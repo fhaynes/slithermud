@@ -1,0 +1,9 @@
+<c_template name="Elf" id_num="2" desc="This is a basic elf.">
+  <stat>sta:1</stat>
+  <stat>int:1</stat>
+  <stat>str:1</stat>
+  <stat>spi:1</stat>
+  <stat>dex:1</stat>
+  
+  <logic>basicCharacterLogic</logic>
+</c_template>
