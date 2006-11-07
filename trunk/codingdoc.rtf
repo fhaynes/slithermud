@@ -1,0 +1,149 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+{\*\generator Msftedit 5.41.15.1507;}\viewkind4\uc1\pard\b\f0\fs28 Coding in SlitherMUD\par
+\par
+\b0\fs24 Welcome! This is the coding document for coding in SlitherMUD. I will give you an overview of the MUD's structure, detail the key files and areas, and detail how the logic system works.\par
+\par
+The logic part of this document will contain a step by step guide on how to implement several common MUD features, but not an entire game.\par
+\par
+If you have any questions, or need help with coding something specific, you can reach me via the following:\par
+\par
+E-Mail: kurosknight@gmail.com\par
+ICQ: 82799879\par
+AIM: Ekteros\par
+\par
+Or you can also check the forums at: http://slither.foobar.us/bb/\par
+\par
+\b Introduction\par
+\par
+\b0 SlitherMUD is a complete MUD framework written entirely in Python. A familiarity with Python is neccessary to code. Python itself, and tutorials, can be found at http://www.python.org.\par
+\par
+Why Python? Well, I was tired of trying to work with obtuse, complicated codebases written 15 years ago. Interpreted languages offer many advantages to writing a MUD, and Python is, in my opinion, the best interpreted language.\par
+\par
+The popular MMO EVE-Online is written in it, for example, and they hold the record for most players online on a single server, just to give you an idea of Python's power and flexibility.\par
+\par
+Python is also extremely easy to read, since it uses whitespace for delimiters.\par
+\par
+Central to the concept of SlitherMUD is the Action system. Ron Penton, in his book MUD Game Programming, designed a nifty system for handling events in MUDs. I stea--er, borrow, many of the concepts to the action system from his codebase.\par
+\par
+The basic idea is this:\par
+Anything that happens in the MUD is an action. Entities in the game have logic modules (python scripts) attached to them that can respond however they want to these actions. The scripts can change anything in the world.\par
+\par
+This provides a nice interface for coding most of a MUD, and for most things, you won't have to touch the actual game/server code. You'll just write a command, and write a script to respond to the action the command generates.\par
+\par
+An example is the say command.\par
+\par
+The say command creates an action containing the player that said something, and what he said. The action is then passed to the game's Action Handler, which routes it to the proper entities (things in the same room as the player who said something). The logic modules attached to the entity then decide how they will respond to the say command. In the case of characters, the basicCharLogic module checks to see if a player can hear, and if they can, it writes the say data to them.\par
+\par
+Any script on an entity can deny an action. You could, for example, have a spell create a Deafness module and attach it to a player. Then they couldn't hear what someone says, though they might see their lips moving! A Silence module could keep a player from casting spells.\par
+\par
+Scripts can change anything about the character. As you can see, this gives great flexibility and makes coding things easier (at least I hope so!).\par
+\par
+Data storage is accomplished with XML. In the future, I may move over to something like SQLObject or SQLAlchemy.\par
+\par
+I've tried to make this as Object Oriented as possible, as well.\par
+\par
+This is my first large-scale programming project, and I am a self taught hobbyist coder. There are bugs, or more efficient ways to do what I've done. Please, e-mail me with suggestions, ideas, comments, etc. And I'll gladly integrate patches if you encounter a bug and fix it!\par
+\par
+I'll try to keep this document as up to date as possible. I'm still changing some of the core stuff of the MUD, though most of it is stable.\par
+\par
+So without further ado, let's go over some of the key files and data structures!\par
+\par
+\b MudObject.py\par
+\par
+\b0 Most "things" (portals, rooms, zones, characters, items) inherit from this class. It contains three 3 attributes, the name, description, and ID Number of the object\par
+\par
+It contains a command dictionary, where the key is command name, and the value is a reference to the instance of the object that handles the command.\par
+\par
+The statistics dictionary contains everything else about a character. Stats, quest progression status, health, whatever else. I've done it like this so you can dynamically add/remove/change statistics. Key is the stat name, value is the value.\par
+\par
+The logic modules dictionary contains all the logic modules attached to the object. Key is the module name (such as basicCharLogic) and the value is a reference to the actual module.\par
+\par
+It also contains functions add/remove things from these dictionaries, and the doAction function. The doAction function sends an action to every logic module the object has.\par
+\par
+\b Templates, Item, and Characters\par
+\par
+\b0 Every item and character in the game comes from a "template". You might have an "Elf" template, for example, that all Elves (both player and mob) in the game are created from. The MudItem and MudCharacter file both contain the template classes for items and characters, respectivley.\par
+\par
+Templates contain only a few attributes. The id number of the template, which is different from the ID number of something created from the template, a default name and description, and a list of logic modules, and a statistics dictionary. This is so you can assign default values to templates. You might, for example, want to make Elves smarter than Humans be default, so you can change the templates Intelligence stat. \par
+\par
+The Item class itself has a few extra attributes. It has a list of any items it contains (so you can do backpacks or whatnot), what character owns the object (set to None if no one is holding it), the room and zone it is in (set to none if a character is holding it), if it is a quantity item, and how many of them there are if it is. By default, items are not quantity items. If you want them to be, you will need to change that manually.\par
+\par
+The MudCharacter class is a bit more complex.\par
+\par
+The sockRef attribute is a reference to the transport layer for the socket connection provided by Twisted. It lets us send data to the socket, basically, and contains information about the connection.\par
+\par
+The roomRef and zoneRef contain references to the current room and zone the player is in. The rest should be fairly self explanatory.\par
+\par
+You'll probably use the writeWithPrompt and writePlain functions a lot. writeWithPrompt writes a string to the player, wraps it, and writes a prompt after the string is sent. The writePlain function writes a string with no special formatting, other than handling color.\par
+\par
+Mobs and Players are both instances of the MudCharacter class. The only difference is that with a mob, the sockRef is set to ''. This lets a mob do anything a player can, and a player can even take over a Mob just be reassigning the sockRef.\par
+\par
+\b MudConst.py\par
+\b0 This file contains various constants the MUD needs to run. It contains the login states, admin levels, the file paths, and the logo/message of the day.\par
+\par
+If you add/change the file paths, be SURE to use the os module for cross platform compatibility. For example, don't use '\\\\', use os.sep.\par
+\par
+\b Zones, Rooms, and Portals\par
+\par
+\b0 A zone is a collection of rooms and portals in the MUD. Portals are one way, and link one room to another.\par
+\par
+Zones maintain their own list of what characters are in it, as well as the rooms in it.\par
+\par
+Zones also have an "allowed" list, which is a list of what players are allowed to edit it. It also contains the next available room and portal ids, for OLC purposes, and automatically updates them each time the zone is loaded.\par
+\par
+Rooms contain a list of portals that exist in them. \par
+\par
+Portals contain a target zone and room. Upon creation, the target zone is by default set to the zone the portal exists in.\par
+\par
+These classes, of course, have standard functions for adding/removing/finding things.\par
+\par
+\b MudWorld.py\par
+\par
+\b0 This object is responsible for intiializng the world. It also handles player input, processing ticks, and the functions to load zones, templates, etc.\par
+\par
+It also contains references to the Database, Protocol Handler, the OLC system, and the logon handler.\par
+\par
+\b MudDatabase.py\par
+\par
+\b0 This file contains a database object that has a list of everything in the MUD, including the zones, templates, every item, every character.\par
+\par
+It has lots of functions for loading them, searching, and returning various collections of objects (all items in a certain room, for instance).\par
+\par
+You'll probably use these functions a lot, so familiarze yerself with them.\par
+\par
+It also contains the content handlers for parsing the XML files with SAX. If you make changes to the attributes of the objects, you'll need to update these. This is also another reason the statistics dictionary should be used for everything. The MUD automatically saves/loads this dictionary without having to add code.\par
+\par
+\b Commands\par
+\par
+\b0 Commands in the MUD are classes that inherit from MudCommand.py.\par
+\par
+The help command automatically displays the command list and help text by using the cmdName, helpText, and usageExample attributes, so be sure to fill those out!\par
+\par
+Each Command class has a Process function you should override for your class. Generally, you'll want to build a new instance of the MudAction class and send it to the action handler, but for things like who, object creation, etc, that do not effect the physical world of the MUD (at least in terms of player interaction), you can skip the action system and code the effect directly.\par
+\par
+\b MudAction.py\par
+\par
+\b0 The MudAction class is the core of doing things in SlitherMUD. Commands will create a new instance of the MudAction class, fill in some data, and send it to the action handler.\par
+\par
+The actionType attribute is what the action will usually be "do". This means that the action is not one handled by the ActionHandler, and should be passed directly to the appropiate logic module.\par
+\par
+The various data attributes can contain different types of information appropiate to the action. The string attribute gives you a place to store any string data you need too.\par
+\par
+playerRef is always a reference to the player who issued the command.\par
+\par
+We'll go over thismore in the logic coding tutorial.\par
+\par
+\par
+\par
+This concludes the overview of the structure of the core. Next up...coding a simple game!\par
+\par
+\par
+\par
+\b\fs28 A Basic Game\par
+\par
+\b0\fs24\par
+\par
+\par
+ \fs20\par
+}
+ 
