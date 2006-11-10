@@ -48,6 +48,9 @@ import cmdBuildwalk
 import cmdVari
 import cmdSavezone
 import cmdGive
+import cmdNewportal
+import cmdDelzone
+import cmdPromote
 
 def nw(text):
     "Remove redundant whitespace from a string"
@@ -373,6 +376,7 @@ class DatabaseManager:
         self.next_zone_id = 0
         
         self.commands     = {}
+        self.commands['promote'] = cmdPromote.promote
         self.commands['look'] = cmdLook.look
         self.commands['say']  = cmdSay.say
         self.commands['go']   = cmdGo.go
@@ -401,7 +405,57 @@ class DatabaseManager:
         self.commands['buildwalk'] = cmdBuildwalk.buildwalk
         self.commands['vari'] = cmdVari.vari
         self.commands['savezone'] = cmdSavezone.savezone
+        self.commands['newportal'] = cmdNewportal.newportal
+        self.commands['delzone'] = cmdDelzone.delzone
     
+    # Command loading functions
+    def loadStdCmds(self, user):
+        user.addCommand("say",  cmdSay.say)
+        user.addCommand("look", cmdLook.look)
+        user.addCommand("go",   cmdGo.go)
+        user.addCommand("olc",  cmdOlc.olc)
+        user.addCommand("who",  cmdWho.who)
+        user.addCommand("help", cmdHelp.help)
+        user.addCommand("get", cmdGet.get)
+        user.addCommand("quit", cmdQuit.quit)
+        user.addCommand("inventory", cmdInventory.inventory)
+        user.addCommand("drop", cmdDrop.drop)
+        user.addCommand("give", cmdGive.give)
+    
+    def loadBuilderCmds(self, user):
+        user.addCommand("icreate", cmdIcreate.icreate)
+        user.addCommand("mcreate", cmdMcreate.mcreate)
+        user.addCommand("set",     cmdSet.set)
+        user.addCommand("search",  cmdSearch.search)
+        user.addCommand("obliterate", cmdObliterate.obliterate)
+        user.addCommand("info", cmdInfo.info)
+        user.addCommand("edit", cmdEdit.edit)
+        user.addCommand("warp", cmdWarp.warp)
+        user.addCommand("zonelist", cmdZonelist.zonelist)
+        user.addCommand("savezone", cmdSavezone.savezone)
+        user.addCommand("newportal", cmdNewportal.newportal)
+        user.addCommand("buildwalk", cmdBuildwalk.buildwalk)
+        
+    def loadAllCmds(self, user):
+        user.addCommand("icreate", cmdIcreate.icreate)
+        user.addCommand("mcreate", cmdMcreate.mcreate)
+        user.addCommand("set",     cmdSet.set)
+        user.addCommand("search",  cmdSearch.search)
+        user.addCommand("copyover", cmdCopyover.copyover)
+        user.addCommand("assign", cmdAssign.assign)
+        user.addCommand("obliterate", cmdObliterate.obliterate)
+        user.addCommand("info", cmdInfo.info)
+        user.addCommand("grant", cmdGrant.grant)
+        user.addCommand("edit", cmdEdit.edit)
+        user.addCommand("newzone", cmdNewzone.newzone)
+        user.addCommand("warp", cmdWarp.warp)
+        user.addCommand("zonelist", cmdZonelist.zonelist)
+        user.addCommand("removezone", cmdRemovezone.removezone)
+        user.addCommand("buildwalk", cmdBuildwalk.buildwalk)
+        user.addCommand("vari", cmdVari.vari)
+        user.addCommand("savezone", cmdSavezone.savezone)
+        user.addCommand("newportal", cmdNewportal.newportal)
+        user.addCommand("delzone", cmdDelzone.delzone)
     # Saving and loading functions
     def saveIds(self):
         tmp = open(MudConst.id_data_file, 'w')
@@ -468,6 +522,20 @@ class DatabaseManager:
             return self.tmp
         else:
             print "Fix me in LoadZoneFromDisk"
+            
+    def deleteZoneFromDisk(self, zone):
+        zone_dir = MudConst.zone_dir+zone.replace(" ", "")+os.sep+zone.replace(" ", "")+'.xml'
+        os.remove(zone_dir)
+        os.rmdir(MudConst.zone_dir+zone.replace(" ", "")+os.sep)
+            
+        tmp = open(MudConst.load_list, 'r')
+        lines = tmp.readlines()
+        tmp.close()
+        lines.remove(zone.replace(" ", ""))
+        tmp = open(MudConst.load_list, 'w')
+        for eachLine in lines:
+            tmp.write(eachLine)
+        tmp.close()
     
     def saveCharToDisk(self, p_object):
         """
@@ -478,7 +546,7 @@ class DatabaseManager:
         if p_object.sockRef != '':
             char_file = MudConst.player_dir+os.sep+str(p_object.name)+'.xml'
         else:
-            char_file = MudConst.mob_dir+os.sep+str(p_object.id_num)+'.xml'
+            char_file = MudConst.mob_dir+os.sep+str(p_object.name)+'.xml'
         tmp = file(char_file, 'w')
         tmp.write('<character name="'+p_object.name+'" id_num="'+str(p_object.id_num)+\
 '" zone="'+str(p_object.zone)+'" room="'+str(p_object.room)+'" a_l="'+str(p_object.admin_level)\
@@ -512,9 +580,6 @@ class DatabaseManager:
     def loadCharFromDisk(self, name):
         """
         This attempts to load a character from the disk.
-        
-        Returns the unpickled object if the file is fine. If the file does not
-        exist, it returns nothing.
         """
         
         char_file = MudConst.player_dir+os.sep+name.capitalize()+'.xml'
@@ -527,9 +592,12 @@ class DatabaseManager:
         else:
             return
         
+
+        
+        
     def saveCharTemplateToDisk(self, template):
         """
-        This pickles a template to disk.
+        This saves a template to disk.
         """
         
         template_file = MudConst.char_template_dir+os.sep+template.name.capitalize()+'.xml'
@@ -545,6 +613,7 @@ class DatabaseManager:
         tmp.write('</c_template>')
         
         tmp.close()
+        
         
     def loadCharTemplateFromDisk(self, t_name):
         """
@@ -648,6 +717,13 @@ class DatabaseManager:
         self.zones[zone.id_num] = zone
         
     def removeZone(self, zone):
+        for eachChar in zone.characters.values():
+            if eachChar.sockRef != '':
+                eachChar.writeWithPrompt("Reality dissolved around you! Moving you to a safe area. Contact an IMM!")
+                eachChar.setZone(1)
+                eachChar.setRoom(1)
+            else:
+                zone.removeCharacter(eachChar.name)
         del self.zones[zone.id_num]
         
     def addCharacter(self, character):
@@ -661,6 +737,7 @@ class DatabaseManager:
         Removes a character from the world.
         """
         del self.characters[int(character.id_num)]
+        
     def addItem(self, item):
         self.items[item.id_num] = item
         
@@ -694,6 +771,12 @@ class DatabaseManager:
                 return eachChar
         return None
     
+    def findCharsByName(self, name):
+        tmp = []
+        for eachChar in self.characters.values():
+            if name.lower() in eachChar.name.lower():
+                tmp.append(eachChar)
+        return tmp
     def findCharTemplateByName(self, name):
         tmp = []
         for eachChar in self.c_templates.values():
@@ -707,7 +790,13 @@ class DatabaseManager:
         else:
             return None
         
-    def findItemByName(self, string):
+    def findItemByName(self, name):
+        tmp = []
+        for eachItem in self.items.values():
+            if string.lower() in eachItem.name.lower():
+                tmp.append(eachItem)
+        return tmp
+    def findItemsByName(self, string):
         tmp = []
         for eachItem in self.items.values():
             if string.lower() in eachItem.name.lower():

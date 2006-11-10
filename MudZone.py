@@ -55,10 +55,10 @@ class MudZone(MudObject.MudObject):
         del self.rooms[room.id_num]
         
     def addCharacter(self, character):
-        self.characters[character.name] = character
+        self.characters[character.id_num] = character
         
     def removeCharacter(self, character):
-        del self.characters[character.name]
+        del self.characters[character.id_num]
             
     def returnCharacters(self):
         m_list = []

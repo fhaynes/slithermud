@@ -266,7 +266,7 @@ class MudActionHandler:
         t.zoneRef = None
         t.roomRef = None
         MudDatabase.db.removeCharacter(t)
-        mob_file = MudConst.mob_dir+str(t.id_num)+'.xml'
+        mob_file = MudConst.mob_dir+str(t.name)+'.xml'
         try:
             os.remove(mob_file)
         except:

@@ -6,41 +6,11 @@ Class for handling logging a player in.
 """
 
 import os
-
-import cPickle as pickle
 import copy
 
 import MudDatabase
 import MudWorld
 import MudConst
-
-import cmdLook
-import cmdSay
-import cmdOlc
-import cmdGo
-import cmdWho
-import cmdIcreate
-import cmdMcreate
-import cmdSet
-import cmdSearch
-import cmdHelp
-import cmdCopyover
-import cmdGet
-import cmdQuit
-import cmdInventory
-import cmdDrop
-import cmdAssign
-import cmdObliterate
-import cmdInfo
-import cmdGrant
-import cmdEdit
-import cmdNewzone
-import cmdWarp
-import cmdZonelist
-import cmdRemovezone
-import cmdBuildwalk
-import cmdVari
-import cmdSavezone
 
 class LoginHandler:
     """
@@ -84,18 +54,12 @@ and numbers. Please try again: ")
         if player.password == data:
             player.writePlain('\r\nPassword accepted!\r\n')
             player.writeWithPrompt('Welcome, '+player.name)
-            if player.name == 'Kuros' or player.name == 'Aya':
-                player.admin_level = MudConst.implementor
-                #self.loadAdmCmds(player)
             player.setZone(1)
             player.setRoom(1)
             player.zoneRef.addCharacter(player)
             MudDatabase.db.addCharacter(player)
             player.roomRef.addCharacter(player)
-            player.zoneRef.addCharacter(player)
-            #self.loadStdCmds(player)
-            player.login_state = MudConst.logedIn
-            
+            player.login_state = MudConst.logedIn     
         else:
             player.writePlain('\r\nInvalid password. Try again: ')
             return
@@ -235,18 +199,11 @@ Try again: ')
             
 
     def getStats(self, player, data):
-        args = data.split(" ")
-        if len(args) > 3:
-            player.writePlain("Proper format is: str/dex/sta/spi/int add/sub amount!!!\r\n")
-            self.displayStats(player)
-            return
-        
-        if args[0] == 'done':
+        if data == 'done':
             if player.statistics['a_points'] != 0:
                 player.writePlain("You still have more points to spend!")
                 return
-            
-            player.setZone(5)
+            player.setZone(1)
             player.setRoom(1)
             MudDatabase.db.saveCharToDisk(player)
             player.writePlain('Character created.\r\n')
@@ -254,9 +211,17 @@ Try again: ')
             player.zoneRef.addCharacter(player)
             MudDatabase.db.addCharacter(player)
             player.roomRef.addCharacter(player)
-            self.loadStdCmds(player)
+            MudDatabase.db.loadStdCmds(player)
             player.login_state = MudConst.logedIn
             return
+            
+        args = data.split(" ")
+        if len(args) != 3:
+            player.writePlain("Proper format is: str/dex/sta/spi/int add/sub amount!!!\r\n")
+            self.displayStats(player)
+            return
+            
+
         elif args[1] == 'add':
             if not args[2].isdigit():
                 player.writePlain('Amount must be numbers only!\r\n')
@@ -335,43 +300,10 @@ Try again: ')
         player.writePlain('Stamina     : '+str(player.statistics['sta'])+'\r\n')
         player.writePlain('Spirit      : '+str(player.statistics['spi'])+'\r\n')
         player.writePlain('Points left : '+str(player.statistics['a_points'])+'\r\n\r\n')
-        player.writePlain('You have 15 points to distribute amongst your stats.\r\n')
         player.writePlain('Type the first three letters of the stat, add/sub, and amount.\r\n')
         player.writePlain('Type done when you are done.\r\n')
         player.writePlain('Your choice: ')
     # This loads standard commands, such as look, say, etc
     
-    def loadStdCmds(self, user):
-        user.addCommand("say",  cmdSay.say)
-        user.addCommand("look", cmdLook.look)
-        user.addCommand("go",   cmdGo.go)
-        user.addCommand("olc",  cmdOlc.olc)
-        user.addCommand("who",  cmdWho.who)
-        user.addCommand("help", cmdHelp.help)
-        user.addCommand("get", cmdGet.get)
-        user.addCommand("quit", cmdQuit.quit)
-        user.addCommand("inventory", cmdInventory.inventory)
-        user.addCommand("drop", cmdDrop.drop)
-        user.addCommand("give", cmdGive.give)
-        
-    
-    def loadAdmCmds(self, user):
-        user.addCommand("icreate", cmdIcreate.icreate)
-        user.addCommand("mcreate", cmdMcreate.mcreate)
-        user.addCommand("set",     cmdSet.set)
-        user.addCommand("search",  cmdSearch.search)
-        user.addCommand("copyover", cmdCopyover.copyover)
-        user.addCommand("assign", cmdAssign.assign)
-        user.addCommand("obliterate", cmdObliterate.obliterate)
-        user.addCommand("info", cmdInfo.info)
-        user.addCommand("grant", cmdGrant.grant)
-        user.addCommand("edit", cmdEdit.edit)
-        user.addCommand("newzone", cmdNewzone.newzone)
-        user.addCommand("warp", cmdWarp.warp)
-        user.addCommand("zonelist", cmdZonelist.zonelist)
-        user.addCommand("removezone", cmdRemovezone.removezone)
-        user.addCommand("buildwalk", cmdBuildwalk.buildwalk)
-        user.addCommand("vari", cmdVari.vari)
-        user.addCommand("savezone", cmdSavezone.savezone)
 
 loginHandler = LoginHandler()
