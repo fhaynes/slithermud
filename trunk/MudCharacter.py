@@ -45,7 +45,7 @@ class MudCharacter(MudObject.MudObject):
         
         self.zone         = 0
         self.room         = 0
-        self.admin_level  = 0
+        self.admin_level  = 1
 
 
         self.items        = {}

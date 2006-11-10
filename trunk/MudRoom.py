@@ -56,13 +56,13 @@ class MudRoom(MudObject.MudObject):
         
         Keys are Character names, value is a reference to the Character instance.
         """
-        self.characters[character.name] = character
+        self.characters[character.id_num] = character
 
     def removeCharacter(self, character):
         """
         Removes a character from the room.
         """
-        del self.characters[character.name]
+        del self.characters[character.id_num]
 
     def addPortal(self, portal):
         """

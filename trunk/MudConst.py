@@ -24,11 +24,11 @@ inOlc                 = 11
 
 # Admin levels
 
-player      = 0
-enforcer    = 1
-builder     = 2
-scripter    = 3
-implementor = 4
+player      = 1
+enforcer    = 2
+builder     = 3
+scripter    = 4
+implementor = 5
 
 # Home directory
 home_dir = os.path.abspath('/Slither')

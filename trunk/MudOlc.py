@@ -35,9 +35,11 @@ class OlcManager:
         self.roomEditPage     = 4
         self.portalEditPage   = 6
         self.mobSelectPage    = 7
-        self.mobEditPage      = 8
-        self.itemSelectPage   = 9
-        self.itemEditPage     = 10
+        self.mobEditPage         = 8
+        self.mobInstanceEditPage = 9
+        self.itemSelectPage   = 10
+        self.itemEditPage     = 11
+        self.itemInstanceEditPage = 12
         
     def addUser(self, user):
         self.users.append(user)
@@ -51,17 +53,15 @@ class OlcManager:
         
     def removeUser(self, user):
         self.users.remove(user)
-        del user.curWorkingPortal
-        del user.curWorkingRoom
-        del user.curWorkingItemTemplate
-        del user.curWorkingZone
+        user.curWorkingPortal = None
+        user.curWorkingRoom   = None
+        user.curWorkingItemTemplate = None
+        user.curWorkingZone = None
+        user.curWorkingCharInstance = None
+        user.curWorkingItemInstance = None
         
     def handleInput(self, user, args):
-        if args.lower() == 'save zone':
-            MudDatabase.db.saveZoneToDisk(user.curWorkingZone)
-            user.writePlain('Zone saved!\r\n>> ')
-            return
-        elif args.lower() == 'save ctemplate':
+        if args.lower() == 'save ctemplate':
             if user.curWorkingCharTemplate != None:
                 MudDatabase.db.saveCharTemplateToDisk(user.curWorkingCharTemplate)
                 user.writePlain('Template saved!\r\n>> ')
@@ -89,12 +89,12 @@ class OlcManager:
         # Initial menu and zone editing function calls
         elif user.olcState == self.initialMenu:
             self.initialMenuProcess(user, args)
-        elif user.olcState == self.zoneEditPage:
-            self.zoneEditProcess(user, args)
-        elif user.olcState == self.zoneSelectPage:
-            self.zoneSelectProcess(user, args)
-        elif user.olcState == self.roomSelectPage:
-            self.roomSelectProcess(user, args)
+        #elif user.olcState == self.zoneEditPage:
+        #    self.zoneEditProcess(user, args)
+        #elif user.olcState == self.zoneSelectPage:
+        #    self.zoneSelectProcess(user, args)
+        #elif user.olcState == self.roomSelectPage:
+        #    self.roomSelectProcess(user, args)
         elif user.olcState == self.roomEditPage:
             self.roomEditProcess(user, args)
         elif user.olcState == self.portalEditPage:
@@ -107,18 +107,14 @@ class OlcManager:
             self.itemSelectProcess(user, args)
         elif user.olcState == self.itemEditPage:
             self.itemEditProcess(user, args)
+        elif user.olcState == self.mobInstanceEditPage:
+            self.mobInstanceEditProcess(user, args)
+        elif user.olcState == self.itemInstanceEditPage:
+            self.itemInstanceEditProcess(user, args)
         else:
             pass 
     def initialMenuProcess(self, user, args):
-        if args.lower() == 'n':
-            user.curWorkingZone = self.createNewZone(user)
-            user.writePlain('Zone created! Taking you to the Editing Page.\r\n')
-            user.olcState = self.zoneEditPage
-            self.displayZoneEditPage(user)
-        elif args.lower() == 'l':
-            self.displayZoneListPage(user)
-            user.olcState = self.zoneSelectPage
-        elif args.lower() == 't':
+        if args.lower() == 't':
             self.displayMobSelectPage(user)
             user.olcState = self.mobSelectPage
         elif args.lower() == 'i':
@@ -132,244 +128,258 @@ class OlcManager:
     def displayMainMenu(self, user):
         user.writePlain('<cls><bright><white>SlitherMUD OLC Main Menu\r\n')
         user.writePlain('<bright><white>\r\n\r\n----------Main Menu----------\r\n')
-        user.writePlain('     \r\n     <red>[N]ew Zone\r\n')
-        user.writePlain('     [L]ist Existing Zones\r\n')
-        user.writePlain('     [T]emplate Editing for Character\r\n')
+        user.writePlain('     \r\n<red>[C]haracter Template Editing\r\n')
         user.writePlain('     [I]tem Template Editing\r\n')
         user.writePlain('     [Quit] the OLC Editor\r\n<white>')
         user.writePlain('\r\n-----------------------------\r\n')
         user.writePlain('\r\n<r>>> ')
         
     def zoneSelectProcess(self, user, args):
-        if args.isdigit():
-            try:
-                user.curWorkingZone = self.cur_zones[int(args)]
-                user.olcState = self.zoneEditPage
-                self.displayZoneEditPage(user)
-            except KeyError:
-                user.writePlain('\r\nThat is not a valid Zone ID. Try again: ')
-        elif args == '':
-            self.displayZoneListPage(user)
-        elif args == 'back':
-            user.olcState = self.initialMenu
-            self.displayMainMenu(user)
-        else:
-            user.writePlain('Zone IDs must be numbers only. Try again: ')
+        pass
+        #if args.isdigit():
+        #    try:
+        #        user.curWorkingZone = self.cur_zones[int(args)]
+        #        user.olcState = self.zoneEditPage
+        #        self.displayZoneEditPage(user)
+        #    except KeyError:
+        #        user.writePlain('\r\nThat is not a valid Zone ID. Try again: ')
+        #elif args == '':
+        #    self.displayZoneListPage(user)
+        #elif args == 'back':
+        #    user.olcState = self.initialMenu
+        #    self.displayMainMenu(user)
+        #else:
+        #    user.writePlain('Zone IDs must be numbers only. Try again: ')
             
     def zoneEditProcess(self, user, args):
-        args = args.split(" ", 1)
-        try:
-            if args[0].lower() == 'name':
-                user.curWorkingZone.name = args[1]
-                self.displayZoneEditPage(user)
-                return
-            elif args[0] == '':
-                self.displayZoneEditPage(user)
-            elif args[0].lower() == 'back':
-                user.olcState = self.zoneSelectPage
-                self.displayZoneListPage(user)
-            elif args[0].lower() == 'id':
-                if args[1].isdigit():
-                    if self.cur_zones.has_key(int(args[1])):
-                        user.writePlain('That ID is already taken!\r\n>> ')
-                        return
-                    user.curWorkingZone.id_num = int(args[1])
-                    self.displayZoneEditPage(user)
-                    return
-                else:
-                    user.writePlain('Zone ID must be numerical.\r\n>> ')
-                    return
-            elif args[0].lower() == 'permissions':
-                for eachUser in user.curWorkingZone.permissions:
-                    if args[1].lower() == eachUser.lower():
-                        user.curWorkingZone.permissions.remove(eachUser)
-                        self.displayZoneEditPage(user)
-                        return
-                user.curWorkingZone.permissions.append(args[1].capitalize)
-                self.displayZoneEditPage(user)
-                return
-            elif args[0].lower() == 'logics':
-                if len(args[1].split(" ")) != 1:
-                    user.writePlain('Proper format is logics modulename. No spaces.')
-                    user.writePlain('\r\n>> ')
-                    return
-                if user.curWorkingZone.logic_modules.has_key(args[1]):
-                    del user.curWorkingZone.logic_modules[args[1]]
-                    self.displayZoneEditPage(user)
-                    return
-                else:
-                    try:
-                        user.curWorkingZone.logic_modules[args[1]] = __import__(args[1])
-                        user.writePlain('Logic module added!\r\n\r\n>>')
-                        return
-                    except:
-                        user.writePlain('Cannot find that logic module!\r\n>>')
-                        return
-            elif args[0].lower() == 'roomedit':
-                user.olcState = self.roomSelectPage
-                self.displayRoomListPage(user)
-            else:
-                user.writePlain('That is not a valid option.\r\n>> ')
-        except:
-            user.writePlain('Invalid command.\r\n>> ')
+        pass
+        #args = args.split(" ", 1)
+        #try:
+        #    if args[0].lower() == 'name':
+        #        user.curWorkingZone.name = args[1]
+        #        self.displayZoneEditPage(user)
+        #        return
+        #    elif args[0] == '':
+        #        self.displayZoneEditPage(user)
+        #    elif args[0].lower() == 'back':
+        #        user.olcState = self.zoneSelectPage
+        #        self.displayZoneListPage(user)
+        #    elif args[0].lower() == 'id':
+        #        if args[1].isdigit():
+        #            if self.cur_zones.has_key(int(args[1])):
+        #                user.writePlain('That ID is already taken!\r\n>> ')
+        #                return
+        #            user.curWorkingZone.id_num = int(args[1])
+        #            self.displayZoneEditPage(user)
+        #            return
+        #        else:
+        #            user.writePlain('Zone ID must be numerical.\r\n>> ')
+        #            return
+        #    elif args[0].lower() == 'permissions':
+        #        for eachUser in user.curWorkingZone.permissions:
+        #            if args[1].lower() == eachUser.lower():
+        #                user.curWorkingZone.permissions.remove(eachUser)
+        #                self.displayZoneEditPage(user)
+        #                return
+        #        user.curWorkingZone.permissions.append(args[1].capitalize)
+        #        self.displayZoneEditPage(user)
+        #        return
+        #    elif args[0].lower() == 'logics':
+        #        if len(args[1].split(" ")) != 1:
+        #            user.writePlain('Proper format is logics modulename. No spaces.')
+        #            user.writePlain('\r\n>> ')
+        #            return
+        #        if user.curWorkingZone.logic_modules.has_key(args[1]):
+        #            del user.curWorkingZone.logic_modules[args[1]]
+        #            self.displayZoneEditPage(user)
+        #            return
+        #        else:
+        #            try:
+        #                user.curWorkingZone.logic_modules[args[1]] = __import__(args[1])
+        #                user.writePlain('Logic module added!\r\n\r\n>>')
+        #                return
+        #            except:
+        #                user.writePlain('Cannot find that logic module!\r\n>>')
+        #                return
+        #    elif args[0].lower() == 'roomedit':
+        #        user.olcState = self.roomSelectPage
+        #        self.displayRoomListPage(user)
+        #    else:
+        #        user.writePlain('That is not a valid option.\r\n>> ')
+        #except:
+        #    user.writePlain('Invalid command.\r\n>> ')
         
     def roomSelectProcess(self, user, args):
-        args = args.split(" ", 1)
-        if args[0].lower() == 'edit':
-            if not args[1].isdigit():
-                user.writePlain('Room to edit must be numbers only! Format is edit idnum.\r\n')
-                user.writePlain('>> ')
-                return
-            try:
-                user.curWorkingRoom = user.curWorkingZone.rooms[int(args[1])]
-                user.olcState = self.roomEditPage
-                self.displayRoomEditPage(user)
-            except:
-                
-                newRoom = MudRoom.MudRoom()
-                newRoom.zone = user.curWorkingZone.id_num
-                newRoom.name = 'NoName'
-                newRoom.desc = 'Empty'
-                newRoom.id_num = int(args[1])
-                newRoom.addLogic('basicRoomLogic')
-                user.curWorkingRoom = newRoom
-                user.curWorkingZone.addRoom(newRoom)
-                user.olcState = self.roomEditPage
-                self.displayRoomEditPage(user)
-        elif args[0] == '':
-            self.displayRoomListPage(user)
-        elif args[0].lower() == 'back':
-            user.olcState = self.zoneEditPage
-            self.displayZoneEditPage(user)
-                
-        else:
-            user.writePlain('Invalid command.\r\n>>')
+        pass
+        #args = args.split(" ", 1)
+        #if args[0].lower() == 'edit':
+        #    if not args[1].isdigit():
+        #        user.writePlain('Room to edit must be numbers only! Format is edit idnum.\r\n')
+        #        user.writePlain('>> ')
+        #        return
+        #    try:
+        #        user.curWorkingRoom = user.curWorkingZone.rooms[int(args[1])]
+        #        user.olcState = self.roomEditPage
+        #        self.displayRoomEditPage(user)
+        #    except:
+        #        
+        #        newRoom = MudRoom.MudRoom()
+        #        newRoom.zone = user.curWorkingZone.id_num
+        #        newRoom.name = 'NoName'
+        #        newRoom.desc = 'Empty'
+        #        newRoom.id_num = int(args[1])
+        #        newRoom.addLogic('basicRoomLogic')
+        #        user.curWorkingRoom = newRoom
+        #        user.curWorkingZone.addRoom(newRoom)
+        #        user.olcState = self.roomEditPage
+        #        self.displayRoomEditPage(user)
+        #elif args[0] == '':
+        #    self.displayRoomListPage(user)
+        #elif args[0].lower() == 'back':
+        #    user.olcState = self.zoneEditPage
+        #    self.displayZoneEditPage(user)
+        #        
+        #else:
+        #    user.writePlain('Invalid command.\r\n>>')
             
     def roomEditProcess(self, user, args):
         args = args.split(" ", 1)
         if args[0].lower() == 'name':
-            if args[0].isalpha():
+            try:
                 user.curWorkingRoom.name = args[1]
                 self.displayRoomEditPage(user)
-                
-            else:
-                user.writePlain('Room names can only have letters!')
-                user.writePlain('\r\n>> ')
+            except IndexError:
+                user.writePlain("You must provide a new name!\r\n>> ")
                 return
-        elif args[0].lower() == 'pedit':
-            if len(args) != 2:
-                user.writePlain("Proper format is: pedit idnum!\r\n>>")
-                return
-            if not args[1].isdigit():
-                user.writePlain("ID Numbers must be numbers!\r\n>>")
-                return
-            if user.curWorkingRoom.portals.has_key(int(args[1])):
-                user.curWorkingPortal = user.curWorkingRoom.portals[int(args[1])]
-                user.olcState = self.portalEditPage
-                self.displayPortalEditPage(user)
-            else:
-                newPortal = MudPortal.MudPortal()
-                newPortal.zone = user.curWorkingZone.id_num
-                newPortal.name = 'NoName'
-                newPortal.desc = 'Empty'
-                newPortal.anchor = int(user.curWorkingRoom.id_num)
-                newPortal.id_num = int(args[1])
-                newPortal.target_zone = user.curWorkingZone.id_num
-                newPortal.addLogic('basicPortalLogic')
-                user.curWorkingPortal = newPortal
-                user.curWorkingRoom.addPortal(newPortal)
-                user.olcState = self.portalEditPage
-                self.displayPortalEditPage(user)
+    
+        #elif args[0].lower() == 'pedit':
+        #    if len(args) != 2:
+        #        user.writePlain("Proper format is: pedit idnum!\r\n>>")
+        #        return
+        #    if not args[1].isdigit():
+        #        user.writePlain("ID Numbers must be numbers!\r\n>>")
+        #        return
+        #    if user.curWorkingRoom.portals.has_key(int(args[1])):
+        #        user.curWorkingPortal = user.curWorkingRoom.portals[int(args[1])]
+        #        user.olcState = self.portalEditPage
+        #        self.displayPortalEditPage(user)
+        #    else:
+        #        newPortal = MudPortal.MudPortal()
+        #        newPortal.zone = user.curWorkingZone.id_num
+        #        newPortal.name = 'NoName'
+        #        newPortal.desc = 'Empty'
+        #        newPortal.anchor = int(user.curWorkingRoom.id_num)
+        #        newPortal.id_num = int(args[1])
+        #        newPortal.target_zone = user.curWorkingZone.id_num
+        #        newPortal.addLogic('basicPortalLogic')
+        #        user.curWorkingPortal = newPortal
+        #        user.curWorkingRoom.addPortal(newPortal)
+        #        user.olcState = self.portalEditPage
+        #        self.displayPortalEditPage(user)
                 
         elif args[0].lower() == 'logics':
-            if len(args[1].split(" ")) != 1:
-                user.writePlain('Proper format is logics modulename. No spaces.')
-                user.writePlain('\r\n>> ')
-                return
-            if user.curWorkingRoom.logic_modules.has_key(args[1]):
-                del user.curWorkingRoom.logic_modules[args[1]]
-                self.displayRoomEditPage(user)
-                return
-            else:
-                try:
-                    user.curWorkingRoom.logic_modules[args[1]] = __import__(args[1])
-                    user.writePlain('Logic module added!\r\n\r\n>>')
-                    return
-                except:
-                    user.writePlain('Cannot find that logic module!\r\n>>')
-                    return
-        elif args[0].lower() == 'id':
-            if args[1].isdigit():
-                if user.curWorkingZone.rooms.has_key(int(args[1])):
-                    user.writePlain('That ID is already assigned to a room.')
+            try:
+                if len(args[1].split(" ")) != 1:
+                    user.writePlain('Proper format is logics modulename. No spaces.')
                     user.writePlain('\r\n>> ')
+                    return
+                if user.curWorkingRoom.logic_modules.has_key(args[1]):
+                    del user.curWorkingRoom.logic_modules[args[1]]
+                    self.displayRoomEditPage(user)
+                    return
                 else:
-                    user.curWorkingRoom.id_num = int(args[1])
-            else:
-                user.writePlain('ID Numbers must be numbers only.')
-                user.writePlain('\r\n>> ')
+                    try:
+                        user.curWorkingRoom.logic_modules[args[1]] = __import__(args[1])
+                        user.writePlain('Logic module added!\r\n\r\n>> ')
+                        return
+                    except:
+                        user.writePlain('Cannot find that logic module!\r\n>> ')
+                        return
+            except IndexError:
+                user.writePlain("You must provide a logic module name!\r\n>> ")
+                return
+                
+                
+        #elif args[0].lower() == 'id':
+        #    if args[1].isdigit():
+        #        if user.curWorkingZone.rooms.has_key(int(args[1])):
+        #            user.writePlain('That ID is already assigned to a room.')
+        #            user.writePlain('\r\n>> ')
+        #        else:
+        #            user.curWorkingRoom.id_num = int(args[1])
+        #    else:
+        #        user.writePlain('ID Numbers must be numbers only.')
+        #        user.writePlain('\r\n>> ')
                 
         elif args[0].lower() == 'desc':
-            user.curWorkingRoom.desc = ''
             try:
-                if args[1] == 'end':
-                    user.curWorkingRoom.desc = user.buffer
-                    user.buffer = ''
+                if args[1].lower() == 'clear':
+                    self.curWorkingRoom.desc = ''
+                    self.displayRoomEditPage(user)
                 else:
-                    user.buffer = user.buffer + args[1]+' '
+                    self.curWorkingRoom.desc += ' '+args[1]
             except IndexError:
-                user.writePlain("You must type something to add to the desc!\r\n>>")
+                user.writePlain("You must provide a new description, or type 'desc clear' to clear it!\r\n>> ")
                 return
         elif args[0] == '':
             self.displayRoomEditPage(user)
-        elif args[0].lower() == 'back':
-            user.olcState = self.roomSelectPage
-            self.displayRoomListPage(user) 
+        elif args[0].lower() == 'help':
+            user.writePlain("This is the room editing page. Anything in []'s can be edited.\r\n")
+            user.writePlain("For example, to edit the name, type name New Room Name.\r\n")
+            user.writePlain("Portals cannot be edited from here. Use the newportal and edit command from the game.\r\n")
+            user.writePlain("To clear a room description, type desc clear.\r\n")
+            user.writePlain("When you are done, type quit. Changes are saved automatically.\r\n>> ")
+        
         else:
-            pass
+            user.writePlain("Invalid choice! Type help for help!\r\n>> ")
 
     def portalEditProcess(self, user, args):
         args = args.split(" ", 1)
         if args[0].lower() == 'name':
-            if args[1].isalpha():
-                user.curWorkingPortal.name = args[1]
-                self.displayPortalEditPage(user)
+            try:
+                if args[1].isalpha():
+                    user.curWorkingPortal.name = args[1]
+                    self.displayPortalEditPage(user)
+                    return
+                else:
+                    user.writePlain('Portal names cannot contain numbers.')
+                    user.writePlain('\r\n >>')
+                    return
+            except IndexError:
+                user.writePlain("You must specify a name!")
                 return
-            else:
-                user.writePlain('Portal names cannot contain numbers.')
-                user.writePlain('\r\n >>')
-                return
-        elif args[0].lower() == 'id':
-            if args[1].isdigit():
-                user.curWorkingPortal.id_num = int(args[1])
-                self.displayPortalEditPage(user)
-                return
-            else:
-                user.writePlain('Portal IDs must be numbers only.')
-                user.writePlain('\r\n >>')
-                return
+                
         elif args[0].lower() == 'targetr':
-            if args[1].isdigit():
-                user.curWorkingPortal.target_room = int(args[1])
-                self.displayPortalEditPage(user)
+            try:
+                if args[1].isdigit():
+                    user.curWorkingPortal.target_room = int(args[1])
+                    self.displayPortalEditPage(user)
+                    return
+                else:
+                    user.writePlain('Portal Targets must be the ID of the room they lead too.')
+                    user.writePlain('\r\n>> ')
+                    return
+            except IndexError:
+                user.writePlain("You must specify a target room!")
                 return
-            else:
-                user.writePlain('Portal Targets must be the ID of the room they lead too.')
-                user.writePlain('\r\n>> ')
-                return
+            
         elif args[0].lower() == 'targetz':
-            if args[1].isdigit():
-                user.curWorkingPortal.target_zone = int(args[1])
-                self.displayPortalEditPage(user)
-                return
-            else:
-                user.writePlain('Portal Targets must be the ID of the room they lead too.')
-                user.writePlain('\r\n>> ')
+            try:
+                if args[1].isdigit():
+                    user.curWorkingPortal.target_zone = int(args[1])
+                    self.displayPortalEditPage(user)
+                    return
+                else:
+                    user.writePlain('Portal Targets must be the ID of the room they lead too.')
+                    user.writePlain('\r\n>> ')
+                    return
+            except IndexError:
+                user.writePlain("You must specify a target zone!")
                 return
         elif args[0].lower() == 'logics':
+            try:
                 if len(args[1].split(" ")) != 1:
-                    user.writePlain('Proper format is logics modulename. No spaces.')
-                    user.writePlain('\r\n>> ')
+                    user.writePlain('Proper format is logics modulename. No spaces.\r\n>> ')
                     return
                 if user.curWorkingPortal.logic_modules.has_key(args[1]):
                     del user.curWorkingPortal.logic_modules[args[1]]
@@ -383,14 +393,14 @@ class OlcManager:
                     except:
                         user.writePlain('Cannot find that logic module!\r\n>>')
                         return
+            except IndexError:
+                user.writePlain("You must specify a logic module!")
+                return
         elif args[0] == '':
             self.displayPortalEditPage(user)
-        elif args[0].lower() == 'back':
-            user.olcState = self.roomEditPage
-            self.displayRoomEditPage(user) 
         
         else:
-            user.writePlain('Invalid command. \r\n>> ')
+            user.writePlain('Invalid command! Type help for help! \r\n>> ')
             
     def mobSelectProcess(self, user, args):
         args = args.split(" ")
@@ -505,6 +515,63 @@ class OlcManager:
         except ValueError:
             user.writePlain('Fix me in MobEditProcess!\r\n>> ')
             
+    def mobInstanceEditProcess(self, user, args):
+        args = args.split(" ", 1)
+        try:
+            if args[0].lower() == 'name':
+                file = MudConst.mob_dir+user.curWorkingCharInstance.name+'.xml'
+                os.remove(file)
+                user.curWorkingCharInstance.name = args[1]
+                self.displayMobInstanceEditPage(user)
+                return
+            elif args[0] == '':
+                self.displayMobInstanceEditPage(user)
+                return
+            elif args[0].lower() == 'desc':
+                user.curWorkingCharInstance.desc = args[1]
+                self.displayMobInstanceEditPage(user)
+                return
+            
+            elif args[0].lower() == 'logics':
+                try:
+                    if args[1] in user.curWorkingCharInstance.logic_modules:
+                        user.curWorkingCharInstance.removeLogic(args[1])
+                        self.displayMobInstanceEditPage(user)
+                    else:
+                        user.curWorkingCharInstance.addLogic(args[1])
+                        self.displayMobInstanceEditPage(user)
+                except ImportError:
+                    user.writePlain("Logic module not found!\r\n>> ")
+                    return
+                
+            elif args[0].lower() == 'stats':
+                tmp = args[1].split(" ")
+                if len(tmp) != 2:
+                    user.writePlain('Proper format is: stats name value!\r\n>> ')
+                    return
+                else:
+                    if user.curWorkingCharInstance.statistics.has_key(tmp[0]):
+                        del user.curWorkingCharInstance.statistics[tmp[0]]
+                        self.displayMobEditPage(user)
+                    else:
+                        user.curWorkingCharInstance.statistics[tmp[0]] = tmp[1]
+                        self.displayMobInstanceEditPage(user)
+            elif args[0].lower() == 'help':
+                user.writePlain('This is the Mob Instance Editor. It edits specific instances of mob templates.\r\n')
+                user.writePlain('Type what you see in [] to edit them. Such as: name New Name.\r\n')
+                user.writePlain('If a stat exists and you want to remove it, just type stats statname.\r\n')
+                user.writePlain('To change or add a stat value, type stats statname value.\r\n')
+                user.writePlain('>> ')
+                return
+            else:
+                user.writePlain("Invalid choice! Type help for help!\r\n>> ")
+                return
+            
+        except ValueError:
+            user.writePlain('Fix me in MobEditProcess!\r\n>> ')
+        except IndexError:
+            user.writePlain('You must specify a value! Type help for help!\r\n>> ')
+            
     def itemSelectProcess(self, user, args):
         args = args.split(" ")
         if args[0].lower() == 'search':
@@ -599,61 +666,111 @@ class OlcManager:
         except ValueError:
             print sys.exc_info()[1]
             user.writePlain('Fix me in MobEditProcess!\r\n>> ')
-        
+            
+    def itemInstanceEditProcess(self, user, args):
+        args = args.split(" ", 1)
+        try:
+            if args[0].lower() == 'name':
+                user.curWorkingItemInstance.name = args[1]
+                self.displayItemInstanceEditPage(user)
+                return
+            elif args[0].lower() == 'desc':
+                user.curWorkingItemInstance.desc = args[1]
+                self.displayItemInstanceEditPage(user)
+                return
+            elif args[0].lower() == 'logics':
+                if args[1] in user.curWorkingItemInstance.logics:
+                    user.curWorkingItemInstance.removeLogic(args[1])
+                    self.displayItemInstanceEditPage(user)
+                else:
+                    user.curWorkingItemInstance.addLogic(args[1])
+                    self.displayItemInstanceEditPage(user)
+            elif args[0].lower() == 'stats':
+                tmp = args[1].split(" ")
+                if len(tmp) != 2:
+                    user.writePlain('Proper format is: stats name value!\r\n>> ')
+                    return
+                else:
+                    if user.curWorkingItemInstance.statistics.has_key(tmp[0]):
+                        del user.curWorkingItemInstance.statistics[tmp[1]]
+                        self.displayItemInstanceEditPage(user)
+                    else:
+                        user.curWorkingItemInstance.statistics[tmp[0]] = tmp[1]
+                        self.displayItemInstanceEditPage(user)
+            elif args[0].lower() == 'help':
+                user.writePlain('This is the Item Instance Editor. It edits specific instances of item templates.\r\n')
+                user.writePlain('Type what you see in [] to edit them. Such as: name New Name.\r\n')
+                user.writePlain('If a stat exists and you want to remove it, just type stats statname.\r\n')
+                user.writePlain('To change or add a stat value, type stats statname value.\r\n')
+                user.writePlain('>> ')
+                return
+            else:
+                user.writePlain("Not a valid choice! Type help for help! \r\n>> ")
+                return
+        except ValueError:
+            print sys.exc_info()[1]
+            user.writePlain('Fix me in ItemInstanceEditProcess!\r\n>> ')
+        except IndexError:
+            user.writePlain("Proper format is: stats name (value). Type help for help!")
+            
     def displayZoneEditPage(self, user):
-        user.writePlain('<cls>Zone Creation and Editing Section\r\n\r\n')
-        user.writePlain('[Name]       :  '+user.curWorkingZone.name+'\r\n')
-        user.writePlain('[ID]         :  '+str(user.curWorkingZone.id_num)+'\r\n')
-        y = 0
-        user.writePlain('[Permissions]\r\n\r\n')
-        for eachAllowed in user.curWorkingZone.allowed:
-            if y == 4:
-                user.writePlain('\r\n')
-                y = 0
-            user.writePlain(eachAllowed+'    ')
-        y = 0
-        user.writePlain('\r\n\r\n[Logics]\r\n')
-        for eachModule in user.curWorkingZone.logic_modules.keys():
-            if y == 4:
-                user.writePlain('\r\n')
-                y = 0
-            user.writePlain(eachModule+'    ')
-
-        user.writePlain('\r\n\r\n>> ')
+        pass
+    #    user.writePlain('<cls>Zone Creation and Editing Section\r\n\r\n')
+    #    user.writePlain('[Name]       :  '+user.curWorkingZone.name+'\r\n')
+    #    user.writePlain('[ID]         :  '+str(user.curWorkingZone.id_num)+'\r\n')
+    #    y = 0
+    #    user.writePlain('[Permissions]\r\n\r\n')
+    #    for eachAllowed in user.curWorkingZone.allowed:
+    #        if y == 4:
+    #            user.writePlain('\r\n')
+    #            y = 0
+    #        user.writePlain(eachAllowed+'    ')
+    #    y = 0
+    #    user.writePlain('\r\n\r\n[Logics]\r\n')
+    #    for eachModule in user.curWorkingZone.logic_modules.keys():
+    #        if y == 4:
+    #            user.writePlain('\r\n')
+    #            y = 0
+    #        user.writePlain(eachModule+'    ')
+    #
+    #    user.writePlain('\r\n\r\n>> ')
+    
     def displayZoneListPage(self, user):
-        user.writePlain('<cls><bright><white>SlitherMUD OLC Main Menu\r\n\r\n')
-        user.writePlain('<under><bright><white>Zone ID<r>    <under><bright><white>Zone Name<r>\r\n')
-        for eachZone in self.cur_zones.keys():
-            user.writePlain('\r\n'+str(eachZone)+'         '+self.cur_zones[eachZone].name+'\r\n')
-        user.writePlain('>>')
+        pass
+        #user.writePlain('<cls><bright><white>SlitherMUD OLC Main Menu\r\n\r\n')
+        #user.writePlain('<under><bright><white>Zone ID<r>    <under><bright><white>Zone Name<r>\r\n')
+        #for eachZone in self.cur_zones.keys():
+        #    user.writePlain('\r\n'+str(eachZone)+'         '+self.cur_zones[eachZone].name+'\r\n')
+        #user.writePlain('>>')
         
     def displayRoomListPage(self, user):
-        user.writePlain('<cls><bright><white>SlitherMUD OLC Room List Page<r>\r\n\r\n')
-        user.writePlain('Rooms range from 1 to ')
-        cnt = 1
-        for eachRoom in user.curWorkingZone.rooms.keys():
-            cnt = cnt + 1
-        user.writePlain(str(cnt)+'.\r\n')
-        user.writePlain('>> ')
+        pass
+        #user.writePlain('<cls><bright><white>SlitherMUD OLC Room List Page<r>\r\n\r\n')
+        #user.writePlain('Rooms range from 1 to ')
+        #cnt = 1
+        #for eachRoom in user.curWorkingZone.rooms.keys():
+        #    cnt = cnt + 1
+        #user.writePlain(str(cnt)+'.\r\n')
+        #user.writePlain('>> ')
         
     def displayRoomEditPage(self, user):
         try:
             desc = self.formatOutput(user.curWorkingRoom.desc)
             user.writePlain('<cls><white><bright>SlitherMUD OLC Room Edit Page<r>\r\n\r\n')
-            user.writePlain('[Name]     : '+user.curWorkingRoom.name+'\r\n')
-            user.writePlain('[ID]       : '+str(user.curWorkingRoom.id_num)+'\r\n')
-            user.writePlain('[Desc]\r\n'+desc+'\r\n')
-            user.writePlain('\r\n[Portals]\r\n')
+            user.writePlain('<cyan>[Name]     <r>:   <green>'+user.curWorkingRoom.name+'<r>\r\n')
+            user.writePlain('<cyan>[ID  ]     <r>:   <green>'+str(user.curWorkingRoom.id_num)+'\r\n')
+            user.writePlain('<cyan>[Desc]<r>\r\n'+desc+'\r\n')
+            user.writePlain('\r\n<bright><red>Portals<r>\r\n')
             x = 0
             for eachPortal in user.curWorkingRoom.portals.keys():
                 if x == 4:
-                    user.writePlain('\r\n')
+                    user.writePlain('\r\n'+str(eachPortal)+'] '+user.curWorkingRoom.portals[eachPortal].name+'    ')
                     x = 0
                 else:
                     user.writePlain('['+str(eachPortal)+'] '+ user.curWorkingRoom.portals[eachPortal].name+'   ')
                     x = x + 1
             x = 0
-            user.writePlain('\r\n\r\n[Logics]\r\n')
+            user.writePlain('\r\n\r\n<bright><red>[Logics]<r>\r\n')
             for eachLogic in user.curWorkingRoom.logic_modules.keys():
                 if x == 4:
                     user.writePlain('\r\n')
@@ -669,15 +786,16 @@ class OlcManager:
             
     def displayPortalEditPage(self, user):
         user.writePlain('<cls><bright><white>SlitherMUD OLC Portal Editor<r>\r\n\r\n')
-        user.writePlain('[Name]     : '+user.curWorkingPortal.name+'\r\n')
-        user.writePlain('[ID]       : '+str(user.curWorkingPortal.id_num)+'\r\n')
-        user.writePlain('[TargetR]   : '+str(user.curWorkingPortal.target_room)+'\r\n')
-        user.writePlain('[TargetZ]   : '+str(user.curWorkingPortal.target_zone)+'\r\n')
-        user.writePlain('\r\n[Logics]\r\n')
+        user.writePlain('<cyan>[Name   ]   <r>: <green>'+user.curWorkingPortal.name+'\r\n')
+        user.writePlain('<cyan>[ID     ]   <r>: <green>'+str(user.curWorkingPortal.id_num)+'\r\n')
+        user.writePlain('<cyan>[TargetR]   <r>: <green>'+str(user.curWorkingPortal.target_room)+'\r\n')
+        user.writePlain('<cyan>[TargetZ]   <r>: <green>'+str(user.curWorkingPortal.target_zone)+'\r\n')
+        user.writePlain('\r\n<red><bright>[Logics]<r>\r\n')
         x = 0
         for eachLogic in user.curWorkingPortal.logic_modules.keys():
             if x == 4:
                 user.writePlain('\r\n')
+                user.writePlain(eachLogic+'  ')
                 x = 0
             else:
                 user.writePlain(eachLogic+'  ')
@@ -685,7 +803,7 @@ class OlcManager:
         user.writePlain('\r\n\r\n>> ')
                 
     def displayMobEditPage(self, user):
-        user.writePlain('<cls><white>SlitherMUD OLC Template Edit Page\r\n\r\n')
+        user.writePlain('<cls><white>SlitherMUD OLC MOB Template Edit Page\r\n\r\n')
         user.writePlain('[Name] '+user.curWorkingCharTemplate.name+'\r\n')
         user.writePlain('[ID  ] '+str(user.curWorkingCharTemplate.id_num)+'\r\n')
         user.writePlain('[Desc] '+user.curWorkingCharTemplate.desc+'\r\n')
@@ -718,7 +836,32 @@ class OlcManager:
                 x = x + 1
         user.writePlain('\r\n\r\n>> ')
             
-            
+    def displayMobInstanceEditPage(self, user):
+        user.writePlain('<cls><white>SlitherMUD OLC MOB Editor\r\n\r\n')
+        user.writePlain('[Name] '+user.curWorkingCharInstance.name+'\r\n')
+        user.writePlain('[ID  ] '+str(user.curWorkingCharInstance.id_num)+'\r\n')
+        user.writePlain('Template: '+str(user.curWorkingCharInstance.template_id)+'\r\n')
+        user.writePlain('[Desc] '+user.curWorkingCharInstance.desc+'\r\n')
+        x = 0
+        user.writePlain('\r\n\r\n[Logics]\r\n')
+        for eachLogic in user.curWorkingCharInstance.logic_modules:
+            if x == 3:
+                user.writePlain(eachLogic+'\r\n')
+                x = 0
+            else:
+                user.writePlain(eachLogic+ '  ')
+                x = x + 1
+        x = 0
+        user.writePlain('\r\n\r\n[Stats]\r\n')
+        for eachStat in user.curWorkingCharInstance.statistics.keys():
+            if x == 3:
+                user.writePlain('('+eachStat+') ('+str(user.curWorkingCharInstance.statistics[eachStat])+')\r\n')
+                x = 0
+            else:
+                user.writePlain('('+eachStat+') ('+str(user.curWorkingCharInstance.statistics[eachStat])+')  ')
+                x = x + 1
+        user.writePlain('\r\n\r\n>> ')
+        
     def displayMobSelectPage(self, user):
         try:
             user.writePlain('<cls><white>Welcome to the Template Editing System!\r\n')
@@ -728,6 +871,32 @@ class OlcManager:
             user.writePlain('To save, type save.\r\n\r\n>> <r>')
         except TypeError:
             pass
+        
+    def displayItemInstanceEditPage(self, user):
+        user.writePlain('<cls><white>SlitherMUD OLC Template Edit Page\r\n\r\n')
+        user.writePlain('[Name] '+user.curWorkingItemInstance.name+'\r\n')
+        user.writePlain('[ID  ] '+str(user.curWorkingItemInstance.id_num)+'\r\n')
+        user.writePlain('Template: '+str(user.curWorkingItemInstance.template_id)+'\r\n')
+        user.writePlain('[Desc] '+user.curWorkingItemInstance.desc+'\r\n')
+        x = 0
+        user.writePlain('\r\n\r\n[Logics]\r\n')
+        for eachLogic in user.curWorkingItemInstance.logic_modules.keys():
+            if x == 3:
+                user.writePlain(eachLogic+'\r\n')
+                x = 0
+            else:
+                user.writePlain(eachLogic+ '  ')
+                x = x + 1
+        x = 0
+        user.writePlain('\r\n\r\n[Stats]\r\n')
+        for eachStat in user.curWorkingItemInstance.statistics.keys():
+            if x == 3:
+                user.writePlain('('+eachStat+') ('+user.curWorkingItemInstance.statistics[eachStat]+')\r\n')
+                x = 0
+            else:
+                user.writePlain('('+eachStat+') ('+user.curWorkingItemInstance.statistics[eachStat]+')  ')
+                x = x + 1
+        user.writePlain('\r\n\r\n>> ')
         
     def displayItemEditPage(self, user):
         user.writePlain('<cls><white>SlitherMUD OLC Template Edit Page\r\n\r\n')
@@ -753,6 +922,7 @@ class OlcManager:
                 user.writePlain('('+eachStat+') ('+user.curWorkingItemTemplate.statistics[eachStat]+')  ')
                 x = x + 1
         user.writePlain('\r\n\r\n>> ')
+        
     def displayItemSelectPage(self, user):
         try:
             user.writePlain('<cls><white>Welcome to the Item Template Editing System!\r\n')
@@ -761,15 +931,17 @@ class OlcManager:
             user.writePlain('To create a new template, type new.\r\n>> ')
         except TypeError:
             pass
+        
     def createNewZone(self, user):
-        tmp = MudZone.MudZone()
-        tmp.name = ''
-        tmp.allowed.append(user.name)
-        x = 0
-        for eachKey in self.cur_zones.keys():
-            x = x + eachKey
-        tmp.id_num = x
-        return tmp
+        pass
+        #tmp = MudZone.MudZone()
+        #tmp.name = ''
+        #tmp.allowed.append(user.name)
+        #x = 0
+        #for eachKey in self.cur_zones.keys():
+        #    x = x + eachKey
+        #tmp.id_num = x
+        #return tmp
     
     def formatOutput(self, data):
         res = ''
