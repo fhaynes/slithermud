@@ -31,7 +31,7 @@ scripter    = 4
 implementor = 5
 
 # Home directory
-home_dir = os.path.abspath('/Slither')
+home_dir = os.path.abspath('/SlitherMUD')
 
 # Zone directory
 zone_dir = os.path.join(home_dir, 'zones'+os.sep)
@@ -39,7 +39,7 @@ zone_dir = os.path.join(home_dir, 'zones'+os.sep)
 # Location of the zone loadlist, i.e., the names of all the zones to load into
 # the game
 load_list = zone_dir + 'loadlist.txt'
-
+log_dir = home_dir + os.sep + 'logs' + os.sep
 player_dir = os.path.join(home_dir, 'players'+os.sep)
 mob_dir   = os.path.join(home_dir, 'mobs'+os.sep)
 
@@ -53,10 +53,9 @@ sys.path.append(os.path.join(home_dir, 'commands'))
 sys.path.append(os.path.join(home_dir, 'modules'))
 
 greeting = '''<green>
-                ____  _ _ _   _               __  __ _   _ ____ \r 
-              / ___|| (_) |_| |__   ___ _ __|  \/  | | | |  _ \ \r
-               \___ \| | | __| '_ \ / _ \ '__| |\/| | | | | | | |\r
-                ___) | | | |_| | | |  __/ |  | |  | | |_| | |_| |\r
-               |____/|_|_|\__|_| |_|\___|_|  |_|  |_|\___/|____/\r\r\n
-                    <r><cyan>   By: Kuros (kurosknight@gmail.com)
+         
+          
+                                             SlitherMUD\r 
+
+                    <r><cyan>   By: Kuros
 <r>\r\n'''

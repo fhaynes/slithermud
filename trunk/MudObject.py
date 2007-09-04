@@ -88,9 +88,10 @@ class MudObject(object):
         """
         Adds a logic module name and reference to the dictionary.
         """
+        
         if not self.logic_modules.has_key(name):
             self.logic_modules[name] = copy.deepcopy(__import__(name))
-
+            
     def removeLogic(self, name):
         """
         Removes a logic module from the dictionary.

@@ -609,7 +609,7 @@ class MudActionHandler:
                     
                     newPortal2 = MudPortal.MudPortal()
                     newPortal2.id_num = action.playerRef.zoneRef.generateNextPortalId()
-                    newPortal2.name = 'down'
+                    newPortal2.name = 'Down'
                     newPortal2.addLogic('basicPortalLogic')
                     newPortal2.target_zone = action.playerRef.zoneRef.id_num
                     newPortal2.target_room = action.playerRef.roomRef.id_num
@@ -629,7 +629,7 @@ class MudActionHandler:
                     
                     newPortal2 = MudPortal.MudPortal()
                     newPortal2.id_num = action.playerRef.zoneRef.generateNextPortalId()
-                    newPortal2.name = 'up'
+                    newPortal2.name = 'Up'
                     newPortal2.addLogic('basicPortalLogic')
                     newPortal2.target_zone = action.playerRef.zoneRef.id_num
                     newPortal2.target_room = action.playerRef.roomRef.id_num
@@ -743,15 +743,15 @@ class MudActionHandler:
         else:
             action.actionType = 'lookat'
             for eachChar in action.playerRef.roomRef.characters.values():
-                if eachChar.name.lower() in action.string:
+                if eachChar.name.lower() == action.string.lower():
                     eachChar.doAction(action)
                     return
             for eachItem in action.playerRef.roomRef.items.values():
-                if eachItem.name.lower() == action.string:
+                if eachItem.name.lower() == action.string.lower():
                     eachItem.doAction(action)
                     return
             for eachPortal in action.playerRef.roomRef.portals.values():
-                if eachPortal.name.lower() == action.string:
+                if eachPortal.name.lower() == action.string.lower():
                     eachPortal.doAction(action)
                     return
                 
