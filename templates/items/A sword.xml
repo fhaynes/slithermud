@@ -1,0 +1,3 @@
+<i_template name="a sword" id_num="1" desc="a basic sword">
+  <logic>basicItemLogic</logic>
+</i_template>
