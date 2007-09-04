@@ -1,1 +1,0 @@
-<c_template name="Human" id_num="1" desc="This is a basic human">   <logic>basicCharacterLogic</logic>  <stat>sta:1</stat>  <stat>int:1</stat>  <stat>str:1</stat>  <stat>spi:1</stat>  <stat>dex:1</stat></c_template>
