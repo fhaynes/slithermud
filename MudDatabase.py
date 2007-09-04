@@ -19,38 +19,8 @@ import MudZone
 import MudRoom
 import MudPortal
 import MudItem
+import MudCommandDatabase
 
-import cmdLook
-import cmdSay
-import cmdOlc
-import cmdGo
-import cmdWho
-import cmdIcreate
-import cmdMcreate
-import cmdSet
-import cmdSearch
-import cmdHelp
-import cmdCopyover
-import cmdGet
-import cmdQuit
-import cmdInventory
-import cmdDrop
-import cmdAssign
-import cmdObliterate
-import cmdInfo
-import cmdGrant
-import cmdEdit
-import cmdNewzone
-import cmdWarp
-import cmdZonelist
-import cmdRemovezone
-import cmdBuildwalk
-import cmdVari
-import cmdSavezone
-import cmdGive
-import cmdNewportal
-import cmdDelzone
-import cmdPromote
 
 def nw(text):
     "Remove redundant whitespace from a string"
@@ -221,7 +191,7 @@ class CharHandler(ContentHandler):
     def characters(self, ch):
         ch = str(ch)
         if self.inCommand:
-            self.newChar.addCommand(ch, db.commands[ch])
+            self.newChar.addCommand(ch, MudCommandDatabase.CommandDB.commands[ch])
         elif self.inCLogic:
             self.newChar.addLogic(ch)
         elif self.inCStat:
@@ -268,7 +238,6 @@ class ZoneHandler(ContentHandler):
         self.inIStat   = 0
 
     def startElement(self, name, attrs):
-        # If it's a comic element, save the title and issue
         if name == 'zinfo':
             self.inZinfo = 1
             self.newZone        = MudZone.MudZone()
@@ -369,93 +338,12 @@ class DatabaseManager:
         self.items        = {}
         self.i_templates  = {}
         self.zones        = {}
-
         
         self.next_item_id = 0
         self.next_char_id = 0
         self.next_zone_id = 0
         
-        self.commands     = {}
-        self.commands['promote'] = cmdPromote.promote
-        self.commands['look'] = cmdLook.look
-        self.commands['say']  = cmdSay.say
-        self.commands['go']   = cmdGo.go
-        self.commands['who']  = cmdWho.who
-        self.commands['get']  = cmdGet.get
-        self.commands['quit'] = cmdQuit.quit
-        self.commands['help'] = cmdHelp.help
-        self.commands['drop'] = cmdDrop.drop
-        self.commands['give'] = cmdGive.give
-        self.commands['inventory'] = cmdInventory.inventory
-        self.commands['olc']  = cmdOlc.olc
-        self.commands['icreate'] = cmdIcreate.icreate
-        self.commands['mcreate'] = cmdMcreate.mcreate
-        self.commands['set']  = cmdSet.set
-        self.commands['search'] = cmdSearch.search
-        self.commands['copyover'] = cmdCopyover.copyover
-        self.commands['obliterate'] = cmdObliterate.obliterate
-        self.commands['assign'] = cmdAssign.assign
-        self.commands['info']   = cmdInfo.info
-        self.commands['grant']  = cmdGrant.grant
-        self.commands['edit']   = cmdEdit.edit
-        self.commands['newzone'] = cmdNewzone.newzone
-        self.commands['warp'] = cmdWarp.warp
-        self.commands['zonelist'] = cmdZonelist.zonelist
-        self.commands['removezone'] = cmdRemovezone.removezone
-        self.commands['buildwalk'] = cmdBuildwalk.buildwalk
-        self.commands['vari'] = cmdVari.vari
-        self.commands['savezone'] = cmdSavezone.savezone
-        self.commands['newportal'] = cmdNewportal.newportal
-        self.commands['delzone'] = cmdDelzone.delzone
     
-    # Command loading functions
-    def loadStdCmds(self, user):
-        user.addCommand("say",  cmdSay.say)
-        user.addCommand("look", cmdLook.look)
-        user.addCommand("go",   cmdGo.go)
-        user.addCommand("olc",  cmdOlc.olc)
-        user.addCommand("who",  cmdWho.who)
-        user.addCommand("help", cmdHelp.help)
-        user.addCommand("get", cmdGet.get)
-        user.addCommand("quit", cmdQuit.quit)
-        user.addCommand("inventory", cmdInventory.inventory)
-        user.addCommand("drop", cmdDrop.drop)
-        user.addCommand("give", cmdGive.give)
-    
-    def loadBuilderCmds(self, user):
-        user.addCommand("icreate", cmdIcreate.icreate)
-        user.addCommand("mcreate", cmdMcreate.mcreate)
-        user.addCommand("set",     cmdSet.set)
-        user.addCommand("search",  cmdSearch.search)
-        user.addCommand("obliterate", cmdObliterate.obliterate)
-        user.addCommand("info", cmdInfo.info)
-        user.addCommand("edit", cmdEdit.edit)
-        user.addCommand("warp", cmdWarp.warp)
-        user.addCommand("zonelist", cmdZonelist.zonelist)
-        user.addCommand("savezone", cmdSavezone.savezone)
-        user.addCommand("newportal", cmdNewportal.newportal)
-        user.addCommand("buildwalk", cmdBuildwalk.buildwalk)
-        
-    def loadAllCmds(self, user):
-        user.addCommand("icreate", cmdIcreate.icreate)
-        user.addCommand("mcreate", cmdMcreate.mcreate)
-        user.addCommand("set",     cmdSet.set)
-        user.addCommand("search",  cmdSearch.search)
-        user.addCommand("copyover", cmdCopyover.copyover)
-        user.addCommand("assign", cmdAssign.assign)
-        user.addCommand("obliterate", cmdObliterate.obliterate)
-        user.addCommand("info", cmdInfo.info)
-        user.addCommand("grant", cmdGrant.grant)
-        user.addCommand("edit", cmdEdit.edit)
-        user.addCommand("newzone", cmdNewzone.newzone)
-        user.addCommand("warp", cmdWarp.warp)
-        user.addCommand("zonelist", cmdZonelist.zonelist)
-        user.addCommand("removezone", cmdRemovezone.removezone)
-        user.addCommand("buildwalk", cmdBuildwalk.buildwalk)
-        user.addCommand("vari", cmdVari.vari)
-        user.addCommand("savezone", cmdSavezone.savezone)
-        user.addCommand("newportal", cmdNewportal.newportal)
-        user.addCommand("delzone", cmdDelzone.delzone)
     # Saving and loading functions
     def saveIds(self):
         tmp = open(MudConst.id_data_file, 'w')
@@ -528,15 +416,6 @@ class DatabaseManager:
         os.remove(zone_dir)
         os.rmdir(MudConst.zone_dir+zone.replace(" ", "")+os.sep)
             
-        tmp = open(MudConst.load_list, 'r')
-        lines = tmp.readlines()
-        tmp.close()
-        lines.remove(zone.replace(" ", ""))
-        tmp = open(MudConst.load_list, 'w')
-        for eachLine in lines:
-            tmp.write(eachLine)
-        tmp.close()
-    
     def saveCharToDisk(self, p_object):
         """
         This pickles the player object to disk.
@@ -550,7 +429,7 @@ class DatabaseManager:
         tmp = file(char_file, 'w')
         tmp.write('<character name="'+p_object.name+'" id_num="'+str(p_object.id_num)+\
 '" zone="'+str(p_object.zone)+'" room="'+str(p_object.room)+'" a_l="'+str(p_object.admin_level)\
-+'" password="'+p_object.password+'" desc="'+p_object.desc+'" template_id="'+str(p_object.template_id)+'">\r\n')
++'" password="'+p_object.password+'" desc="'+p_object.desc+'">\r\n')
         for eachCommand in p_object.commands.keys():
             tmp.write('  <command>'+eachCommand+'</command>\r\n')
         for eachLogic in p_object.logic_modules.keys():
@@ -860,6 +739,7 @@ class DatabaseManager:
         p_object.zone       = p_tmp.zone
         p_object.room       = p_tmp.room
         p_object.id_num     = p_tmp.id_num
+        p_object.admin_level = p_tmp.admin_level
         p_object.template_id = p_tmp.template_id
         p_object.items      = copy.deepcopy(p_tmp.items)
         p_object.statistics = copy.deepcopy(p_tmp.statistics)
@@ -873,10 +753,11 @@ class DatabaseManager:
         Checks if a player is logged in.
         """
 
-        if self.characters.has_key(name):
-            return True
-
+        for eachChar in self.characters.values():
+            if eachChar.name.lower() == name.lower():
+                return True
         return False
+
 db = DatabaseManager()
         
         

@@ -114,7 +114,7 @@ class OlcManager:
         else:
             pass 
     def initialMenuProcess(self, user, args):
-        if args.lower() == 't':
+        if args.lower() == 'c':
             self.displayMobSelectPage(user)
             user.olcState = self.mobSelectPage
         elif args.lower() == 'i':
@@ -128,7 +128,7 @@ class OlcManager:
     def displayMainMenu(self, user):
         user.writePlain('<cls><bright><white>SlitherMUD OLC Main Menu\r\n')
         user.writePlain('<bright><white>\r\n\r\n----------Main Menu----------\r\n')
-        user.writePlain('     \r\n<red>[C]haracter Template Editing\r\n')
+        user.writePlain('     \r\n<red>     [C]haracter Template Editing\r\n')
         user.writePlain('     [I]tem Template Editing\r\n')
         user.writePlain('     [Quit] the OLC Editor\r\n<white>')
         user.writePlain('\r\n-----------------------------\r\n')
@@ -314,10 +314,10 @@ class OlcManager:
         elif args[0].lower() == 'desc':
             try:
                 if args[1].lower() == 'clear':
-                    self.curWorkingRoom.desc = ''
+                    user.curWorkingRoom.desc = ''
                     self.displayRoomEditPage(user)
                 else:
-                    self.curWorkingRoom.desc += ' '+args[1]
+                    user.curWorkingRoom.desc += ' '+args[1]
             except IndexError:
                 user.writePlain("You must provide a new description, or type 'desc clear' to clear it!\r\n>> ")
                 return
@@ -412,7 +412,7 @@ class OlcManager:
             x = 0
             y = 0
             for eachTemp in MudDatabase.db.c_templates.values():
-                if eachTemp.name.lower().search(args[1].lower()):
+                if eachTemp.name.lower() == args[1].lower():
                     x = x + 1
                     y = y + 1
                     if x == 3:
@@ -520,7 +520,10 @@ class OlcManager:
         try:
             if args[0].lower() == 'name':
                 file = MudConst.mob_dir+user.curWorkingCharInstance.name+'.xml'
-                os.remove(file)
+		try:
+                     os.remove(file)
+		except:
+		     pass
                 user.curWorkingCharInstance.name = args[1]
                 self.displayMobInstanceEditPage(user)
                 return
@@ -582,7 +585,7 @@ class OlcManager:
             x = 0
             y = 0
             for eachTemp in MudDatabase.db.i_templates.values():
-                if eachTemp.name.lower().search(args[1].lower()):
+                if eachTemp.name.lower() == args[1].lower():
                     x = x + 1
                     y = y + 1
                     if x == 3:
@@ -864,7 +867,7 @@ class OlcManager:
         
     def displayMobSelectPage(self, user):
         try:
-            user.writePlain('<cls><white>Welcome to the Template Editing System!\r\n')
+            user.writePlain('<cls><white>Welcome to the MOB Template Editing System!\r\n')
             user.writePlain('To search for a mob template by name, type search name.\r\n')
             user.writePlain('To edit that template, type edit idnum.\r\n')
             user.writePlain('To create a new template, type new.\r\n')

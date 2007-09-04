@@ -14,6 +14,7 @@ import MudProtocol
 import MudWorld
 import MudConst
 import MudDatabase
+import logger
 
 class MudServer(twisted.protocols.basic.LineReceiver):
     """
@@ -29,7 +30,7 @@ class MudServer(twisted.protocols.basic.LineReceiver):
         Creates a new instance of the Character class and asks for an account
         name. Provides the transport layer to the class for I/O.
         """
-        print "New Connection!"
+        logger.logging.info('New connection from'+str(self.transport.getPeer()))
         self.playerRef = MudCharacter.MudCharacter(self.transport)
         self.playerRef.login_state = MudConst.getAccountName
         self.transport.write(MudProtocol.protocolHandler.processText(MudConst.greeting))

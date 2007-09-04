@@ -9,7 +9,7 @@ Contains the world class for the MUD.
 
 import string
 import os
-import sys
+import sys, traceback
 
 import MudDatabase
 import MudProtocol
@@ -19,9 +19,10 @@ import MudZone
 import MudOlc
 import MudAction
 import MudActionHandler
+import MudCommandDatabase
+import logger
 
-
-
+import time
 class World:
     """
     Object containing the entire MUD World.
@@ -73,8 +74,33 @@ class World:
         try:
             player.commands[cmd.lower()].Process(player, args)
         except KeyError:
-            player.writeWithPrompt("Invalid command.")
-            
+            x = self.checkAliases(cmd)
+            if x == None:
+                player.writeWithPrompt("Invalid command.")
+            else:
+                input_string = x+' '+args
+                print input_string
+                self.handleInput(player, input_string)
+        except:
+            player.writeWithPrompt("There has been an error processing your command. Please report this to an IMM.")
+            etype = sys.exc_info()[0]
+            evalue = sys.exc_info()[1]
+            etb = traceback.extract_tb(sys.exc_info()[2])
+            string = 'Error type: '+str(etype) + '\nError value: '+str(evalue)+'\n Traceback:'+str(etb)
+            logger.logging.debug(string)
+    
+    def checkAliases(self, cmd):
+        for eachAlias in MudCommandDatabase.CommandDB.aliases.keys():
+            if eachAlias == cmd.lower():
+                return MudCommandDatabase.CommandDB.aliases[eachAlias]
+        return None
+    
+    def sendToImms(self, msg):
+        for eachPlayer in MudDatabase.db.characters.values():
+            if eachPlayer.admin_level > 1 and eachPlayer.sockRef != '':
+                eachPlayer.writeWithPrompt(msg)
+                
+    
     def loadTemplates(self):
         print "Loading templates..."
         self.loadItemTemplates()
@@ -91,10 +117,13 @@ class World:
     def loadMobs(self):
         print "Loading MOBs..."
         for eachMob in os.listdir(MudConst.mob_dir):
-            tmp = MudDatabase.db.loadMobFromDisk(eachMob)
-            tmp.zoneRef.addCharacter(tmp)
-            tmp.roomRef.addCharacter(tmp)
-            MudDatabase.db.addCharacter(tmp)
+            if '.xml' in eachMob:
+                tmp = MudDatabase.db.loadMobFromDisk(eachMob)
+                tmp.zoneRef.addCharacter(tmp)
+                tmp.roomRef.addCharacter(tmp)
+                MudDatabase.db.addCharacter(tmp)
+            else:
+                pass
             
     def loadWorld(self):
         """
