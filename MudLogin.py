@@ -118,6 +118,7 @@ Try again: ')
         Confirms the new password for the account.
         """
         if data.lower() == 'y':
+            player.id_num = MudDatabase.db.generateNextId('char')
             player.setZone(1)
             player.setRoom(1)
             logger.logging.info('New character: '+player.name+'logged in.')
