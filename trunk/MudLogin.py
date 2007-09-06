@@ -121,6 +121,7 @@ Try again: ')
         """
         if data.lower() == 'y':
             player.id_num = MudDatabase.db.generateNextId('char')
+            player.template_id = 2
             player.setZone(1)
             player.setRoom(1)
             logger.logging.info('New character: '+player.name+'logged in.')
