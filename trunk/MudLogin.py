@@ -62,6 +62,8 @@ and numbers. Please try again: ")
             player.zoneRef.addCharacter(player)
             MudDatabase.db.addCharacter(player)
             player.roomRef.addCharacter(player)
+            MudCommandDatabase.CommandDB.loadStdCmds(player)
+            MudDatabase.db.saveCharToDisk(player)
             player.login_state = MudConst.logedIn     
         else:
             player.writePlain('\r\nInvalid password. Try again: ')
