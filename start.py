@@ -32,6 +32,8 @@ import profile
 
 factory = twisted.internet.protocol.Factory()
 factory.protocol = MudServer.MudServer
+# Should we make the port a const declared in MudConst.py?
+#  Might make things a bit clearer and easier to find -V
 twisted.internet.reactor.listenTCP(5003, factory)
 print "Starting MUD."
 MudWorld.world.loadWorld()

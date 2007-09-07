@@ -13,9 +13,9 @@ import MudActionHandler
 class cmdSet(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "set"
-        self.helpText = '''This lets you set, add, or remove the attributes of things.'''
-        self.useExample = '''set char 10 strength 100'''
+        self.cmdName     = "set"
+        self.helpText    = '''This lets you set, add, or remove the attributes of things.'''
+        self.useExample  = '''set char 10 strength 100'''
         self.useExample += '''\r\n set new char 10 strength 100'''
         self.useExample += '''\r\n set del char 10 strength'''
         self.useExample += '''\r\n set char 10 strength 100'''
@@ -64,8 +64,6 @@ class cmdSet(MudCommand.MudCommand):
                 
         else:
             player.writeWithPrompt("Proper usage is: set (new/del) type id stat value!")
-
-
 
 
 set = cmdSet()

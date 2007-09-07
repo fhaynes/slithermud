@@ -8,8 +8,8 @@ import string
 class cmdDrop(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "drop"
-        self.helpText = '''This tries to drop an item.'''
+        self.cmdName    = "drop"
+        self.helpText   = '''This tries to drop an item.'''
         self.useExample = '''drop sword'''
         
     def Process(self, player, args=''):
@@ -32,12 +32,6 @@ class cmdDrop(MudCommand.MudCommand):
                 MudActionHandler.actionHandler.doAction(action)
         if x == 0:
             player.writeWithPrompt("You do not have that item!")
-                
-        
 
-
-
-
-
-      
+  
 drop = cmdDrop()

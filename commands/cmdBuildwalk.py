@@ -7,8 +7,8 @@ import string
 class cmdBuildWalk(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "buildwalk"
-        self.helpText = '''This lets you create exits and rooms by walking.'''
+        self.cmdName    = "buildwalk"
+        self.helpText   = '''This lets you create exits and rooms by walking.'''
         self.useExample = '''buildwalk'''
         
     def Process(self, player, args=''):
@@ -27,14 +27,6 @@ class cmdBuildWalk(MudCommand.MudCommand):
             player.statistics['buildwalk'] = 1
             player.writeWithPrompt("Buildwalk enabled!")
             return
-        
 
         
-        
-
-
-
-
-
-      
 buildwalk = cmdBuildWalk()

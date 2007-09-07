@@ -16,6 +16,6 @@ class cmdImmChat(MudCommand.MudCommand):
             return
         msg = '<bright><green>[IMM-CHAT] <r>'+player.name+' chats: '+args
         MudWorld.world.sendToImms(msg)
-        
-      
+
+
 immchat = cmdImmChat()

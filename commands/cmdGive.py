@@ -9,8 +9,8 @@ import string
 class cmdGive(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "give"
-        self.helpText = '''This attempts to give a character an item.'''
+        self.cmdName    = "give"
+        self.helpText   = '''This attempts to give a character an item.'''
         self.useExample = '''Give Kuros Sword (quantity)'''
         
     def Process(self, player, args=''):
@@ -43,12 +43,6 @@ class cmdGive(MudCommand.MudCommand):
                 MudActionHandler.actionHandler.doAction(action)
         if x == 0:
             player.writeWithPrompt("You do not have that item!")
-                
-        
 
 
-
-
-
-      
 give = cmdGive()

@@ -7,8 +7,8 @@ import string
 class cmdWarp(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "warp"
-        self.helpText = '''This teleports you directly to a zone and room.'''
+        self.cmdName    = "warp"
+        self.helpText   = '''This teleports you directly to a zone and room.'''
         self.useExample = '''warp zoneid roomid or warp roomid or warp charname'''
         
     def Process(self, player, args=''):
@@ -49,10 +49,10 @@ class cmdWarp(MudCommand.MudCommand):
                 
                 MudActionHandler.actionHandler.doAction(secAction)
                 return
-                
+        
         args = args.split(" ", 1)
-
-            
+        
+        
         if len(args) == 1:
             t_z = player.zone
             t_r = int(args[0])
@@ -60,7 +60,7 @@ class cmdWarp(MudCommand.MudCommand):
         elif len(args) == 2:
             t_z = int(args[0])
             t_r = int(args[1])
-            
+        
         else:
             player.writeWithPrompt("Proper format is: "+self.useExample)
             return
@@ -95,8 +95,4 @@ class cmdWarp(MudCommand.MudCommand):
         MudActionHandler.actionHandler.doAction(secAction)
 
 
-
-
-
-      
 warp = cmdWarp()

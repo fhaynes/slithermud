@@ -7,8 +7,8 @@ import string
 class cmdGo(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "go"
-        self.helpText = '''This tries to move you through a portal.'''
+        self.cmdName    = "go"
+        self.helpText   = '''This tries to move you through a portal.'''
         self.useExample = '''go portalname'''
         
     def Process(self, player, args=''):
@@ -20,12 +20,6 @@ class cmdGo(MudCommand.MudCommand):
             action.playerRef.writeWithPrompt('Go where?')
             return
         MudActionHandler.actionHandler.doAction(action)
-        
-        
 
 
-
-
-
-      
 go = cmdGo()

@@ -27,8 +27,6 @@ class cmdWho(MudCommand.MudCommand):
 
         player.writePlain('\r\n\r\n<red>[============================================]<r>\r\n')
         player.writeWithPrompt("")
-        
-        
-        
-      
+
+
 who = cmdWho()

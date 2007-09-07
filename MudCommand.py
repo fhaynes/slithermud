@@ -23,7 +23,3 @@ class MudCommand:
         self.cmdName = ''
         self.helpText = ''
         self.useExample = ''
-        
-
-            
-        

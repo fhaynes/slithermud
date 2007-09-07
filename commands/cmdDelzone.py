@@ -7,8 +7,8 @@ import MudConst
 class cmdDelZone(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "delzone"
-        self.helpText = '''This removes a zone from disk.'''
+        self.cmdName    = "delzone"
+        self.helpText   = '''This removes a zone from disk.'''
         self.useExample = '''delzone New Zone Name'''
 
 
@@ -23,10 +23,6 @@ class cmdDelZone(MudCommand.MudCommand):
         except OSError: 
             player.writeWithPrompt("Invalid zone name!")
             return
-        
- 
-
-
 
 
 delzone = cmdDelZone()

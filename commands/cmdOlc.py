@@ -27,8 +27,6 @@ class cmdOlc(MudCommand.MudCommand):
         player.writePlain("Entering the OLC system!\r\n")
         player.login_state = MudConst.inOlc
         MudWorld.world.olcHandler.addUser(player)
-        
-        
-        
-      
+
+
 olc = cmdOlc()

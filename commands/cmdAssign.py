@@ -9,8 +9,8 @@ import string
 class cmdAssign(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "assign"
-        self.helpText = '''This assigns vnums to a character.'''
+        self.cmdName    = "assign"
+        self.helpText   = '''This assigns vnums to a character.'''
         self.useExample = '''assign Kuros item/mob 100 150'''
         
     def Process(self, player, args=''):
@@ -45,12 +45,5 @@ class cmdAssign(MudCommand.MudCommand):
         
         player.writeWithPrompt("Vnums have been assigned!")
         
-                
-        
-
-
-
-
-
-      
+   
 assign = cmdAssign()

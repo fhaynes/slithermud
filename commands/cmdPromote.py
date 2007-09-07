@@ -6,8 +6,8 @@ import MudConst
 class cmdPromote(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "promote"
-        self.helpText = '''This lets you promote a person to immortal status.'''
+        self.cmdName    = "promote"
+        self.helpText   = '''This lets you promote a person to immortal status.'''
         self.useExample = '''promote Kuros enforcer/builder/scripter/implementor'''
 
 
@@ -34,13 +34,6 @@ class cmdPromote(MudCommand.MudCommand):
             else:
                 player.writeWithPrompt("Not a valid promotion level!")
                 return
-        
-        
-                
-        
- 
-
-
 
 
 promote = cmdPromote()

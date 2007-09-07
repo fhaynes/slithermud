@@ -6,8 +6,8 @@ import string
 class cmdVari(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "vari"
-        self.helpText = '''Do not use this!!!'''
+        self.cmdName    = "vari"
+        self.helpText   = '''Do not use this!!!'''
         self.useExample = '''vari'''
         
     def Process(self, player, args=''):
@@ -18,6 +18,4 @@ class cmdVari(MudCommand.MudCommand):
         player.writeWithPrompt("Done.")
 
 
-
-      
 vari = cmdVari()

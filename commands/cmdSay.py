@@ -26,5 +26,6 @@ class cmdSay(MudCommand.MudCommand):
         action.string     = args
         
         MudActionHandler.actionHandler.doAction(action)
-      
+
+
 say = cmdSay()

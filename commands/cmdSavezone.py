@@ -4,8 +4,8 @@ import MudConst
 class cmdSaveZone(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "savezone"
-        self.helpText = '''This saves a zone.'''
+        self.cmdName    = "savezone"
+        self.helpText   = '''This saves a zone.'''
         self.useExample = '''savezone zone ID'''
 
 
@@ -23,15 +23,6 @@ class cmdSaveZone(MudCommand.MudCommand):
         except:
             player.writeWithPrompt("That ID does not exist, or you did enter a zone ID! Do not use zone names!")
             return
-
-
-        
-        
-                
-        
- 
-
-
 
 
 savezone = cmdSaveZone()

@@ -8,8 +8,8 @@ import string
 class cmdGet(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "get"
-        self.helpText = '''This tries to get an item.'''
+        self.cmdName    = "get"
+        self.helpText   = '''This tries to get an item.'''
         self.useExample = '''get sword'''
         
     def Process(self, player, args=''):
@@ -32,12 +32,6 @@ class cmdGet(MudCommand.MudCommand):
             for eachItem in tmp:
                 action.data1 = eachItem
                 MudActionHandler.actionHandler.doAction(action)
-                
-        
 
 
-
-
-
-      
 get = cmdGet()

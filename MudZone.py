@@ -23,15 +23,15 @@ class MudZone(MudObject.MudObject):
         MudObject.MudObject.__init__(self)
         
         # Rooms are indexed by id number. Shocking, isn't it?
-        self.rooms      = {}
+        self.rooms          = {}
         
-        self.characters = {}
+        self.characters     = {}
         
         # OLC Stuff
         # List of names who are allowed to edit this zone
-        self.allowed    = []
+        self.allowed        = []
         
-        self.next_room_id = 2
+        self.next_room_id   = 2
         self.next_portal_id = 1
         
         for eachRoom in self.rooms.values():

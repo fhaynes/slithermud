@@ -6,8 +6,8 @@ import MudCommand
 class cmdNewZone(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "newzone"
-        self.helpText = '''This lets you create a new zone in the game.'''
+        self.cmdName    = "newzone"
+        self.helpText   = '''This lets you create a new zone in the game.'''
         self.useExample = '''newzone New Zone Name'''
 
 
@@ -35,12 +35,6 @@ class cmdNewZone(MudCommand.MudCommand):
         newZone.addRoom(newRoom)
         
         player.writeWithPrompt("Zone added!")
-        
-                
-        
- 
-
-
 
 
 newzone = cmdNewZone()

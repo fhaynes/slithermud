@@ -46,8 +46,6 @@ class MudCharacter(MudObject.MudObject):
         self.zone         = 0
         self.room         = 0
         self.admin_level  = 1
-        self.template_id  = 0
-
 
         self.items        = {}
         self.ticks_since_last_input = 0
@@ -96,8 +94,3 @@ class MudCharacter(MudObject.MudObject):
     # Returns a basic prompt.
     def prompt(self):
         return '\r\n'+self.name+'> '
-
-
-        
-
-
