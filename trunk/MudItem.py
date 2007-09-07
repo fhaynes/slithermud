@@ -9,9 +9,9 @@ import MudObject
 
 class MudItemTemplate:
     def __init__(self):
-        self.id_num   = 0
-        self.name = 'A formless blob'
-        self.desc = 'This is a formless blob of protomatter.'
+        self.id_num     = 0
+        self.name       = 'A formless blob'
+        self.desc       = 'This is a formless blob of protomatter.'
         self.logics     = []
         self.statistics = {}
         

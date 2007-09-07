@@ -50,10 +50,6 @@ class cmdHelp(MudCommand.MudCommand):
                     return
             player.writeWithPrompt("Invalid choice for help!")
         player.writeWithPrompt("")
-            
-        
-        
-        
-        
-      
+
+
 help = cmdHelp()

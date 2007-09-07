@@ -415,11 +415,14 @@ class OlcManager:
                 if eachTemp.name.lower() == args[1].lower():
                     x = x + 1
                     y = y + 1
+                    # Need a local variable to get the value of eachTemp into the new block below
+                    #  Updated the if/else clause below to reflect using the new local variable tmp -V
+                    tmp = eachTemp
                     if x == 3:
-                        user.writePlain('['+str(eachTemp.id_num)+'] ['+eachTmp.name+']\r\n')
+                        user.writePlain('['+str(tmp.id_num)+'] ['+tmp.name+']\r\n')
                         x = 0
                     else:
-                        user.writePlain('['+str(eachTemp.id_num)+'] ['+eachTmp.name+']\r\n')
+                        user.writePlain('['+str(tmp.id_num)+'] ['+tmp.name+']\r\n')
             if y != 0:
                 user.writePlain('>> ')
                 return

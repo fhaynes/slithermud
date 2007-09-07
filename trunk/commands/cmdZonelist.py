@@ -6,8 +6,8 @@ import string
 class cmdZoneList(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "zonelist"
-        self.helpText = '''This lists all the zones in the game.'''
+        self.cmdName    = "zonelist"
+        self.helpText   = '''This lists all the zones in the game.'''
         self.useExample = '''zonelist'''
         
     def Process(self, player, args=''):
@@ -18,8 +18,4 @@ class cmdZoneList(MudCommand.MudCommand):
         player.writeWithPrompt("")
 
 
-
-
-
-      
 zonelist = cmdZoneList()

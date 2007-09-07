@@ -9,8 +9,8 @@ import string
 class cmdInfo(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "info"
-        self.helpText = '''This displays info about an item, character, room or zone. Use search to get ids.'''
+        self.cmdName    = "info"
+        self.helpText   = '''This displays info about an item, character, room or zone. Use search to get ids.'''
         self.useExample = '''info item/char/zone/room/portal id'''
         
     def Process(self, player, args=''):
@@ -79,13 +79,6 @@ class cmdInfo(MudCommand.MudCommand):
         else:
             player.writeWithPrompt("You can only info items, chars, zones, rooms, or portals!")
             return
-        
-                
-        
 
 
-
-
-
-      
 info = cmdInfo()

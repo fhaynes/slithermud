@@ -4,8 +4,8 @@ import MudCommand
 class cmdRemoveZone(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "removezone"
-        self.helpText = '''This removes a zone from the game. It does not delete it or keep it from loading on the next startup.'''
+        self.cmdName    = "removezone"
+        self.helpText   = '''This removes a zone from the game. It does not delete it or keep it from loading on the next startup.'''
         self.useExample = '''removezone zone ID'''
 
 
@@ -19,13 +19,6 @@ class cmdRemoveZone(MudCommand.MudCommand):
         MudDatabase.db.removeZone(zone)
         
         player.writeWithPrompt("Zone removed!")
-        
-        
-                
-        
- 
-
-
 
 
 removezone = cmdRemoveZone()

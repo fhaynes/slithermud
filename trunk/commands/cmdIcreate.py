@@ -5,8 +5,8 @@ import MudActionHandler
 class cmdIcreate(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "icreate"
-        self.helpText = '''This creates an item from a template.'''
+        self.cmdName    = "icreate"
+        self.helpText   = '''This creates an item from a template.'''
         self.useExample = '''icreate templateid'''
 
     def Process(self, player, args=''):
@@ -16,6 +16,8 @@ class cmdIcreate(MudCommand.MudCommand):
         action = MudAction.MudAction()
         action.actionType = 'spawnitem'
         action.playerRef  = player
-        action.data1     = int(args[0])
+        action.data1      = int(args[0])
         MudActionHandler.actionHandler.doAction(action)
+
+
 icreate = cmdIcreate()

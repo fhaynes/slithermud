@@ -6,8 +6,8 @@ import MudDatabase
 class cmdSearch(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "search"
-        self.helpText = '''This lets you search for items and characters.'''
+        self.cmdName    = "search"
+        self.helpText   = '''This lets you search for items and characters.'''
         self.useExample = '''search item/char/itemplate/ctemplate string'''
 
     def Process(self, player, args=''):
@@ -80,9 +80,6 @@ class cmdSearch(MudCommand.MudCommand):
                 return
         
         player.writeWithPrompt("You can search for: item char itemplate ctemplate!")
-            
 
 
-
-        
 search = cmdSearch()

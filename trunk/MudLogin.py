@@ -62,8 +62,6 @@ and numbers. Please try again: ")
             player.zoneRef.addCharacter(player)
             MudDatabase.db.addCharacter(player)
             player.roomRef.addCharacter(player)
-            MudCommandDatabase.CommandDB.loadStdCmds(player)
-            MudDatabase.db.saveCharToDisk(player)
             player.login_state = MudConst.logedIn     
         else:
             player.writePlain('\r\nInvalid password. Try again: ')
@@ -120,12 +118,10 @@ Try again: ')
         Confirms the new password for the account.
         """
         if data.lower() == 'y':
-            player.id_num = MudDatabase.db.generateNextId('char')
-            player.template_id = 2
             player.setZone(1)
             player.setRoom(1)
-            logger.logging.info('New character: '+player.name+'logged in.')
-
+            logger.logging.info('New character: '+player.name+' logged in.') #Fixed lack of spacing here to make logs prettier -V
+            MudDatabase.db.saveCharToDisk(player)
             player.writePlain('Character created.\r\n')
             player.writeWithPrompt('Welcome, '+player.name)
             player.zoneRef.addCharacter(player)
@@ -133,7 +129,6 @@ Try again: ')
             player.roomRef.addCharacter(player)
             MudCommandDatabase.CommandDB.loadStdCmds(player)
             player.login_state = MudConst.logedIn
-            MudDatabase.db.saveCharToDisk(player)
         
 
         elif data.lower() == 'n':

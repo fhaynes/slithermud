@@ -10,8 +10,8 @@ import string
 class cmdGrant(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "grant"
-        self.helpText = '''This grants a command to a user.'''
+        self.cmdName    = "grant"
+        self.helpText   = '''This grants a command to a user.'''
         self.useExample = '''grant Kuros info'''
         
     def Process(self, player, args=''):
@@ -30,13 +30,6 @@ class cmdGrant(MudCommand.MudCommand):
         if MudDatabase.db.commands.has_key(args[1].lower()):
             tmp.addCommand(args[1].lower(), MudCommandDatabase.CommandDB.commands[args[1].lower()])
             player.writeWithPrompt("Command has been granted!")
-        
-                
-        
 
 
-
-
-
-      
 grant = cmdGrant()

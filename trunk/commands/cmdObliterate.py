@@ -6,8 +6,8 @@ import MudDatabase
 class cmdObliterate(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "obliterate"
-        self.helpText = '''This removes an item or mob from the game, and from disk.'''
+        self.cmdName    = "obliterate"
+        self.helpText   = '''This removes an item or mob from the game, and from disk.'''
         self.useExample = '''obliterate item/mob id'''
 
     def Process(self, player, args=''):
@@ -43,5 +43,6 @@ class cmdObliterate(MudCommand.MudCommand):
                 
         else:
             player.writeWithPrompt("You can only obliterate items or mobs!")
-            
+
+
 obliterate = cmdObliterate()

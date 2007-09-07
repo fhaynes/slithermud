@@ -11,8 +11,8 @@ import MudActionHandler
 class cmdMcreate(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "mcreate"
-        self.helpText = '''This creates an character from a template.'''
+        self.cmdName    = "mcreate"
+        self.helpText   = '''This creates an character from a template.'''
         self.useExample = '''mcreate template_id'''
 
     def Process(self, player, args=''):
@@ -21,5 +21,6 @@ class cmdMcreate(MudCommand.MudCommand):
         action.playerRef  = player
         action.data1      = int(args)
         MudActionHandler.actionHandler.doAction(action)
-        
+
+
 mcreate = cmdMcreate()

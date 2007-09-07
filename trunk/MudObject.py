@@ -10,7 +10,7 @@ class MudObject(object):
     """
     The base class of items, players, mobiles, and portals in the MUD.
     
-    All Objects in the MUD subclass this. Be default, the Object has:
+    All Objects in the MUD subclass this. By default, the Object has:
         - A name
         - An ID number
         - A description

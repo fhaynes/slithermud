@@ -41,7 +41,7 @@ def Execute(owner, action):
     elif action.actionType == 'lookat':
         new_action = MudAction.MudAction()
         new_action.actionType = 'isvisible'
-        new_action.playerRef = action.playerRef
+        new_action.playerRef  = action.playerRef
         res = owner.doAction(new_action)
         if res == 1:
             return
@@ -49,6 +49,5 @@ def Execute(owner, action):
             action.playerRef.writeWithPrompt(owner.desc)
     elif action.actionType == 'tick':
         MudDatabase.db.saveCharToDisk(owner)
-        
     else:
         pass

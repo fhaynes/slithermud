@@ -96,6 +96,4 @@ class MudRoom(MudObject.MudObject):
             if eachPortal.name.lower() == portal_name.lower():
                 return eachPortal
         return 0
-        
-    
-            
+     

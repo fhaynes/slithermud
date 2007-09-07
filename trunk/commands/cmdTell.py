@@ -22,5 +22,6 @@ class cmdTell(MudCommand.MudCommand):
         player.writeWithPrompt('You tell '+tmp.name+', "'+args[1]+'"')
         tmp.writeWithPrompt(player.name+' tells you, "'+args[1]+'"')
         return
-      
+
+
 tell = cmdTell()

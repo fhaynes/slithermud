@@ -15,4 +15,3 @@ class MudAccount(object):
         @type passwd: str
         """
         self.password = sha.new(passwd).hexdigest()
-    

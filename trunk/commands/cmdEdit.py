@@ -10,11 +10,11 @@ import MudConst
 class cmdEdit(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
-        self.cmdName  = "edit"
-        self.helpText = '''This lets you edit the name or desc of things outside of the OLC.'''
-        self.helpText += '''\r\nYou can edit: item room zone mob or portal.'''
-        self.helpText += '''\r\nMobs, portals, and items require an ID, and must be in the same room as you.'''
-        self.helpText += '''\r\nTo edit the current room you are in, type edit room.'''
+        self.cmdName    = "edit"
+        self.helpText   = '''This lets you edit the name or desc of things outside of the OLC.'''
+        self.helpText  += '''\r\nYou can edit: item room zone mob or portal.'''
+        self.helpText  += '''\r\nMobs, portals, and items require an ID, and must be in the same room as you.'''
+        self.helpText  += '''\r\nTo edit the current room you are in, type edit room.'''
         self.useExample = '''edit room or edit mob 20 or edit item 20'''
 
 
@@ -24,11 +24,11 @@ class cmdEdit(MudCommand.MudCommand):
             try:
                 for eachChar in player.roomRef.items.values():
                     if eachChar.id_num == int(args[1]):
-                        player.curWorkingZone = player.zoneRef
-                        player.curWorkingRoom = player.roomRef
+                        player.curWorkingZone         = player.zoneRef
+                        player.curWorkingRoom         = player.roomRef
                         player.curWorkingItemInstance = eachChar
-                        player.login_state = MudConst.inOlc
-                        player.olcState = MudWorld.world.olcHandler.itemInstanceEditPage
+                        player.login_state            = MudConst.inOlc
+                        player.olcState               = MudWorld.world.olcHandler.itemInstanceEditPage
                         MudWorld.world.olcHandler.users.append(player)
                         MudWorld.world.olcHandler.displayItemInstanceEditPage(player)
                         return
@@ -72,8 +72,8 @@ class cmdEdit(MudCommand.MudCommand):
                 if x.lower() == player.name.lower():
                     player.curWorkingZone = player.zoneRef
                     player.curWorkingRoom = player.roomRef
-                    player.login_state = MudConst.inOlc
-                    player.olcState = MudWorld.world.olcHandler.roomEditPage
+                    player.login_state    = MudConst.inOlc
+                    player.olcState       = MudWorld.world.olcHandler.roomEditPage
                     MudWorld.world.olcHandler.users.append(player)
                     MudWorld.world.olcHandler.displayRoomEditPage(player)
                     return
@@ -165,11 +165,11 @@ class cmdEdit(MudCommand.MudCommand):
                         if eachChar.sockRef != '':
                             player.writeWithPrompt("You cannot edit players! Use Set!")
                             return
-                        player.curWorkingZone = player.zoneRef
-                        player.curWorkingRoom = player.roomRef
+                        player.curWorkingZone         = player.zoneRef
+                        player.curWorkingRoom         = player.roomRef
                         player.curWorkingCharInstance = eachChar
-                        player.login_state = MudConst.inOlc
-                        player.olcState = MudWorld.world.olcHandler.mobInstanceEditPage
+                        player.login_state            = MudConst.inOlc
+                        player.olcState               = MudWorld.world.olcHandler.mobInstanceEditPage
                         MudWorld.world.olcHandler.users.append(player)
                         MudWorld.world.olcHandler.displayMobInstanceEditPage(player)
                         return
@@ -222,11 +222,11 @@ class cmdEdit(MudCommand.MudCommand):
                     try:
                         for eachPortal in player.roomRef.portals.values():
                             if int(args[1]) == eachPortal.id_num:
-                                player.curWorkingZone = player.zoneRef
-                                player.curWorkingRoom = player.roomRef
+                                player.curWorkingZone   = player.zoneRef
+                                player.curWorkingRoom   = player.roomRef
                                 player.curWorkingPortal = eachPortal
-                                player.login_state = MudConst.inOlc
-                                player.olcState = MudWorld.world.olcHandler.portalEditPage
+                                player.login_state      = MudConst.inOlc
+                                player.olcState         = MudWorld.world.olcHandler.portalEditPage
                                 MudWorld.world.olcHandler.users.append(player)
                                 MudWorld.world.olcHandler.displayPortalEditPage(player)
                                 return
@@ -275,12 +275,6 @@ class cmdEdit(MudCommand.MudCommand):
         else:
             player.writeWithPrompt("Not a valid choice!")
             return
-        
-                
-        
- 
-
-
 
 
 edit = cmdEdit()

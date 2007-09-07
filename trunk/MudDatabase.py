@@ -1,3 +1,5 @@
+# Did a bit of clean-up on this file for readability's sake - V
+
 """
 Database related classes.
 
@@ -33,10 +35,10 @@ class CharTemplateHandler(ContentHandler):
         self.inCom   = 0
     def startElement(self, name, attrs):
         if name == 'c_template':
-            self.newTemp = MudCharacter.MudCharacterTemplate()
-            self.newTemp.name = str(nw(attrs.get('name', "")))
+            self.newTemp        = MudCharacter.MudCharacterTemplate()
+            self.newTemp.name   = str(nw(attrs.get('name', "")))
             self.newTemp.id_num = int(nw(attrs.get('id_num', "")))
-            self.newTemp.desc = str(nw(attrs.get('desc', "")))
+            self.newTemp.desc   = str(nw(attrs.get('desc', "")))
         elif name == 'logic':
             self.inLogic = 1
         elif name == 'command':
@@ -79,10 +81,10 @@ class ItemTemplateHandler(ContentHandler):
         self.inCom   = 0
     def startElement(self, name, attrs):
         if name == 'i_template':
-            self.newTemp = MudCharacter.MudCharacterTemplate()
-            self.newTemp.name = str(nw(attrs.get('name', "")))
+            self.newTemp        = MudCharacter.MudCharacterTemplate()
+            self.newTemp.name   = str(nw(attrs.get('name', "")))
             self.newTemp.id_num = int(nw(attrs.get('id_num', "")))
-            self.newTemp.desc = str(nw(attrs.get('desc', "")))
+            self.newTemp.desc   = str(nw(attrs.get('desc', "")))
         elif name == 'logic':
             self.inLogic = 1
         elif name == 'command':
@@ -132,15 +134,15 @@ class CharHandler(ContentHandler):
     def startElement(self, name, attrs):
         if name == 'character':
             self.inCharacter = 1
-            self.newChar = MudCharacter.MudCharacter()
-            self.newChar.name = str(nw(attrs.get('name', "")))
-            self.newChar.id_num = int(nw(attrs.get('id_num', "")))
+            self.newChar             = MudCharacter.MudCharacter()
+            self.newChar.name        = str(nw(attrs.get('name', "")))
+            self.newChar.id_num      = int(nw(attrs.get('id_num', "")))
             self.newChar.template_id = int(nw(attrs.get('template_id', "")))
-            self.newChar.zone   = int(nw(attrs.get('zone', "")))
-            self.newChar.room   = int(nw(attrs.get('room', "")))
+            self.newChar.zone        = int(nw(attrs.get('zone', "")))
+            self.newChar.room        = int(nw(attrs.get('room', "")))
             self.newChar.admin_level = int(nw(attrs.get('a_l', "")))
-            self.newChar.password = str(nw(attrs.get('password', "")))
-            self.newChar.desc = str(nw(attrs.get('desc', "")))
+            self.newChar.password    = str(nw(attrs.get('password', "")))
+            self.newChar.desc        = str(nw(attrs.get('desc', "")))
             
         elif name == 'command':
             self.inCommand = 1
@@ -155,15 +157,15 @@ class CharHandler(ContentHandler):
         elif name == 'item':
             self.inItem = 1
             self.newItem = MudItem.MudItem()
-            self.newItem.name = str(nw(attrs.get('name', "")))
-            self.newItem.id_num = int(nw(attrs.get('id_num', "")))
-            self.newItem.desc   = str(nw(attrs.get('desc', "")))
+            self.newItem.name        = str(nw(attrs.get('name', "")))
+            self.newItem.id_num      = int(nw(attrs.get('id_num', "")))
+            self.newItem.desc        = str(nw(attrs.get('desc', "")))
             self.newItem.template_id = int(nw(attrs.get('t_id', "")))
-            self.newItem.quantity = int(nw(attrs.get('quan', "")))
-            self.newItem.isQuantity = str(nw(attrs.get('isquan', "")))
-            self.newItem.zone = None
-            self.newItem.room = None
-            self.newItem.owner = self.newChar.name
+            self.newItem.quantity    = int(nw(attrs.get('quan', "")))
+            self.newItem.isQuantity  = str(nw(attrs.get('isquan', "")))
+            self.newItem.zone        = None
+            self.newItem.room        = None
+            self.newItem.owner       = self.newChar.name
 
         else:
             pass
@@ -247,31 +249,31 @@ class ZoneHandler(ContentHandler):
             self.inAllowed = 1
         elif name == 'room':
             self.inRoom = 1
-            self.newRoom      = MudRoom.MudRoom()
-            self.newRoom.name = str(nw(attrs.get('name', "")))
-            self.newRoom.id_num   = int(nw(attrs.get('id_num', "")))
-            self.newRoom.desc = str(nw(attrs.get('desc', "")))
+            self.newRoom        = MudRoom.MudRoom()
+            self.newRoom.name   = str(nw(attrs.get('name', "")))
+            self.newRoom.id_num = int(nw(attrs.get('id_num', "")))
+            self.newRoom.desc   = str(nw(attrs.get('desc', "")))
             self.newZone.addRoom(self.newRoom)
         elif name == 'portal':
             self.inPortal = 1
             self.newPortal = MudPortal.MudPortal()
-            self.newPortal.name = str(nw(attrs.get('name', "")))
-            self.newPortal.id_num = int(nw(attrs.get('id_num', "")))
-            self.newPortal.desc = str(nw(attrs.get('desc', "")))
+            self.newPortal.name        = str(nw(attrs.get('name', "")))
+            self.newPortal.id_num      = int(nw(attrs.get('id_num', "")))
+            self.newPortal.desc        = str(nw(attrs.get('desc', "")))
             self.newPortal.target_zone = int(nw(attrs.get('tz', "")))
             self.newPortal.target_room = int(nw(attrs.get('tr', "")))
             self.newRoom.addPortal(self.newPortal)
         elif name == 'item':
             self.inItem = 1
             self.newItem = MudItem.MudItem()
-            self.newItem.name = str(nw(attrs.get('name', "")))
-            self.newItem.id_num = int(nw(attrs.get('id_num', "")))
-            self.newItem.desc   = str(nw(attrs.get('desc', "")))
+            self.newItem.name        = str(nw(attrs.get('name', "")))
+            self.newItem.id_num      = int(nw(attrs.get('id_num', "")))
+            self.newItem.desc        = str(nw(attrs.get('desc', "")))
             self.newItem.template_id = int(nw(attrs.get('t_id', "")))
-            self.newItem.quantity = int(nw(attrs.get('quan', "")))
-            self.newItem.isQuantity = str(nw(attrs.get('isquan', "")))
-            self.newItem.zone = self.newZone
-            self.newItem.room = self.newRoom
+            self.newItem.quantity    = int(nw(attrs.get('quan', "")))
+            self.newItem.isQuantity  = str(nw(attrs.get('isquan', "")))
+            self.newItem.zone        = self.newZone
+            self.newItem.room        = self.newRoom
             self.newRoom.addItem(self.newItem)
             db.addItem(self.newItem)
         elif name == 'ilogic':
@@ -377,18 +379,21 @@ class DatabaseManager:
             file.write('    <allowed>'+x+'</allowed>\r\n')
         file.write('  </zinfo>\r\n')
         for eachRoom in zone.rooms.values():
-            file.write('  <room name="'+eachRoom.name+'" id_num="'+str(eachRoom.id_num)+'" desc="'+eachRoom.desc+'">\r\n')
+            file.write('  <room name="'+eachRoom.name+'" id_num="'+str(eachRoom.id_num)\
+                       +'" desc="'+eachRoom.desc+'">\r\n')
             for x in eachRoom.logic_modules.keys():
                 file.write('    <rlogic>'+x+'</rlogic>\r\n')
             for x in eachRoom.portals.values():
                 file.write('    <portal name="'+x.name+'" id_num="'+str(x.id_num)\
-+'" tz="'+str(x.target_zone)+'" tr="'+str(x.target_room)+'" desc="'+x.desc+'">\r\n')
+                           +'" tz="'+str(x.target_zone)+'" tr="'+str(x.target_room)\
+                           +'" desc="'+x.desc+'">\r\n')
                 for y in x.logic_modules.keys():
                     file.write('      <plogic>'+y+'</plogic>\r\n')
                 file.write('    </portal>\r\n')
             for x in eachRoom.items.values():
                 file.write('      <item name="'+x.name+'" id_num="'+str(x.id_num)\
-+'" quan="'+str(x.quantity)+'" isquan="'+str(x.isQuantity)+'" t_id="'+str(x.template_id)+'" desc="'+x.desc+'">\r\n')
+                           +'" quan="'+str(x.quantity)+'" isquan="'+str(x.isQuantity)\
+                           +'" t_id="'+str(x.template_id)+'" desc="'+x.desc+'">\r\n')
                 for eachStat in x.statistics.keys():
                     file.write('        <istat>'+eachStat+':'+eachStat.statistics[x]+'</istat>\r\n')
                 for eachLogic in x.logic_modules.keys():
@@ -428,15 +433,16 @@ class DatabaseManager:
             char_file = MudConst.mob_dir+os.sep+str(p_object.name)+'.xml'
         tmp = file(char_file, 'w')
         tmp.write('<character name="'+p_object.name+'" id_num="'+str(p_object.id_num)+\
-'" zone="'+str(p_object.zone)+'" room="'+str(p_object.room)+'" a_l="'+str(p_object.admin_level)\
-+'" password="'+p_object.password+'" desc="'+p_object.desc+'">\r\n')
+                  '" zone="'+str(p_object.zone)+'" room="'+str(p_object.room)+'" a_l="'+str(p_object.admin_level)\
+                  +'" password="'+p_object.password+'" desc="'+p_object.desc+'">\r\n')
         for eachCommand in p_object.commands.keys():
             tmp.write('  <command>'+eachCommand+'</command>\r\n')
         for eachLogic in p_object.logic_modules.keys():
             tmp.write('  <clogic>'+eachLogic+'</clogic>\r\n')
         for x in p_object.items.values():
                     tmp.write('  <item name="'+x.name+'" id_num="'+str(x.id_num)\
-+'" quan="'+str(x.quantity)+'" isquan="'+str(x.isQuantity)+'" t_id="'+str(x.template_id)+'" desc="'+x.desc+'">\r\n')
+                              +'" quan="'+str(x.quantity)+'" isquan="'+str(x.isQuantity)\
+                              +'" t_id="'+str(x.template_id)+'" desc="'+x.desc+'">\r\n')
                     for eachStat in x.statistics.keys():
                         tmp.write('    <istat>'+eachStat+':'+eachStat.statistics[x]+'</istat>\r\n')
                     for eachLogic in x.logic_modules.keys():
@@ -482,7 +488,7 @@ class DatabaseManager:
         template_file = MudConst.char_template_dir+os.sep+template.name.capitalize()+'.xml'
         tmp = file(template_file, 'w')
         tmp.write('<c_template name="'+template.name+'" id_num="'+str(template.id_num)+\
-'" desc="'+template.desc+'">\r\n')
+                  '" desc="'+template.desc+'">\r\n')
         for eachLogic in template.logics:
             tmp.write('  <logic>'+eachLogic+'</logic>\r\n')
         for eachStat in template.statistics.keys():
@@ -515,7 +521,7 @@ class DatabaseManager:
         tmp = file(template_file, 'w')
         tmp = file(template_file, 'w')
         tmp.write('<i_template name="'+template.name+'" id_num="'+str(template.id_num)+\
-'" desc="'+template.desc+'">\r\n')
+                  '" desc="'+template.desc+'">\r\n')
         for eachLogic in template.logics:
             tmp.write('  <logic>'+eachLogic+'</logic>\r\n')
         for eachStat in template.statistics.keys():
@@ -578,9 +584,9 @@ class DatabaseManager:
         newItem = MudItem.MudItem()
         newItem.template_id = int(tmp.id_num)
         newItem.id_num      = self.generateNextId('item')
-        newItem.name = tmp.name
-        newItem.desc = tmp.desc
-        newItem.statistics = copy.deepcopy(tmp.statistics)
+        newItem.name        = tmp.name
+        newItem.desc        = tmp.desc
+        newItem.statistics  = copy.deepcopy(tmp.statistics)
         for eachLogic in tmp.logics:
             newItem.addLogic(eachLogic)
             
@@ -733,18 +739,18 @@ class DatabaseManager:
         Copies the attributes from a saved char to the new one.
         '''
         
-        p_object.name       = p_tmp.name
-        p_object.password   = p_tmp.password
-        p_object.desc       = p_tmp.desc
-        p_object.zone       = p_tmp.zone
-        p_object.room       = p_tmp.room
-        p_object.id_num     = p_tmp.id_num
-        p_object.admin_level = p_tmp.admin_level
-        p_object.template_id = p_tmp.template_id
-        p_object.items      = copy.deepcopy(p_tmp.items)
-        p_object.statistics = copy.deepcopy(p_tmp.statistics)
-        p_object.commands   = copy.deepcopy(p_tmp.commands)
-        p_object.logic_modules     = copy.deepcopy(p_tmp.logic_modules)
+        p_object.name          = p_tmp.name
+        p_object.password      = p_tmp.password
+        p_object.desc          = p_tmp.desc
+        p_object.zone          = p_tmp.zone
+        p_object.room          = p_tmp.room
+        p_object.id_num        = p_tmp.id_num
+        p_object.admin_level   = p_tmp.admin_level
+        p_object.template_id   = p_tmp.template_id
+        p_object.items         = copy.deepcopy(p_tmp.items)
+        p_object.statistics    = copy.deepcopy(p_tmp.statistics)
+        p_object.commands      = copy.deepcopy(p_tmp.commands)
+        p_object.logic_modules = copy.deepcopy(p_tmp.logic_modules)
         del p_tmp
         return p_object
     
@@ -759,7 +765,3 @@ class DatabaseManager:
         return False
 
 db = DatabaseManager()
-        
-        
-
-    
