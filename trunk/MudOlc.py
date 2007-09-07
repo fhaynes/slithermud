@@ -8,6 +8,7 @@ The OLC Manager
 import textwrap
 import os
 import sys
+import exceptions
 
 import MudWorld
 import MudRoom
@@ -28,18 +29,18 @@ class OlcManager:
         # OLC states - states the user can be in while using the OLC
         
         # Initial and Zone Editing States
-        self.initialMenu      = 0
-        self.zoneEditPage     = 1
-        self.zoneSelectPage   = 2
-        self.roomSelectPage   = 3
-        self.roomEditPage     = 4
-        self.portalEditPage   = 6
-        self.mobSelectPage    = 7
-        self.mobEditPage         = 8
-        self.mobInstanceEditPage = 9
-        self.itemSelectPage   = 10
-        self.itemEditPage     = 11
-        self.itemInstanceEditPage = 12
+        self.initialMenu            = 0
+        self.zoneEditPage           = 1
+        self.zoneSelectPage         = 2
+        self.roomSelectPage         = 3
+        self.roomEditPage           = 4
+        self.portalEditPage         = 6
+        self.mobSelectPage          = 7
+        self.mobEditPage            = 8
+        self.mobInstanceEditPage    = 9
+        self.itemSelectPage         = 10
+        self.itemEditPage           = 11
+        self.itemInstanceEditPage   = 12
         
     def addUser(self, user):
         self.users.append(user)
@@ -53,10 +54,10 @@ class OlcManager:
         
     def removeUser(self, user):
         self.users.remove(user)
-        user.curWorkingPortal = None
-        user.curWorkingRoom   = None
+        user.curWorkingPortal       = None
+        user.curWorkingRoom         = None
         user.curWorkingItemTemplate = None
-        user.curWorkingZone = None
+        user.curWorkingZone         = None
         user.curWorkingCharInstance = None
         user.curWorkingItemInstance = None
         
@@ -81,10 +82,10 @@ class OlcManager:
         elif args.lower() == 'quit':
             user.writePlain('Exiting OLC System!\r\n')
             self.removeUser(user)
-            user.login_state = MudConst.logedIn
+            user.login_state      = MudConst.logedIn
             user.writeWithPrompt("<cls>")
-            user.curWorkingZone = None
-            user.curWorkingRoom = None
+            user.curWorkingZone   = None
+            user.curWorkingRoom   = None
             user.curWorkingPortal = None
         # Initial menu and zone editing function calls
         elif user.olcState == self.initialMenu:
@@ -123,15 +124,12 @@ class OlcManager:
         else:
             user.writePlain('\r\n>> ')
             
-        
-        
     def displayMainMenu(self, user):
-        user.writePlain('<cls><bright><white>SlitherMUD OLC Main Menu\r\n')
-        user.writePlain('<bright><white>\r\n\r\n----------Main Menu----------\r\n')
-        user.writePlain('     \r\n<red>     [C]haracter Template Editing\r\n')
-        user.writePlain('     [I]tem Template Editing\r\n')
-        user.writePlain('     [Quit] the OLC Editor\r\n<white>')
-        user.writePlain('\r\n-----------------------------\r\n')
+        user.writePlain('<bright><white>\r\n\r\n---------<green>OLC MAIN MENU<bright><white>----------\r\n')
+        user.writePlain('\r\n<red>  [C]haracter Template Editing\r\n')
+        user.writePlain('  [I]tem Template Editing\r\n')
+        user.writePlain('  [Quit] the OLC Editor\r\n<bright><white>')
+        user.writePlain('\r\n------------<green>SLITHER<bright><white>-------------\r\n')
         user.writePlain('\r\n<r>>> ')
         
     def zoneSelectProcess(self, user, args):
@@ -280,7 +278,7 @@ class OlcManager:
         elif args[0].lower() == 'logics':
             try:
                 if len(args[1].split(" ")) != 1:
-                    user.writePlain('Proper format is logics modulename. No spaces.')
+                    user.writePlain('Proper format is logics <modulename>. No spaces.')
                     user.writePlain('\r\n>> ')
                     return
                 if user.curWorkingRoom.logic_modules.has_key(args[1]):
@@ -431,6 +429,18 @@ class OlcManager:
                 return
             
         elif args[0].lower() == 'edit':
+
+            try:
+                int(args[1])
+            except exceptions.ValueError:
+                user.writePlain("<red>Warning: Improper argument passed to edit function!\r\n")
+                user.writePlain("<green>Correct Usage: edit <ID Number>\r\n")
+                user.writePlain(' '.join(["<white>Please perform a search for the template you'd like to edit.\r\n",\
+                                          "This will give you the correct ID number for reference.\r\n",\
+                                          "\r\n>>"]))
+                return
+
+            
             try:
                 if not int(args[1]) in range(user.statistics['m_lvnum'], user.statistics['m_hvnum']):
                     user.writePlain("That ID number is not within your assigned range!\r\n>>")
@@ -445,7 +455,7 @@ class OlcManager:
             except:
                 print "Doh!"
                 newTemplate = MudCharacter.MudCharacterTemplate()
-                newTemplate.id_num = int(args[1])
+                newTemplate.id_num            = int(args[1])
                 newTemplate.statistics['str'] = 1
                 newTemplate.statistics['int'] = 1
                 newTemplate.statistics['dex'] = 1
@@ -504,6 +514,9 @@ class OlcManager:
                     user.curWorkingCharTemplate.logics.append(args[1])
                     self.displayMobEditPage(user)
             elif args[0].lower() == 'stats':
+                if len(args) < 2:
+                    user.writePlain("Proper format is: stats <name> <value>\r\n>>")
+                    return
                 tmp = args[1].split(" ")
                 if len(tmp) != 2:
                     user.writePlain('Proper format is: stats name value!\r\n>> ')
@@ -523,10 +536,10 @@ class OlcManager:
         try:
             if args[0].lower() == 'name':
                 file = MudConst.mob_dir+user.curWorkingCharInstance.name+'.xml'
-		try:
+                try:
                      os.remove(file)
-		except:
-		     pass
+                except:
+                     pass
                 user.curWorkingCharInstance.name = args[1]
                 self.displayMobInstanceEditPage(user)
                 return
@@ -619,6 +632,7 @@ class OlcManager:
                 self.displayItemEditPage(user)
         else:
             self.displayItemSelectPage(user)
+            
     def itemEditProcess(self, user, args):
         args = args.split(" ", 1)
         try:
@@ -721,25 +735,25 @@ class OlcManager:
             
     def displayZoneEditPage(self, user):
         pass
-    #    user.writePlain('<cls>Zone Creation and Editing Section\r\n\r\n')
-    #    user.writePlain('[Name]       :  '+user.curWorkingZone.name+'\r\n')
-    #    user.writePlain('[ID]         :  '+str(user.curWorkingZone.id_num)+'\r\n')
-    #    y = 0
-    #    user.writePlain('[Permissions]\r\n\r\n')
-    #    for eachAllowed in user.curWorkingZone.allowed:
-    #        if y == 4:
-    #            user.writePlain('\r\n')
-    #            y = 0
-    #        user.writePlain(eachAllowed+'    ')
-    #    y = 0
-    #    user.writePlain('\r\n\r\n[Logics]\r\n')
-    #    for eachModule in user.curWorkingZone.logic_modules.keys():
-    #        if y == 4:
-    #            user.writePlain('\r\n')
-    #            y = 0
-    #        user.writePlain(eachModule+'    ')
-    #
-    #    user.writePlain('\r\n\r\n>> ')
+        #    user.writePlain('<cls>Zone Creation and Editing Section\r\n\r\n')
+        #    user.writePlain('[Name]       :  '+user.curWorkingZone.name+'\r\n')
+        #    user.writePlain('[ID]         :  '+str(user.curWorkingZone.id_num)+'\r\n')
+        #    y = 0
+        #    user.writePlain('[Permissions]\r\n\r\n')
+        #    for eachAllowed in user.curWorkingZone.allowed:
+        #        if y == 4:
+        #            user.writePlain('\r\n')
+        #            y = 0
+        #        user.writePlain(eachAllowed+'    ')
+        #    y = 0
+        #    user.writePlain('\r\n\r\n[Logics]\r\n')
+        #    for eachModule in user.curWorkingZone.logic_modules.keys():
+        #        if y == 4:
+        #            user.writePlain('\r\n')
+        #            y = 0
+        #        user.writePlain(eachModule+'    ')
+        #
+        #    user.writePlain('\r\n\r\n>> ')
     
     def displayZoneListPage(self, user):
         pass
@@ -870,11 +884,12 @@ class OlcManager:
         
     def displayMobSelectPage(self, user):
         try:
-            user.writePlain('<cls><white>Welcome to the MOB Template Editing System!\r\n')
-            user.writePlain('To search for a mob template by name, type search name.\r\n')
-            user.writePlain('To edit that template, type edit idnum.\r\n')
-            user.writePlain('To create a new template, type new.\r\n')
-            user.writePlain('To save, type save.\r\n\r\n>> <r>')
+            user.writePlain('<cls><bright><white>---------------------<green>MOB TEMPLATE EDITOR<bright><white>----------------------\r\n')
+            user.writePlain('<white>  To search for a mob template by name, type: <cyan>search <name><white>.\r\n')
+            user.writePlain('  To edit that template, type: <cyan>edit <idnum><white>.\r\n')
+            user.writePlain('  To create a new template, type: <cyan>new<white>.\r\n')
+            user.writePlain('  To save, type: <cyan>save<white>.\r\n')
+            user.writePlain('<bright><white>---------------------------<green>SLITHER<bright><white>----------------------------\r\n>><r>')
         except TypeError:
             pass
         
@@ -931,10 +946,11 @@ class OlcManager:
         
     def displayItemSelectPage(self, user):
         try:
-            user.writePlain('<cls><white>Welcome to the Item Template Editing System!\r\n')
-            user.writePlain('To search for a item template by name, type search name.\r\n')
-            user.writePlain('To edit that template, type edit idnum.\r\n')
-            user.writePlain('To create a new template, type new.\r\n>> ')
+            user.writePlain('<cls><bright><white>---------------------<green>ITEM TEMPLATE EDITOR<bright><white>---------------------\r\n')
+            user.writePlain('<white>  To search for a item template by name, type: <cyan>search <name><white>.\r\n')
+            user.writePlain('  To edit that template, type: <cyan>edit <idnum><white>.\r\n')
+            user.writePlain('  To create a new template, type: <cyan>new<white>.\r\n')
+            user.writePlain('<bright><white>---------------------------<green>SLITHER<bright><white>----------------------------\r\n>><r>')
         except TypeError:
             pass
         
@@ -956,6 +972,3 @@ class OlcManager:
         #res = res.replace(']', ']\r\n')
         res = res.lstrip()
         return res
-        
-
-            
