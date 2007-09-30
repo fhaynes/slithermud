@@ -1,0 +1,103 @@
+import logger
+import sys
+import traceback
+
+import MudConst
+import MudLogin
+import MudCommandDatabase
+import MudActionHandler
+import MudDatabase
+import MudLogicDatabase
+
+class MudWorld:
+    """
+    This class contains all of the relevant data about the world.
+    
+    It contains a dictionary of zones, connected players, and it also handles
+    input processing.    
+    """
+    
+    def __init__(self):
+        self.info = {}
+        self.info['players'] = {}
+        self.info['zones']   = {}
+        
+        # Database of commands, used for instantiating new ones for items
+        # and/or characters
+        self.cmdDb = MudCommandDatabase.CommandDatabase()
+        
+        # Class that handles all the action processing of the MUD.
+        self.actionHandler = MudActionHandler.MudActionHandler()
+        
+        # General database class
+        self.db = MudDatabase.MudDatabase()
+        
+        # Database of logic modules
+        self.logicDb = MudLogicDatabase.LogicModuleDatabase()
+        
+    def loadWorld(self):
+        """Function responsible for loading the entire world."""
+        self.logicDb.loadAllLogics()
+        
+    def processAction(self, action):
+        """Sends the action to the actionHandler instance for processing."""
+        self.actionHandler.doAction(action)
+
+    def addCharacter(self, player):
+        """Adds a player to the global dictionary."""
+        self.info['players'][player.info['name']] = player
+        
+    def addZone(self, zone):
+        """Adds a zone to the world."""
+        self.info['zones'][zone.getId()] = zone
+        
+    def getZone(self, zone_id):
+        """Gets a reference to a zone. Takes the ID of the zone."""
+        return self.info['zones'][zone_id]
+    
+    def handleInput(self, player, input):
+        """
+        Handles player input. If the player is not logged in, hands it off
+        to the login processor in MudLogin. If they are, checks the input,
+        splits it as appropiate, and sends it to doCommand.
+        """
+        if player.getLoginState() != MudConst.logedIn and player.getSockRef() != '':
+            MudLogin.processLogin(player, input)
+            return
+        if input == '':
+            player.writeWithPrompt("")
+            return
+        argList = input.split(" ", 1)
+        try:
+            self.doCommand(player, argList[0], argList[1])
+        except IndexError:
+            self.doCommand(player, argList[0], '')
+
+    def doCommand(self, player, cmd, args):
+        """
+        Checks the command for validity in the command dictionary of the player
+        If it is not there, notifies the player. Also catches any major errors
+        while processing the command.
+        """
+        
+        try:
+            player.info['commands'][cmd.lower()].process(player, args)
+        except KeyError:
+            player.writeWithPrompt("Invalid command!")
+
+        #except:
+           # player.writeWithPrompt("There has been an error processing your command. Please report this to an IMM.")
+           # etype = sys.exc_info()[0]
+           # evalue = sys.exc_info()[1]
+           # etb = traceback.extract_tb(sys.exc_info()[2])
+           # string = 'Error type: '+str(etype) + '\r\nError value: '+str(evalue)+'\r\n Traceback:'+str(etb)
+            
+            #logger.logging.debug(string)
+            
+    def getPlayers(self):
+        """Returns the global player dictionary."""
+        return self.info['players']
+            
+    
+            
+world = MudWorld()
