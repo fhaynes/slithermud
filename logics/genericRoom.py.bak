@@ -1,4 +1,0 @@
-def process(action, owner):
-    if action.getActionType() == 'look':
-        c = action.getPlayerRef()
-        c.writeWithPrompt(owner.getDesc())

@@ -1,1 +1,0 @@
-Thu, 27 Sep 2007 11:31:32 INFO     MUD Started.
