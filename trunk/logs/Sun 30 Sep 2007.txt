@@ -1,0 +1,3 @@
+Sun, 30 Sep 2007 01:06:30 INFO     MUD Started.
+Sun, 30 Sep 2007 01:06:32 INFO     New connection fromIPv4Address(TCP, '127.0.0.1', 3354)
+Sun, 30 Sep 2007 01:06:34 INFO     Kuros entered the game!

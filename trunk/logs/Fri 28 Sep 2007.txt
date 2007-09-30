@@ -1,0 +1,2 @@
+Fri, 28 Sep 2007 12:30:42 INFO     MUD Started.
+Fri, 28 Sep 2007 12:30:44 INFO     New connection fromIPv4Address(TCP, '127.0.0.1', 49665)
