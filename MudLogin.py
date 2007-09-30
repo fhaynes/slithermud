@@ -51,6 +51,7 @@ def getAccountPassword(player, data):
         # TODO: Come up with better way to load initial logics. #
         gen  = MudWorld.world.logicDb.getLogic('genericPlayer')
         player.addLogic('genericPlayer', gen)
+        MudWorld.world.db.savePlayer(player)
 
     else:
         player.writePlain('\r\nInvalid password. Try again: ')
@@ -114,7 +115,7 @@ def confirmNewAccountPass(player, data):
         player.writePlain('Character created.\r\n')
         player.writeWithPrompt('Welcome, '+player.getName())
         player.setLoginState(MudConst.logedIn)
-        MudWorld.world.db.savePlayer(player)
+
         newAction = MudAction.MudAction('enterworld', player, 1, 1)
         MudWorld.world.actionHandler.doAction(newAction)
         
@@ -124,6 +125,8 @@ def confirmNewAccountPass(player, data):
         # TODO: Come up with better way to load initial logics. #
         gen  = MudWorld.world.logicDb.getLogic('genericPlayer')
         player.addLogic('genericPlayer', gen)
+        
+        MudWorld.world.db.savePlayer(player)
 
     elif data.lower() == 'n':
         player.writePlain('\r\nChoose a password: ')

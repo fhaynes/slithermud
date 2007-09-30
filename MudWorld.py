@@ -35,9 +35,19 @@ class MudWorld:
         # Database of logic modules
         self.logicDb = MudLogicDatabase.LogicModuleDatabase()
         
+    # This function is responsible for loading all of the zones and the 
+    # logic modules. All zones are listed in zone_index.txt and all logic
+    # modules are listed in logic_index.txt.
+        
     def loadWorld(self):
         """Function responsible for loading the entire world."""
         self.logicDb.loadAllLogics()
+        zFile = open(MudConst.zoneList)
+        for eachLine in zFile.readlines():
+            eachLine = eachLine.replace('\r', '')
+            eachLine = eachLine.replace('\n', '')
+            print "Loading Zone: "+eachLine
+            self.addZone(self.db.loadZone(eachLine))
         
     def processAction(self, action):
         """Sends the action to the actionHandler instance for processing."""

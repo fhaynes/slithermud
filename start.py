@@ -34,20 +34,7 @@ factory.protocol = MudServer.MudServer
 twisted.internet.reactor.listenTCP(MudConst.port, factory)
 print "Starting MUD."
 
-# For Testing Puroses - Remove Below Later #
 MudWorld.world.loadWorld()
-
-zone = MudWorld.world.db.loadZone('offices')
-gen  = MudWorld.world.logicDb.getLogic('genericRoom')
-
-for eachRoom in zone.getRooms().values():
-    #print eachRoom.info
-    eachRoom.addLogic('genericRoom', gen)
-    
-MudWorld.world.addZone(zone)
-
-
-# For Testing Purposes - Remove Above Later #
 
 logger.logging.info('MUD Started.')
 
