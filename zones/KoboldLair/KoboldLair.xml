@@ -1,8 +1,0 @@
-<mud_zone>
-  <zinfo name="Kobold Lair" id_num="17">
-    <allowed>Kuros</allowed>
-  </zinfo>
-  <room name="Entrance to Kobold Lair" id_num="1" desc=" This is the entrance to the filthy underground kobold hovel.">
-    <rlogic>basicRoomLogic</rlogic>
-  </room>
-</mud_zone>

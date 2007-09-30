@@ -1,3 +1,0 @@
-ITEM 26
-CHAR 39
-ZONE 17
