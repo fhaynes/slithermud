@@ -33,7 +33,7 @@ implementor = 5
 port = 5003
 
 # Home directory
-homeDir = os.path.abspath('/Slither2')
+homeDir = os.path.abspath(os.getcwd()+os.sep)
 
 # Zone directory
 zoneDir = os.path.join(homeDir, 'zones'+os.sep)
@@ -56,10 +56,6 @@ sys.path.append(zoneDir)
 sys.path.append(os.path.join(homeDir, 'commands'))
 sys.path.append(os.path.join(homeDir, 'logics'))
 
-greeting = '''<green>
-         
-          
-                    SlitherMUD\r 
-
-                    <r><cyan>   By: Kuros
+greeting = '''<green>\r\n\r\n\tSlitherMUD\r\n
+<r>\t<cyan>By: Kuros
 <r>\r\n'''
