@@ -47,6 +47,6 @@ Definitions:
 
 9. THIS PACKAGE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 
-10. A credits page that is easily and obviously accessible by users must be maintained and contain the names and email addresses of the original authors, which are Fletcher Haynes (kurosknight@gmail.com) and Jennifer Ennis (zaylea@gmail.com), as well as the web address of the project (http://slither.foobar.us).
+10. A credits page that is easily and obviously accessible by users must be maintained and contain the names and email addresses of the original author, which are Fletcher Haynes (kurosknight@gmail.com) as well as the web address of the project (http://starlessnights.genesismuds.com).
 
 The End
