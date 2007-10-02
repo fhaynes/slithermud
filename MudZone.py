@@ -51,7 +51,7 @@ class MudZone(MudObject.MudObject):
         self.info['characters'][character.info['name']] = character
         character.setZoneRef(self)
         
-    def remCharacter(self, character_name):
+    def removeCharacter(self, character_name):
         """
         Removes a character instance from the zone object.
         """

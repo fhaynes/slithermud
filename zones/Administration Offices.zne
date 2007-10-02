@@ -66,7 +66,7 @@ g3
 (dp33
 g5
 (dp34
-sg7
+sg12
 (dp35
 sg9
 S'Door to Hallway'
@@ -78,12 +78,12 @@ sg11
 I1
 sS'target_room'
 p38
-I1
-sg12
+I2
+sg7
 (dp39
 sS'target_zone'
 p40
-I2
+I1
 sS'desc'
 p41
 S''
@@ -128,7 +128,7 @@ g3
 (dp56
 g5
 (dp57
-sg7
+sg12
 (dp58
 sg9
 S'Door to Office'
@@ -139,7 +139,7 @@ sg11
 I2
 sg38
 I1
-sg12
+sg7
 (dp60
 sg40
 I1

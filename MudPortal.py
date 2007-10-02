@@ -24,3 +24,11 @@ class MudPortal(MudObject.MudObject):
         """Sets the reference to the room that owns the portal."""
         self.info['room'] = room
         
+    def getTargetZone(self):
+        """Returns the target zone ID."""
+        return self.info['target_zone']
+    
+    def getTargetRoom(self):
+        """Returns the target room ID."""
+        return self.info['target_room']
+    

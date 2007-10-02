@@ -1,6 +1,6 @@
 import MudCommand
 import MudAction
-import MudActionHandler
+import MudWorld
 
 import string
 
@@ -11,15 +11,16 @@ class cmdGo(MudCommand.MudCommand):
         self.helpText   = '''This tries to move you through a portal.'''
         self.useExample = '''go portalname'''
         
-    def Process(self, player, args=''):
-        action = MudAction.MudAction()
-        action.actionType = 'attemptenterportal'
-        action.playerRef  = player
-        action.data1      = args
-        if action.data1 == '':
-            action.playerRef.writeWithPrompt('Go where?')
+    def process(self, player, args=''):
+        if args == '':
+            player.writeWithPrompt("Go where?")
             return
-        MudActionHandler.actionHandler.doAction(action)
 
-
-go = cmdGo()
+        for eachPortal in player.getRoomRef().getPortals().values():
+            if eachPortal.getName().lower() == args.lower():
+                action = MudAction.MudAction('enterportal', player, eachPortal)
+                MudWorld.world.actionHandler.doAction(action)
+                return
+        
+        player.writeWithPrompt("Unable to find that portal.")
+                    

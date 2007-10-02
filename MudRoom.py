@@ -52,7 +52,7 @@ class MudRoom(MudObject.MudObject):
         """
         del self.info['portals'][portal.info['id_num']]
         
-    def getPortal(self):
+    def getPortals(self):
         """Returns the portal dictionary."""
         return self.info['portals']
     
