@@ -10,6 +10,7 @@ player did it.
 """
 
 import MudWorld
+import MudAction
 
 class MudActionHandler:
     def doAction(self, action):
@@ -18,7 +19,9 @@ class MudActionHandler:
         elif action.getType() == 'look':
             self.look(action)
         elif action.getType() == 'enterworld':
-            self.enterworld(action)
+            self.enterWorld(action)
+        elif action.getType() == 'enterportal':
+            self.enterPortal(action)
         else:
             pass
     
@@ -93,7 +96,137 @@ class MudActionHandler:
     # Handlers for specific actions  #
     # ------------------------------ #
     
-    def enterworld(self, action):
+    def enterPortal(self, action):
+        """Handles a character attempting to enter a portal."""
+        
+        # First, we'll get some references for brevity's sake.
+        
+        # Character who tried to enter the portal
+        c = action.getPlayerRef()
+        
+        # Portal the character tried to enter
+        p = action.getData1()
+        
+        # Current room of the player
+        r = c.getRoomRef()
+        
+        # Current zone of the player
+        z = c.getZoneRef()
+        
+        # Now we need to get some info on where they are trying to go.
+        # TODO: Error checking for invalid IDs
+        newZone = MudWorld.world.getZone(p.getTargetZone())
+        newRoom = newZone.getRoom(p.getTargetRoom())
+        
+        # Now lets check if they are trying to change zones
+        if newZone.getId() == c.getZoneRef().getId():
+            changeZone = False
+        else:
+            changeZone = True
+
+        # If they are going to change zones, we need to do some additional
+        # checks.
+        
+        # TODO: Are we generating too many actions? Also, should we not use
+        # the queryZone function? For when we are querying just one thing,
+        # should we just query it directly?
+        if changeZone:
+            result = self.queryZone(MudAction.MudAction("canleavezone", c, c.getZoneRef()))
+            if result == 1:
+                return
+            
+            # Now we check the destination zone to make sure they can enter.
+            result = self.queryZone(MudAction.MudAction('canenterzone', c, newZone))
+            if result == 1:
+                return
+            
+            # Now let's ask the character if they can leave the zone
+            result = c.doQuery(MudAction.MudAction('canleavezone', c, c.getRoomRef()))
+            if result == 1:
+                return
+            
+            # And ask the character if they can enter a new zone
+            result = c.doQuery(MudAction.MudAction('canenterzone', c, newRoom))
+            if result == 1:
+                return
+        
+        # Ask the current room if they can leave it.
+        result = r.doQuery(MudAction.MudAction('canleaveroom', c))
+        if result == 1:
+            return
+        
+        # Ask the new room if they can enter it.
+        result = newRoom.doQuery(MudAction.MudAction('canenterroom', c))
+        if result == 1:
+            return
+            
+        # Ask the character if they can leave the room
+        result = c.doQuery(MudAction.MudAction('canleaveroom', c))
+        if result == 1:
+            return
+        
+        # Ask the portal if they can enter it
+        result = p.doQuery(MudAction.MudAction('canenterportal', c))
+        if result == 1:
+            return
+        
+        # If we are this point, then we know the action is ok.
+        # Now, if they changed zones, we need to notify the zones.
+        # TODO: Might want to use one action for this part instead of
+        # generating a lot of new ones
+        
+        if changeZone:
+            z.doAction(MudAction.MudAction('leavezone', c, z))
+            newZone.doAction(MudAction.MudAction('enterzone', c, newZone))
+            
+        # Now we'll tell all the characters in the old room that they left.
+        self.actionRoomChars(MudAction.MudAction('leaveroom', c, p), r)
+        
+        # Now we'll tell all the items in the old room that they left.
+        self.actionRoomItems(MudAction.MudAction('leaveroom', c, p), r)
+        
+        # And finally we tell the old room
+        r.doAction(MudAction.MudAction('leaveroom', c, p))
+        
+        # Now we tell the portal that they entered it
+        p.doAction(MudAction.MudAction('enterportal', c))
+        
+        # And the character that we entered the portal
+        c.doAction(MudAction.MudAction('enterportal', c))
+        
+        # Now it is time to do the actual mechanics of moving the character.
+        # Deleting them from the old room/zone, adding them to the new ones, etc.
+        if changeZone:
+            # Remove char from old zone
+            z.removeCharacter(c.getName())
+            
+            # Add to new one
+            newZone.addCharacter(c)
+            
+        # Remove them from the old room
+        r.removeCharacter(c)
+
+        # Add the character to the new room
+        newRoom.addCharacter(c)
+        
+        # Tell everyone in the new zone that the char is entering
+        if changeZone:
+            newZone.doAction(MudAction('enterzone', c))
+            
+            # Tell the char they are entering a new zone.
+            c.doAction(MudAction.MudAction('enterzone', c))
+            
+        # Tell the room they entered
+        newRoom.doAction(MudAction.MudAction('enterroom', c, p))
+        
+        # Tell the characters in the new room that the char entered
+        self.actionRoomChars(MudAction.MudAction('enterroom', c, p), newRoom)
+        
+        # Tell all the items they entered
+        self.actionRoomItems(MudAction.MudAction('enterroom', c, p), newRoom)
+        
+    
+    def enterWorld(self, action):
         """Handles setting a player up in the world."""
         # TODO: Error checking for not finding the zone #
         destZone = MudWorld.world.getZone(action.getData1())

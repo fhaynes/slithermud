@@ -30,4 +30,4 @@ class LogicModuleDatabase:
         
     def getLogic(self, name):
         """Returns a copy of a logic module."""
-        return copy.deepcopy(self.logics[name])
+        return name, copy.deepcopy(self.logics[name])

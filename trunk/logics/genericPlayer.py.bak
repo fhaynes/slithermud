@@ -1,5 +1,0 @@
-def process(action, owner):
-    if action.getType() == 'say':
-        print "Here"
-        owner.writeWithPrompt(action.getPlayerRef().getName()+ ' says, "'+action.getString()+'"')
-        

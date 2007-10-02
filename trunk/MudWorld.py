@@ -48,6 +48,7 @@ class MudWorld:
             eachLine = eachLine.replace('\n', '')
             print "Loading Zone: "+eachLine
             self.addZone(self.db.loadZone(eachLine))
+            
         
     def processAction(self, action):
         """Sends the action to the actionHandler instance for processing."""
