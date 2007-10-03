@@ -5,5 +5,7 @@ def process(action, owner):
         owner.writeWithPrompt(action.getPlayerRef().getName()+ ' enters via '+ action.getData1().getName())
     elif action.getType() == 'leaveroom':
         owner.writeWithPrompt(action.getPlayerRef().getName()+ ' exits via '+action.getData1().getName())
+    elif action.getType() == 'getitem':
+        owner.writeWithPrompt(owner.getName()+' gets: '+action.getData1().getName())
     else:
         pass

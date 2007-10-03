@@ -73,6 +73,7 @@ class MudCharacter(MudObject.MudObject):
     def addItem(self, item):
         """Adds an item to the dictionary. Indexed by ID Number."""
         self.info['items'][item.info['id_num']] = item
+        item.setOwner(self)
         
     def remItem(self, item_id):
         """Removes an item from the dictionary."""
