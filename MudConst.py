@@ -51,7 +51,11 @@ playerDir = homeDir + os.sep + 'players' + os.sep
 log_dir = homeDir + os.sep + 'logs' + os.sep
 
 # Path to the ID Database
-IdDatabasePath = homeDir + os.sep + 'databases'+os.sep+'idDatabase.db'
+idDatabasePath = homeDir + os.sep + 'databases'+os.sep+'idDatabase.mdb'
+
+# Path to the Template Database
+templateDatabasePath = homeDir+os.sep+'databases'+os.sep+'templateDatabase.mdb'
+
 # Adds some stuff to the PATH
 sys.path.append(zoneDir)
 sys.path.append(os.path.join(homeDir, 'commands'))

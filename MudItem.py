@@ -26,6 +26,9 @@ class MudItem(MudObject.MudObject):
         # If it is a quantity item, how many are there?
         self.info['quantity']   = 1
         
+        # ID of the template the item was created from
+        self.info['templateId'] = None
+        
     def setOwner(self, newOwner):
         """Sets the reference to the owner of the item."""
         self.info['owner'] = newOwner

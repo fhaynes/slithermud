@@ -6,7 +6,7 @@ are free, etc. It also handles giving out free IDs when something asks for
 one.
 """
 
-class IdDatabase:
+class MudIdDatabase:
     def __init__(self):
         # These are the highest known ID numbers we have used for each
         # idType so far. If we don't have a free one, we have to increment
@@ -74,6 +74,5 @@ class IdDatabase:
                 self.nextCharInstance += 1
         else:
             # TODO: Error checking code for an invalid idType
-        
-    
-
+            pass
+            

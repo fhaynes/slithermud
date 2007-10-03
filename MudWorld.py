@@ -9,6 +9,7 @@ import MudActionHandler
 import MudDatabase
 import MudLogicDatabase
 import MudIdDatabase
+import MudTemplateDatabase
 
 class MudWorld:
     """
@@ -37,7 +38,10 @@ class MudWorld:
         self.logicDb = MudLogicDatabase.LogicModuleDatabase()
         
         # ID Database
-        self.idDb    = MudIdDatabase.IdDatabase()
+        self.idDb    = MudIdDatabase.MudIdDatabase()
+        
+        # Item and Char Template Database
+        self.templateDb = MudTemplateDatabase.MudTemplateDatabase()
         
     # This function is responsible for loading all of the zones and the 
     # logic modules. All zones are listed in zone_index.txt and all logic
@@ -45,14 +49,24 @@ class MudWorld:
         
     def loadWorld(self):
         """Function responsible for loading the entire world."""
+        print "Loading Logic Modules..."
         self.logicDb.loadAllLogics()
-        self.idDb = MudDatabase.loadIdDatabase()
+        
+        print "Loading ID Database..."
+        self.idDb = self.db.loadIdDatabase()
+        
+        print "Loading Template Database..."
+        self.templateDb = self.db.loadTemplateDatabase()
+        
+        print "Starting zone loading..."
         zFile = open(MudConst.zoneList)
         for eachLine in zFile.readlines():
             eachLine = eachLine.replace('\r', '')
             eachLine = eachLine.replace('\n', '')
-            print "Loading Zone: "+eachLine
+            print "     Loading Zone: "+eachLine
             self.addZone(self.db.loadZone(eachLine))
+            
+        print "MUD Started!"
         
             
         

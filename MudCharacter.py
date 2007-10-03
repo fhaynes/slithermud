@@ -17,6 +17,9 @@ class MudCharacter(MudObject.MudObject):
 
         self.info['items']        = {}
 
+        # ID of the template the character was created from
+        self.info['templateId'] = None
+
         
     # ------------------- #
     #  Get/Set Functions  #
