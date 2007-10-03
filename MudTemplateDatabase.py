@@ -49,7 +49,8 @@ class MudTemplateDatabase:
                 if eachTemplate.getName().lower() == name:
                     return eachTemplate
             return None
-        
+    
+    # Need code to handle ID creation and such 
     def createInstance(self, template):
         """
         Returns a copy (instance in the MUD) of the template.

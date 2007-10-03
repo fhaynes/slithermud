@@ -333,7 +333,17 @@ class MudActionHandler:
         
         # So if we are at this point, we can do the physical movement required
         
-        # TODO: Add in code to handle quantity items. 
+        # If the player tries to get a quantity item, but the quantity they
+        # want is not equal to what is in the room (i.e., someone tries to get
+        # 50g from a 100g pile), we need to make a new item containing the
+        # difference.
+        
+        #if i.isQuantity() and q != i.getQuantity():
+        #    template = MudWorld.world.templateDatabase.findTemplateById(i.getTemplateId())
+        #    newItem = MudWorld.world.templateDatabase.createInstance(template)
+        #    newItem.setQuantity(q)
+        #    i.setQuantity(i.getQuantity() - q)
+        
 
         # Now we sound the action to the room the item was in to tell it that
         # it was picked up
