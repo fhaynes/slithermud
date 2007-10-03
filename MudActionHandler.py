@@ -295,12 +295,22 @@ class MudActionHandler:
         
     def getItem(self, action):
         # Do some assignments for brevity's sake
-        
         # Player that tried to get the item
         c = action.getPlayerRef()
         
         # The item the player tried to get
         i = action.getData1()
+        
+        # Get the quantity
+        q = action.getData2()
+
+        if i.isQuantity() == True and q < 1:
+            c.writeWithPrompt("You cannot get less than one of an item!")
+            return
+        
+        if i.isQuantity() == True and q > i.getQuantity():
+            c.writeWithPrompt("There are not that many to get!")
+            return
         
 
         # Now, let's make sure the item and character are in the same room still
