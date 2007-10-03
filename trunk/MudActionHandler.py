@@ -24,6 +24,8 @@ class MudActionHandler:
             self.enterPortal(action)
         elif action.getType() == 'getitem':
             self.getItem(action)
+        elif action.getType() == 'dropitem':
+            self.dropItem(action)
         else:
             pass
     
@@ -354,4 +356,20 @@ class MudActionHandler:
         
         
         
-    
+    def dropItem(self, action):
+        c = action.getPlayerRef()
+        i = action.getData1()
+        r = c.getRoomRef()
+        
+        queryAction = MudAction.MudAction('candropitem', c, i)
+        if i.doQuery(queryAction) == 1:
+            return
+        if r.doQuery(queryAction) == 1:
+            return
+        if c.doQuery(queryAction) == 1:
+            return
+        c.removeItem(i)
+        r.addItem(i)
+        r.doAction(action)
+        self.actionRoomChars(action, r)
+        self.actionRoomItems(action, r)

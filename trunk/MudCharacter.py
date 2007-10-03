@@ -75,9 +75,20 @@ class MudCharacter(MudObject.MudObject):
         self.info['items'][item.info['id_num']] = item
         item.setOwner(self)
         
-    def remItem(self, item_id):
+    def removeItem(self, item):
         """Removes an item from the dictionary."""
-        del self.info['items']['item_id']
+        del self.info['items'][item.getId()]
+        
+    def getItems(self):
+        """Returns the item dictionary."""
+        return self.info['items']
+        
+    def findItemByName(self, name):
+        """Searches for an item in char's inventory by name."""
+        for eachItem in self.getItems().values():
+            if eachItem.getName().lower() == name.lower():
+                return eachItem
+        return None
 
         
     # ---------------------- #

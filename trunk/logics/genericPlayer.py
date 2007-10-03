@@ -7,5 +7,7 @@ def process(action, owner):
         owner.writeWithPrompt(action.getPlayerRef().getName()+ ' exits via '+action.getData1().getName())
     elif action.getType() == 'getitem':
         owner.writeWithPrompt(owner.getName()+' gets: '+action.getData1().getName())
+    elif action.getType() == 'dropitem':
+        owner.writeWithPrompt(owner.getName()+' drops: '+action.getData1().getName())
     else:
         pass
