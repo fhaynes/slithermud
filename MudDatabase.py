@@ -97,4 +97,15 @@ class MudDatabase:
         
         file.close()
         
+    def saveIdDatabase(self):
+        """Saves the ID Database."""
+        file = open(MudConst.IdDatabasePath, 'wb')
+        pickle.dump(MudWorld.world.idDb, file)
+        file.close()
+        
+    def loadIdDatabase(self):
+        """Loads the ID Database."""
+        file = open(MudConst.IdDatabasePath)
+        return pickle.load(file)
+        
         

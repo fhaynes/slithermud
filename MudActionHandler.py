@@ -323,19 +323,7 @@ class MudActionHandler:
         
         # So if we are at this point, we can do the physical movement required
         
-        # TODO: Add in code to handle quantity items. Below is the equivalent
-        # C++ code that needs to be translated.
-        
-##  665     // ========================================================================
-##  666     //  PHYSICAL MOVEMENT
-##  667     // ========================================================================
-##  668     entityid newitemid = 0;
-##  669     if( i.IsQuantity() && p_quantity != i.GetQuantity() )
-##  670     {
-##  671         newitemid = ItemDB.generate( i.TemplateID() );      // generate new item
-##  672         item( newitemid ).SetQuantity( p_quantity );        // set quantity
-##  673         i.SetQuantity( i.GetQuantity() - p_quantity );      // reset old quantity
-##  674     }
+        # TODO: Add in code to handle quantity items. 
 
         # Now we sound the action to the room the item was in to tell it that
         # it was picked up
