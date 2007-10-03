@@ -64,5 +64,12 @@ class MudRoom(MudObject.MudObject):
         """Returns the items dictionary."""
         return self.info['items']
     
+    def findItemByName(self, name):
+        "Searchs for an item by name."""
+        for eachItem in self.getItems().values():
+            if eachItem.getName().lower() == name.lower():
+                return eachItem
+        return None
+    
     def setZone(self, zone):
         self.info['zone'] = zone

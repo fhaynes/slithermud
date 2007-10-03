@@ -48,6 +48,7 @@ class MudWorld:
             eachLine = eachLine.replace('\n', '')
             print "Loading Zone: "+eachLine
             self.addZone(self.db.loadZone(eachLine))
+        
             
         
     def processAction(self, action):
@@ -91,19 +92,19 @@ class MudWorld:
         while processing the command.
         """
         
-        try:
-            player.info['commands'][cmd.lower()].process(player, args)
-        except KeyError:
-            player.writeWithPrompt("Invalid command!")
+        #try:
+        player.info['commands'][cmd.lower()].process(player, args)
+        #except KeyError:
+        #    player.writeWithPrompt("Invalid command!")
 
-        #except:
-           # player.writeWithPrompt("There has been an error processing your command. Please report this to an IMM.")
-           # etype = sys.exc_info()[0]
-           # evalue = sys.exc_info()[1]
-           # etb = traceback.extract_tb(sys.exc_info()[2])
-           # string = 'Error type: '+str(etype) + '\r\nError value: '+str(evalue)+'\r\n Traceback:'+str(etb)
-            
-            #logger.logging.debug(string)
+##        except:
+##            player.writeWithPrompt("There has been an error processing your command. Please report this to an IMM.")
+##            etype = sys.exc_info()[0]
+##            evalue = sys.exc_info()[1]
+##            etb = traceback.extract_tb(sys.exc_info()[2])
+##            string = 'Error type: '+str(etype) + '\r\nError value: '+str(evalue)+'\r\n Traceback:'+str(etb)
+##            
+##            logger.logging.debug(string)
             
     def getPlayers(self):
         """Returns the global player dictionary."""

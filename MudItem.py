@@ -12,14 +12,12 @@ class MudItem(MudObject.MudObject):
     This class represents items in the game. A sword, gold coins, and such.
     """
     def __init__(self):
+        MudObject.MudObject.__init__(self)
         # Player that owns the item. Is a reference to the character instance.
         self.info['owner']      = None
         
         # Reference to the instance of the room the item is in.
-        self.info['room']       = None
-        
-        # Reference to the zone the item is in.
-        self.info['zone']       = None
+        self.info['roomRef']       = None
         
         # Wether or not the item is a quantity item.
         # Coins vs a sword, for example
@@ -36,13 +34,13 @@ class MudItem(MudObject.MudObject):
         """Returns reference to owner of the item."""
         return self.info['owner']
         
-    def setRoom(self, newRoom):
+    def setRoomRef(self, newRoom):
         """Sets the reference to the room the item is in."""
-        self.info['room'] = newRoom
+        self.info['roomRef'] = newRoom
         
-    def getRoom(self):
+    def getRoomRef(self):
         """Returns the reference to the room the item is in."""
-        return self.info['room']
+        return self.info['roomRef']
         
     def getQuantity(self):
         """Returns the quantity of the item."""

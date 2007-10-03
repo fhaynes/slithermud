@@ -12,7 +12,6 @@ import MudWorld
 import os
 import copy
 import cPickle as pickle
-import marshal
 
 class MudDatabase:
     def __init__(self):
@@ -29,7 +28,6 @@ class MudDatabase:
         
         for eachRoom in zCopy.info['rooms'].values():
             eachRoom.info['characters'] = {}
-            print eachRoom.info['logics']
 
         file = open(MudConst.zoneDir+zCopy.getName()+'.zne', 'wb')
         pickle.dump(zCopy, file)
@@ -39,6 +37,16 @@ class MudDatabase:
     def loadZone(self, name):
         """Unpickles a zone file. Takes the zone name as an argument."""
         file = open(MudConst.zoneDir+os.sep+name+'.zne', 'r')
+##        x = pickle.load(file)
+##        name, genRoom = MudWorld.world.logicDb.getLogic('genericRoom')
+##        for eachRoom in x.info['rooms'].values():
+##            eachRoom.addLogic(name, genRoom)
+##            for eachItem in eachRoom.info['items'].values():
+##                iName, genItem = MudWorld.world.logicDb.getLogic('genericItem')
+##                eachItem.setRoomRef(eachRoom)
+##                eachItem.addLogic(iName, genItem)
+##        self.saveZone(x)
+##        return x
         return pickle.load(file)
     
     def loadPlayer(self, name, player):

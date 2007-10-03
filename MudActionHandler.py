@@ -22,6 +22,8 @@ class MudActionHandler:
             self.enterWorld(action)
         elif action.getType() == 'enterportal':
             self.enterPortal(action)
+        elif action.getType() == 'getitem':
+            self.getItem(action)
         else:
             pass
     
@@ -282,11 +284,72 @@ class MudActionHandler:
         result = self.queryRoomItems(action)
         if result == 1:
             return
-        
         action.setType('look')
         self.actionRoom(action, action.getPlayerRef().getRoomRef())
         self.actionRoomChars(action, action.getPlayerRef().getRoomRef())
         self.actionRoomItems(action, action.getPlayerRef().getRoomRef())
+        
+        action.getPlayerRef().writeWithPrompt("")
+        
+    def getItem(self, action):
+        # Do some assignments for brevity's sake
+        
+        # Player that tried to get the item
+        c = action.getPlayerRef()
+        
+        # The item the player tried to get
+        i = action.getData1()
+        
+
+        # Now, let's make sure the item and character are in the same room still
+        if i.getRoomRef().getId() != c.getRoomRef().getId():
+            
+            # TODO: Write some try/except code here
+            return
+        
+        # Let's ask the item if they can get gotten
+        if i.doQuery(MudAction.MudAction('cangetitem', c, i)) == 1:
+            return
+        
+        # And let's ask the room if they can get it
+        if c.getRoomRef().doQuery(MudAction.MudAction('cangetitem', c, i)) == 1:
+            return
+        
+        # And finally we ask the character
+        if c.doQuery(MudAction.MudAction('cangetitem', c, i)) == 1:
+            return
+        
+        # So if we are at this point, we can do the physical movement required
+        
+        # TODO: Add in code to handle quantity items. Below is the equivalent
+        # C++ code that needs to be translated.
+        
+##  665     // ========================================================================
+##  666     //  PHYSICAL MOVEMENT
+##  667     // ========================================================================
+##  668     entityid newitemid = 0;
+##  669     if( i.IsQuantity() && p_quantity != i.GetQuantity() )
+##  670     {
+##  671         newitemid = ItemDB.generate( i.TemplateID() );      // generate new item
+##  672         item( newitemid ).SetQuantity( p_quantity );        // set quantity
+##  673         i.SetQuantity( i.GetQuantity() - p_quantity );      // reset old quantity
+##  674     }
+
+        # Now we sound the action to the room the item was in to tell it that
+        # it was picked up
+        i.getRoomRef().doAction(MudAction.MudAction('getitem', c, i))
+        
+        # Same for the chars in the room
+        self.actionRoomChars(MudAction.MudAction('getitem', c, i), c.getRoomRef())
+
+        # And the items
+        self.actionRoomItems(MudAction.MudAction('getitem', c, i), c.getRoomRef())
+
+        # Now we remove it from the room
+        i.getRoomRef().removeItem(i)
+        
+        # And add it to the char's item dictionar
+        c.addItem(i)
         
         
         

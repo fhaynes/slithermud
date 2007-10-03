@@ -20,6 +20,14 @@ class MudAction:
         """Sets the action type to the provided string."""
         self.info['actionType'] = type
         
+    def setData1(self, data):
+        """Sets the Data1 field of the action."""
+        self.info['data1'] = data
+        
+    def setData2(self, data):
+        """Sets the Data2 field of the action."""
+        self.info['data2'] = data
+        
     def getType(self):
         """Returns the type of action."""
         return self.info['actionType']

@@ -5,5 +5,3 @@ def process(action, owner):
         c.writePlain(owner.getDesc()+'\r\n')
         for eachExit in owner.getPortals().values():
             c.writePlain('['+eachExit.getName()+'] ')
-            
-        c.writeWithPrompt("")
