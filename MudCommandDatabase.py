@@ -2,6 +2,7 @@ import cmdLook
 import cmdSay
 import cmdGo
 import cmdGet
+import cmdDrop
 
 class CommandDatabase:
     def __init__(self):
@@ -10,6 +11,7 @@ class CommandDatabase:
         self.commands['say'] = cmdSay.cmdSay
         self.commands['go'] = cmdGo.cmdGo
         self.commands['get'] = cmdGet.cmdGet
+        self.commands['drop'] = cmdDrop.cmdDrop
         
     def getCommand(self, name):
         """Returns a new command instance."""
