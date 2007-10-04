@@ -5,6 +5,7 @@ This class keeps track of all the IDs in the MUD. Which are in use, which
 are free, etc. It also handles giving out free IDs when something asks for
 one.
 """
+import MudWorld
 
 class MudIdDatabase:
     def __init__(self):
@@ -43,6 +44,9 @@ class MudIdDatabase:
             # is sent?
             return
 
+    # TODO: Do we want to save the ID DB every time it generates a new ID,
+    # so as to ensure we have a current record saved to disk in the event
+    # of a crash?
     def getNewId(self, idType):
         """Will get the next available ID number for the correct idType."""
         if idType.lower() == 'itemtemplate':
