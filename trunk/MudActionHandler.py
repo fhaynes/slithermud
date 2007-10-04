@@ -12,6 +12,8 @@ player did it.
 import MudWorld
 import MudAction
 
+# TODO: Update docstrings to include details on what each field of
+# the action should be for each action type
 class MudActionHandler:
     def doAction(self, action):
         if action.info['actionType']   == 'say':
@@ -26,6 +28,10 @@ class MudActionHandler:
             self.getItem(action)
         elif action.getType() == 'dropitem':
             self.dropItem(action)
+        elif action.getType() == 'forcetransport':
+            self.forceTransport(action)
+        elif action.getType() == 'do':
+            self.routeAction(action)
         else:
             pass
     
@@ -94,14 +100,34 @@ class MudActionHandler:
             if result == 1:
                 return 1
         return 0
-
+    
+    def routeAction(self, action):
+        """
+        Handles custom actions.
+        """
+        if action.getData1() == 'character':
+            action.getData2().doAction(action)
+        elif action.getData1() == 'item':
+            action.getData2().doAction(action)
+        elif action.getData1() == 'room':
+            action.getData2().doAction(action)
+        elif action.getData1() == 'portal':
+            action.getData2().doAction(action)
+        elif action.getData1() == 'zone':
+            action.getData2().doAction(action)
+        else:
+            return
+    
     
     # ------------------------------ #
     # Handlers for specific actions  #
     # ------------------------------ #
     
     def enterPortal(self, action):
-        """Handles a character attempting to enter a portal."""
+        """
+        Handles a character attempting to enter a portal.
+        data1 is the portal they tried to enter
+        """
         
         # First, we'll get some references for brevity's sake.
         
@@ -294,6 +320,11 @@ class MudActionHandler:
         action.getPlayerRef().writeWithPrompt("")
         
     def getItem(self, action):
+        """
+        Handles a player picking up an item from a room.
+        data1 is a reference to the item they tried to get.
+        data2 is the quantity they tried to get.
+        """
         # Do some assignments for brevity's sake
         # Player that tried to get the item
         c = action.getPlayerRef()
@@ -338,11 +369,11 @@ class MudActionHandler:
         # 50g from a 100g pile), we need to make a new item containing the
         # difference.
         
-        #if i.isQuantity() and q != i.getQuantity():
-        #    template = MudWorld.world.templateDatabase.findTemplateById(i.getTemplateId())
-        #    newItem = MudWorld.world.templateDatabase.createInstance(template)
-        #    newItem.setQuantity(q)
-        #    i.setQuantity(i.getQuantity() - q)
+        if i.isQuantity() and q != i.getQuantity():
+            template = MudWorld.world.templateDatabase.findTemplateById(i.getTemplateId())
+            newItem = MudWorld.world.templateDatabase.createInstance('item', i.getTemplateId())
+            newItem.setQuantity(q)
+            i.setQuantity(i.getQuantity() - q)
         
 
         # Now we sound the action to the room the item was in to tell it that
@@ -365,6 +396,7 @@ class MudActionHandler:
         
         
     def dropItem(self, action):
+        #TODO: Add in code for quantity items.
         c = action.getPlayerRef()
         i = action.getData1()
         r = c.getRoomRef()
@@ -381,3 +413,77 @@ class MudActionHandler:
         r.doAction(action)
         self.actionRoomChars(action, r)
         self.actionRoomItems(action, r)
+        
+    def forceTransport(self, action):
+        """
+        Handles forcing a transportation of a character.
+        data1 is the target zone id
+        data2 is the target room id within that zone
+        """        
+        c = action.getPlayerRef()
+        r = c.getRoomRef()
+        z = c.getZoneRef()
+
+        if z.getId() == int(action.getData1()):
+            changeZone = False
+            try:
+                newRoom = z.getRoom(action.getData2())
+            except:
+                # TODO: Should we log stuff like this to the log?
+                c.writeWithPrompt("Error - Invalid room ID!")
+                return
+        else:
+            changeZone = True
+            newZone = MudWorld.world.getZone(action.getData1())
+            try:
+                new_room = MudDatabase.db.returnRoomRef(new_zone.info['id_num'], int(action.info['data2']))
+            except:
+                c.writeWithPrompt("Error - Invalid room ID!")
+                return
+        
+        if changeZone:
+            z.removeCharacter(c)
+            newZone.addCharacter(c)
+            
+        r.removeCharacter(c)
+        newRoom.addCharacter(c)
+        
+        if changeZone:
+            newAction = MudAction.MudAction('enterzone', c)
+            newZone.doAction(newAction)
+            c.doAction(newAction)
+            
+        newAction.setType('enterroom')
+        newRoom.doAction(action)
+        self.actionRoomChars(action, c.getRoomRef())
+        self.actionRoomItems(action, c.getRoomRef())
+        
+    def spawnItem(self, action):
+        """
+        Spawns an item from a template ID.
+        data1 field is the template id.
+        data2 field is the zone it should be spawned in.
+        data3 is the room in the zone it should be spawned in.
+        """
+        if MudWorld.world.templateDatabase.ifTemplateExists('item', action.getData1()):
+            newItem = MudWorld.world.templateDatabase.createInstance('item', action.getData1())
+            zone = MudWorld.world.getZone(action.getData2())
+            room = zone.getRoom(action.getData3())
+            room.addItem(newItem)
+        else:
+            action.getPlayerRef().writeWithPrompt("Invalid template ID!")
+            
+    def spawnCharacter(self, action):
+        """
+        Spawns a character from a template ID.
+        data1 field is the template ID.
+        data2 field is the zone where it should be spawned.
+        data3 is the room in the zone it should be spawned in.
+        """
+        if MudWorld.world.templateDatabase.ifTemplateExists('character', action.getData1()):
+            newChar = MudWorld.world.templateDatabase.createInstance('character', action.getData1())
+            zone = MudWorld.world.getZone(action.getData2())
+            room = zone.getRoom(action.getData3())
+            room.addCharacter(newChar)
+        else:
+            action.info['playerRef'].writeWithPrompt("Invalid template ID!")
