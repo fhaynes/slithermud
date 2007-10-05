@@ -52,3 +52,59 @@ class MudAction:
         """Returns the data3 field."""
         return self.info['data3']
     
+
+class TimedAction(MudAction):
+    def __init__(self, actionType, playerRef, data1='', \
+                  data2='', data3='', string=''):
+        MudAction.__init__(self, actionType, playerRef, data1='', \
+                  data2='', data3='', string='')
+        self.executionTime = None
+        self.actionEvent   = None
+        self.valid         = True
+        
+    def getExecutionTime(self):
+        """
+        Returns the time (in miliseconds after start of MUD) that the 
+        action should be executed.
+        """
+        return self.executionTime
+    
+    def setExecutionTime(self, time):
+        """
+        Sets the time (in milliseconds after the MUD has started) that the 
+        action should be executed.
+        """
+        self.executionTime = time
+        
+    def hook(self):
+        """
+        This hooks a timed action to all it's references.
+        """
+        
+        # TODO: Some error checking code in case the instance/hook no longer
+        # exists? Same for unhook...
+        if type(self.getPlayerRef()) == 'instance':
+            self.getPlayerRef().addHook(self)
+        if type(self.getData1()) == 'instance':
+            self.getData1().addHook(self)
+        if type(self.getData2()) == 'instance':
+            self.getData1().addHook(self)
+        if type(self.getData3()) == 'instance':
+            self.getData1().addHook(self)
+            
+    def unhook(self):
+        """
+        This removes a timed action from all it's references.
+        """
+        if type(self.getPlayerRef()) == 'instance':
+            self.getPlayerRef().removeHook(self)
+        if type(self.getData1()) == 'instance':
+            self.getData1().removeHook(self)
+        if type(self.getData2()) == 'instance':
+            self.getData1().removeHook(self)
+        if type(self.getData3()) == 'instance':
+            self.getData1().removeHook(self)
+        
+        
+
+        

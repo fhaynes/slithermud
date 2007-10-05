@@ -50,11 +50,20 @@ playerDir = homeDir + os.sep + 'players' + os.sep
 
 log_dir = homeDir + os.sep + 'logs' + os.sep
 
+# Path to the database directory
+databaseDir = homeDir+os.sep+'databases'+os.sep
+
 # Path to the ID Database
-idDatabasePath = homeDir + os.sep + 'databases'+os.sep+'idDatabase.mdb'
+idDatabasePath = databaseDir+'idDatabase.mdb'
 
 # Path to the Template Database
-templateDatabasePath = homeDir+os.sep+'databases'+os.sep+'templateDatabase.mdb'
+templateDatabasePath = databaseDir+'templateDatabase.mdb'
+
+# Path to the Timed Action database
+timerDatabasePath = databaseDir+'timerDatabase.mdb'
+
+# Path to the saved game time variable
+gameTimePath = databaseDir+'currentGameTime.mdb'
 
 # Adds some stuff to the PATH
 sys.path.append(zoneDir)
