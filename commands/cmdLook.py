@@ -14,6 +14,3 @@ class cmdLook(MudCommand.MudCommand):
     def process(self, player, args=''):
         action = MudAction.MudAction('look', player, '', '', '', args)
         MudWorld.world.processAction(action)
-
-        
-look = cmdLook()

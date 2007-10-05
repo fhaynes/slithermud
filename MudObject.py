@@ -16,6 +16,7 @@ class MudObject:
         self.info['statistics']     = {}
         self.info['commands']       = {}
         self.info['logics']         = {}
+        self.info['hooks']          = []
         
         # Name of the object, description, and ID Number. All Objects in the
         # MUD will have these.
@@ -97,6 +98,18 @@ class MudObject:
         Removes a logic module from the dictionary.
         '''
         del self.info['logics'][module_name]
+        
+    def addHook(self, action):
+        """
+        Adds a reference (or hook) to the supplied Action.
+        """
+        self.info['hooks'].append(action)
+        
+    def removeHook(self, action):
+        """
+        Deletes a reference (or hook) to the supplied Action.
+        """
+        del self.info['hooks'][action]
 
         
     # ------------------------- #    

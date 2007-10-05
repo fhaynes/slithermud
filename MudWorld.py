@@ -1,6 +1,7 @@
 import logger
 import sys
 import traceback
+import time
 
 import MudConst
 import MudLogin
@@ -58,7 +59,7 @@ class MudWorld:
         print "Loading Template Database..."
         self.templateDb = self.db.loadTemplateDatabase()
         
-        print "Starting zone loading..."
+        print "Starting Zone Loading..."
         zFile = open(MudConst.zoneList)
         for eachLine in zFile.readlines():
             eachLine = eachLine.replace('\r', '')
@@ -66,9 +67,10 @@ class MudWorld:
             print "     Loading Zone: "+eachLine
             self.addZone(self.db.loadZone(eachLine))
             
-        print "MUD Started!"
+        print "Loading Time and Timer Database..."
+        self.actionHandler.gameTime = self.db.loadGameTime()            
         
-            
+        print "MUD Started!"
         
     def processAction(self, action):
         """Sends the action to the actionHandler instance for processing."""

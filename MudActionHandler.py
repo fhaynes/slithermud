@@ -8,6 +8,7 @@ player did it.
 @author: Fletcher Haynes
 @copyright: (c)2004 Fletcher Haynes, All rights reserved.
 """
+import time
 
 import MudWorld
 import MudAction
@@ -15,6 +16,16 @@ import MudAction
 # TODO: Update docstrings to include details on what each field of
 # the action should be for each action type
 class MudActionHandler:
+    def __init__(self):
+        
+        # Holds the timed actions
+        self.actionQueue = []
+        
+        # Current time of the game (doesn't match the real world time!)
+        # DO NOT MESS WITH THIS! YOU WILL INVALIDATE ALL THE SAVED TIMERS!
+        # THE GAME TAKES CARE OF SETTING THIS!
+        self.gameTime    = None
+        
     def doAction(self, action):
         if action.info['actionType']   == 'say':
             self.say(action)
@@ -487,3 +498,82 @@ class MudActionHandler:
             room.addCharacter(newChar)
         else:
             action.info['playerRef'].writeWithPrompt("Invalid template ID!")
+            
+ 
+    # ------------------------------------ #
+    # Functions for handling timed Actions #
+    # ------------------------------------ #
+    
+    def getGameTime(self):
+        """
+        Returns the current game time.
+        """
+        return self.gameTime
+    
+    def getTime(self):
+        """
+        Gets the current time, NOT the game time.
+        """
+        return time.time()
+    
+    def addActionRelative(self, action, seconds):
+        """
+        Adds a timed action scheduled for execution *seconds* from the current
+        time.
+        """
+        action.setExecutionTime(self.getTime()+seconds)
+        self.actionQueue.append(action)
+        sort_by_attr_inplace(self.actionQueue, 'executionTime')
+        print self.actionQueue
+        
+    def processTimedActions(self):
+        
+        try:
+            curTime = self.getTime()
+            
+            if self.actionQueue[0].executionTime < curTime:
+                if self.actionQueue[0].valid == True:
+                    self.actionQueue[0].unhook()
+                    action = self.actionQueue.pop()
+                    self.doAction(action)
+                    del action
+                else:
+                    action = self.actionQueue.pop
+                    del action
+            else:
+                pass
+        except IndexError:
+            pass
+            
+def sort_by_attr(seq, attr):
+    """
+    Sort the sequence of objects by object's attribute
+    Code by Yakov Markovitch.
+
+    Arguments:
+    seq  - the list or any sequence (including immutable one) of objects to sort.
+    attr - the name of attribute to sort by
+
+    Returns:
+    the sorted list of objects.
+    """
+    import operator
+
+    # Use the "Schwartzian transform"
+    # Create the auxiliary list of tuples where every i-th tuple has form
+    # (seq[i].attr, i, seq[i]) and sort it. The second item of tuple is needed not
+    # only to provide stable sorting, but mainly to eliminate comparison of objects
+    # (which can be expensive or prohibited) in case of equal attribute values.
+    intermed = map(None, map(getattr, seq, (attr,)*len(seq)), xrange(len(seq)), seq)
+    intermed.sort()
+    return map(operator.getitem, intermed, (-1,) * len(intermed))
+
+def sort_by_attr_inplace(lst, attr):
+    """
+    Inplace sort the list of objects by object's attribute
+    Code by Yakov Markovitch.
+    """
+    lst[:] = sort_by_attr(lst, attr)
+        
+    
+    

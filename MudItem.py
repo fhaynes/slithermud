@@ -57,7 +57,7 @@ class MudItem(MudObject.MudObject):
         """Set wether or not the item is a quantity item."""
         self.info['isQuantity'] = flag
         
-    def getIsQuantity(self):
+    def isQuantity(self):
         """Returns if the item is a quantity item or not."""
         return self.info['isQuantity']
         

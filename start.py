@@ -10,6 +10,7 @@ Start up the MUD.
 import sys
 import os
 import logger
+import time
 
 import twisted.internet.protocol
 import twisted.internet.reactor
@@ -25,9 +26,6 @@ import profile
 #psyco.log()
 #psyco.profile()
 
-#tick = twisted.internet.task.LoopingCall(MudWorld.world.doTick)
-#tick.start(0.01)
-
 factory = twisted.internet.protocol.Factory()
 factory.protocol = MudServer.MudServer
 
@@ -35,6 +33,8 @@ twisted.internet.reactor.listenTCP(MudConst.port, factory)
 print "Starting MUD."
 
 MudWorld.world.loadWorld()
+checkTimedActions = twisted.internet.task.LoopingCall(MudWorld.world.actionHandler.processTimedActions)
+checkTimedActions.start(0.1)
 
 logger.logging.info('MUD Started.')
 

@@ -24,10 +24,17 @@ class MudDatabase:
         Takes a zone instance as the argument.
         """
         zCopy = copy.deepcopy(zone)
-        zCopy.info['characters'] = {}
         
+        # TODO: Clean this up, or find a more efficient way to remove
+        # PCs from the zones before saving.
+        for eachChar in zCopy.info['characters'].keys():
+            if zCopy.info['characters'][eachChar].sockRef != '':
+                del zCopy.info['characters'][eachChar]
+                
         for eachRoom in zCopy.info['rooms'].values():
-            eachRoom.info['characters'] = {}
+            for eachChar in eachRoom.info['characters'].keys():
+                if eachRoom.info['characters'][eachChar].sockRef != '':
+                    del eachRoom.info['characters'][eachChar]
 
         file = open(MudConst.zoneDir+zCopy.getName()+'.zne', 'wb')
         pickle.dump(zCopy, file)
@@ -117,6 +124,26 @@ class MudDatabase:
     def loadTemplateDatabase(self):
         """Loads the Template Database."""
         file = open(MudConst.templateDatabasePath)
+        return pickle.load(file)
+    
+    def saveTimerDatabase(self, timerList):
+        """Saves the list of timed actions."""
+        file = open(MudConst.timerDatabasePath, 'wb')
+        pickle.dump(timerList, file)
+        
+    def loadTimerDatabase(self):
+        """Loads the list of timed actions."""
+        file = open(MudConst.timerDatabasePath)
+        return pickle.load(file)
+    
+    def saveGameTime(self, time):
+        """Saves the current game time."""
+        file = open(MudConst.gameTimePath, 'wb')
+        pickle.dump(time, file)
+        
+    def loadGameTime(self):
+        """Loads the current game time."""
+        file = open(MudConst.gameTimePath)
         return pickle.load(file)
         
         
