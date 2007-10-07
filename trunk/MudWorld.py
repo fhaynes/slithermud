@@ -51,7 +51,6 @@ class MudWorld:
     def loadWorld(self):
         """Function responsible for loading the entire world."""
         print "Loading Logic Modules..."
-        self.logicDb.loadAllLogics()
         
         print "Loading ID Database..."
         self.idDb = self.db.loadIdDatabase()

@@ -104,6 +104,19 @@ class TimedAction(MudAction):
             self.getData1().removeHook(self)
         if type(self.getData3()) == 'instance':
             self.getData1().removeHook(self)
+            
+    def setValid(self, value):
+        """
+        Sets the validity of the action.
+        """
+        if value == True:
+            self.valid = True
+        elif value == False:
+            self.valid = False
+        else:
+            #TODO: Code to notify that it is an invalid value?
+            return
+        
         
         
 

@@ -22,8 +22,6 @@ class MudActionHandler:
         self.actionQueue = []
         
         # Current time of the game (doesn't match the real world time!)
-        # DO NOT MESS WITH THIS! YOU WILL INVALIDATE ALL THE SAVED TIMERS!
-        # THE GAME TAKES CARE OF SETTING THIS!
         self.gameTime    = None
         
     def doAction(self, action):
@@ -128,6 +126,7 @@ class MudActionHandler:
             action.getData2().doAction(action)
         else:
             return
+    
     
     
     # ------------------------------ #
@@ -497,22 +496,51 @@ class MudActionHandler:
             room = zone.getRoom(action.getData3())
             room.addCharacter(newChar)
         else:
-            action.info['playerRef'].writeWithPrompt("Invalid template ID!")
+            pass
+
+    def destroyItem(self, action):
+        """
+        Destroys a specified item.
+        data1 field is a reference to the item to be destroyed.
+        """
+        i = action.getData1()
+        MudWorld.world.idDb.addFreeId('iteminstance', i.getId())
+        if i.getRoomRef() == None:
+            i.clearHooks()
+            i.getOwner().removeItem(i)
+        else:
+            i.clearHooks()
+            i.getRoomRef().removeItem(i)
+        
+
+    def destroyCharacter(self, action):
+        """
+        Destroys a NPC. Does not work on players!
+        data field is a reference to the mob to destroy.
+        """
+        # Mob to destroy
+        t = action.getData1()
+        
+        # Make sure we aren't trying to destroy a player
+        if t.getSockRef() != '':
+            return
+        
+        # Destroy each item the char has, and free their ID numbers for
+        # later use.
+        for eachItem in t.getItems().values():
+            newAction = MudAction.MudAction('destroyitem', None, eachItem)
+            self.doAction(action)
+        t.clearHooks()
+
+        t.getRoomRef().removeCharacter(t)
             
- 
     # ------------------------------------ #
     # Functions for handling timed Actions #
     # ------------------------------------ #
     
-    def getGameTime(self):
-        """
-        Returns the current game time.
-        """
-        return self.gameTime
-    
     def getTime(self):
         """
-        Gets the current time, NOT the game time.
+        Gets the current time
         """
         return time.time()
     
