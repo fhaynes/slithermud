@@ -62,6 +62,17 @@ class MudObject:
         Returns the ID of the object.
         '''
         return self.info['id_num']
+    
+    def addStat(self, statName, statValue):
+        # TODO: Should we throw an exception if the stat already exists?
+        # Or should we combine addStat and setStat into one function?
+        # Right now, both do the same thing.
+        """Adds a stat to the dictionary."""
+        self.info['statistics'][statName] = statValue
+        
+    def removeStat(self, statName):
+        '''Deletes a stat from the dictionary.'''
+        del self.info['statistics'][statName]
         
     def setStat(self, statName, statValue):
         '''
@@ -93,11 +104,15 @@ class MudObject:
         '''
         self.info['logics'][newLogic] = logicInst
         
-    def remLogic(self, module_name):
+    def removeLogic(self, moduleName):
         '''
         Removes a logic module from the dictionary.
         '''
-        del self.info['logics'][module_name]
+        del self.info['logics'][moduleName]
+        
+    def getLogic(self, moduleName):
+        """Returns the specified logic module."""
+        return self.info['logics'][moduleName]
         
     def addHook(self, action):
         """

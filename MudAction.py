@@ -28,6 +28,17 @@ class MudAction:
         """Sets the Data2 field of the action."""
         self.info['data2'] = data
         
+    def setData3(self, data):
+        """Sets the Data3 field of the action."""
+        self.info['data3'] = data
+    
+    def setString(self, data):
+        """Sets the string field of the action."""
+        # TODO: Probably not neccessary to call this string. Holdover from
+        # the translated C++ code.
+        
+        self.string = data
+        
     def getType(self):
         """Returns the type of action."""
         return self.info['actionType']

@@ -12,6 +12,7 @@ import time
 
 import MudWorld
 import MudAction
+import logger
 
 # TODO: Update docstrings to include details on what each field of
 # the action should be for each action type
@@ -39,8 +40,20 @@ class MudActionHandler:
             self.dropItem(action)
         elif action.getType() == 'forcetransport':
             self.forceTransport(action)
+        elif aciton.getType() == 'addstat':
+            self.addStat(action)
+        elif action.getType() == 'removestat':
+            self.removeStat(action)
+        elif action.getType() == 'modifystat':
+            self.modifyStat(action)
         elif action.getType() == 'do':
             self.routeAction(action)
+        elif action.getType() == 'addlogic':
+            self.addLogic(action)
+        elif action.getType() == 'removelogic':
+            self.removeLogic(action)
+        elif action.getType() == 'messagelogic':
+            self.messageLogic(action)
         else:
             pass
     
@@ -114,18 +127,7 @@ class MudActionHandler:
         """
         Handles custom actions.
         """
-        if action.getData1() == 'character':
-            action.getData2().doAction(action)
-        elif action.getData1() == 'item':
-            action.getData2().doAction(action)
-        elif action.getData1() == 'room':
-            action.getData2().doAction(action)
-        elif action.getData1() == 'portal':
-            action.getData2().doAction(action)
-        elif action.getData1() == 'zone':
-            action.getData2().doAction(action)
-        else:
-            return
+        action.getData2.doAction(action)
     
     
     
@@ -406,10 +408,18 @@ class MudActionHandler:
         
         
     def dropItem(self, action):
-        #TODO: Add in code for quantity items.
         c = action.getPlayerRef()
         i = action.getData1()
+        q = action.getData2()
         r = c.getRoomRef()
+        
+        if i.isQuantity() and q < 1:
+            c.writeWithPrompt("You cannot drop that many!")
+            return
+        
+        if i.isQuantity() and q > i.getQuantity():
+            c.writeWithPrompt("You do not have that many!")
+            return
         
         queryAction = MudAction.MudAction('candropitem', c, i)
         if i.doQuery(queryAction) == 1:
@@ -418,11 +428,25 @@ class MudActionHandler:
             return
         if c.doQuery(queryAction) == 1:
             return
-        c.removeItem(i)
-        r.addItem(i)
-        r.doAction(action)
-        self.actionRoomChars(action, r)
-        self.actionRoomItems(action, r)
+        
+        if i.isQuantity() and q != i.getQuantity():
+            template = MudWorld.world.templateDatabase.findTemplateById(i.getTemplateId())
+            newItem = MudWorld.world.templateDatabase.createInstance('item', i.getTemplateId())
+            newItem.setQuantity(q)
+            i.setQuantity(i.getQuantity() - q)
+            c.removeItem(i)
+            r.addItem(i)
+            r.doAction(action)
+            self.actionRoomChars(action, r)
+            self.actionRoomItems(action, r)
+            
+        else:
+        
+            c.removeItem(i)
+            r.addItem(i)
+            r.doAction(action)
+            self.actionRoomChars(action, r)
+            self.actionRoomItems(action, r)
         
     def forceTransport(self, action):
         """
@@ -533,6 +557,51 @@ class MudActionHandler:
         t.clearHooks()
 
         t.getRoomRef().removeCharacter(t)
+        
+    def addStat(self, action):
+        """Adds a stat to the provided entity."""
+        action.getData1().addStat(action.getData2(), action.getData3())
+    
+    def removeStat(self, action):
+        """Removes a stat from the entity."""
+        action.getData1().removeStat(action.getData2())
+        
+        
+    def modifyStat(self, action):
+        """Modifies a stat of the entity."""
+        action.getData1().addStat(action.getData2(), action.getData3())
+        
+        
+    def addLogic(self, action):
+        """Adds a logic module to the entity."""
+        try:
+            name, module = MudWorld.world.logicDb.getLogic(action.getString())
+            action.getData1().addLogic(action.getString())
+        except KeyError:
+            logger.logging.debug("A logic module was not found upon attempting to load it! \
+            The name of the module was: "+action.getString()+ '. \
+            The player that originated the action was: '+action.getPlayerRef.getName())
+            
+    def remLogic(self, action):
+        """Removes a logic module from the entity."""
+        try:
+            action.getData1().removeLogic(action.getString())
+        except:
+            return
+
+    def messageLogic(self, action):
+        """
+        Sends a text message to a specific logic module on an entity.
+        """
+        try:
+            logic = action.getData1().getLogic(action.getData2())
+            logic.process(action)
+        except KeyError:
+            logger.logging.debug("Amessage was sent to a nonexistent logic module! \
+            The name of the module was: "+action.getString()+ '. \
+            The player that originated the action was: '+action.getPlayerRef.getName())+' \
+            The message was: '+action.getString()
+            
             
     # ------------------------------------ #
     # Functions for handling timed Actions #
