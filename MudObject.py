@@ -110,6 +110,14 @@ class MudObject:
         Deletes a reference (or hook) to the supplied Action.
         """
         del self.info['hooks'][action]
+        
+    def clearHooks(self, action):
+        """
+        Clears all the hooks to all actions.
+        """
+        for eachHook in self.info['hooks']:
+            eachHook.setValid(False)
+            del eachHook
 
         
     # ------------------------- #    

@@ -24,20 +24,20 @@ class MudIdDatabase:
         self.freeItemInstanceIds = []
         self.freeCharInstanceIds = []
         
-    def addFreeId(self, idType, id_num):
+    def addFreeId(self, idType, idNum):
         """This takes an ID number and adds it to the appropiate freed list."""
         if idType.lower()   == 'itemtemplate':
-            self.freeItemTemplateIds.append(int(id_num))
+            self.freeItemTemplateIds.append(int(idNum))
             self.freeItemTemplateIds.sort(reverse=True)
             
         elif idType.lower() == 'chartemplate':
-            self.freeCharTemplateIds.append(int(id_num))
+            self.freeCharTemplateIds.append(int(idNum))
             self.freeCharTemplateIds.sort(reverse=True)
         elif idType.lower() == 'iteminstance':
-            self.freeItemInstanceIds.append(int(id_num))
+            self.freeItemInstanceIds.append(int(idNum))
             self.freeItemInstanceIds.sort(reverse=True)            
         elif idType.lower() == 'charinstance':
-            self.freeCharInstanceIds.append(int(id_num))
+            self.freeCharInstanceIds.append(int(idNum))
             self.freeCharTemplateIds.sort(reverse=True)
         else:
             # TODO some error checking code in case an invalid idType

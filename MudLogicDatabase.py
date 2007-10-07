@@ -9,25 +9,22 @@ import copy
 
 import MudConst
 
+# Logic Modules 
+# Contains the processing classes
+
+import genericRoom
+import genericItem
+import genericPortal
+import genericPlayer
+
 class LogicModuleDatabase:
     def __init__(self):
         self.logics = {}
-        
-    def loadLogic(self, name):
-        """Attempts to load a logic module from a file."""
-        self.logics[name] = __import__(name)
-        
-    def loadAllLogics(self):
-        """
-        Loads all the logic modules listed in logicIndex.txt.
-        """
-        logicIndex = open(MudConst.logicIndex, 'r')
-        for eachLine in logicIndex.readlines():
-            eachLine = eachLine.replace("\n", "")
-            eachLine = eachLine.replace("\r", "")
-            self.loadLogic(eachLine)
-        logicIndex.close()
+        self.logics['genericRoom'] = genericRoom.genericRoom
+        self.logics['genericItem'] = genericItem.genericItem
+        self.logics['genericPlayer'] = genericPlayer.genericPlayer
+        self.logics['genericPortal'] = genericPortal.genericPortal
         
     def getLogic(self, name):
         """Returns a copy of a logic module."""
-        return name, copy.deepcopy(self.logics[name])
+        return name, self.logics[name]()

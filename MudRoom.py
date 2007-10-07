@@ -22,6 +22,7 @@ class MudRoom(MudObject.MudObject):
         self.info['items'][item.info['id_num']] = item
         
     def removeItem(self, item):
+        item.setRoomRef(None)
         del self.info['items'][item.info['id_num']]
         
     def addCharacter(self, character):

@@ -46,6 +46,7 @@ class MudDatabase:
         file = open(MudConst.zoneDir+os.sep+name+'.zne', 'r')
 ##        x = pickle.load(file)
 ##        name, genRoom = MudWorld.world.logicDb.getLogic('genericRoom')
+##        print name, genRoom
 ##        for eachRoom in x.info['rooms'].values():
 ##            eachRoom.addLogic(name, genRoom)
 ##            for eachItem in eachRoom.info['items'].values():
@@ -136,13 +137,14 @@ class MudDatabase:
         file = open(MudConst.timerDatabasePath)
         return pickle.load(file)
     
-    def saveGameTime(self, time):
+    def saveGameTime(self):
         """Saves the current game time."""
+        time = MudWorld.world.actionHandler.getTime()
         file = open(MudConst.gameTimePath, 'wb')
         pickle.dump(time, file)
         
     def loadGameTime(self):
-        """Loads the current game time."""
+        """Loads the saved game time."""
         file = open(MudConst.gameTimePath)
         return pickle.load(file)
         
