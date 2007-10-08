@@ -44,18 +44,18 @@ class MudDatabase:
     def loadZone(self, name):
         """Unpickles a zone file. Takes the zone name as an argument."""
         file = open(MudConst.zoneDir+os.sep+name+'.zne', 'r')
-##        x = pickle.load(file)
-##        name, genRoom = MudWorld.world.logicDb.getLogic('genericRoom')
-##        print name, genRoom
-##        for eachRoom in x.info['rooms'].values():
-##            eachRoom.addLogic(name, genRoom)
-##            for eachItem in eachRoom.info['items'].values():
-##                iName, genItem = MudWorld.world.logicDb.getLogic('genericItem')
-##                eachItem.setRoomRef(eachRoom)
-##                eachItem.addLogic(iName, genItem)
-##        self.saveZone(x)
-##        return x
-        return pickle.load(file)
+        x = pickle.load(file)
+        name, genRoom = MudWorld.world.logicDb.getLogic('genericRoom')
+        print name, genRoom
+        for eachRoom in x.info['rooms'].values():
+            eachRoom.addLogic(name, genRoom)
+            for eachItem in eachRoom.info['items'].values():
+                iName, genItem = MudWorld.world.logicDb.getLogic('genericItem')
+                eachItem.setRoomRef(eachRoom)
+                eachItem.addLogic(iName, genItem)
+        self.saveZone(x)
+        return x
+        #return pickle.load(file)
     
     def loadPlayer(self, name, player):
         """Attempts to load a player file. NOT FOR NPCS!"""
