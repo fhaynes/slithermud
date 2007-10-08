@@ -86,6 +86,10 @@ class MudActionHandler:
     # -------------------- #
     #  Querying Functions  #
     # -------------------- #
+    
+    def queryZone(self, action):
+        """Queries the zone of the player that generated the action."""
+        action.getPlayerRef().getZoneRef().doQuery(action)
             
     def queryRoom(self, action):
         """Queries the room of the player that generated the action."""
@@ -253,7 +257,7 @@ class MudActionHandler:
         
         # Tell everyone in the new zone that the char is entering
         if changeZone:
-            newZone.doAction(MudAction('enterzone', c))
+            newZone.doAction(MudAction.MudAction('enterzone', c))
             
             # Tell the char they are entering a new zone.
             c.doAction(MudAction.MudAction('enterzone', c))
