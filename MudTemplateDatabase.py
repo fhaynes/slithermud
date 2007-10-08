@@ -12,7 +12,13 @@ class MudTemplateDatabase:
     
     def addTemplate(self, templateType, template):
         """Adds a template to the DB."""
-        pass
+        if templateType == 'character':
+            self.charTemplates[template.getId()] = template
+        elif templateType == 'item':
+            self.itemTemplates[template.getId()] = template
+        else:
+            return
+            
     
     def removeTemplate(self, templateType, template):
         """Removes a template from the DB."""
