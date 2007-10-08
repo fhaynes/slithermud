@@ -97,6 +97,15 @@ class MudObject:
         Removes a command from the dictionary.
         '''
         del self.info['commands'][command]
+
+    def getCommands(self):
+        '''
+        Returns a list of all the command names
+        '''
+        cmdList = []
+        for eachCommand in self.info['commands']:
+            cmdList.append(eachCommand)
+        return cmdList                    
         
     def addLogic(self, newLogic, logicInst):
         '''

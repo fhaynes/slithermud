@@ -112,10 +112,10 @@ class MudWorld:
         while processing the command.
         """
         
-        #try:
-        player.info['commands'][cmd.lower()].process(player, args)
-        #except KeyError:
-        #    player.writeWithPrompt("Invalid command!")
+        try:
+            player.info['commands'][cmd.lower()].process(player, args)
+        except KeyError:
+            player.writeWithPrompt("Invalid command!")
 
 ##        except:
 ##            player.writeWithPrompt("There has been an error processing your command. Please report this to an IMM.")

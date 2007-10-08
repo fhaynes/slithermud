@@ -10,7 +10,6 @@ def getAccountName(player, data):
     Checks to see if the player exists, or helps create a new one.
     """
     
-    
     if data.lower() == 'new':
         player.setLoginState(MudConst.getNewAccountName)
         player.writePlain('Choose a character name: ')
