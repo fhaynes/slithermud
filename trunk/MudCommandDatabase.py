@@ -4,16 +4,20 @@ import cmdGo
 import cmdGet
 import cmdDrop
 import cmdVari
+import cmdSearch
+import cmdCommands
 
 class CommandDatabase:
     def __init__(self):
         self.commands = {}
-        self.commands['look'] = cmdLook.cmdLook
-        self.commands['say'] = cmdSay.cmdSay
-        self.commands['go'] = cmdGo.cmdGo
-        self.commands['get'] = cmdGet.cmdGet
-        self.commands['drop'] = cmdDrop.cmdDrop
-        self.commands['vari'] = cmdVari.cmdVari
+        self.commands['look']     = cmdLook.cmdLook
+        self.commands['say']      = cmdSay.cmdSay
+        self.commands['go']       = cmdGo.cmdGo
+        self.commands['get']      = cmdGet.cmdGet
+        self.commands['drop']     = cmdDrop.cmdDrop
+        self.commands['vari']     = cmdVari.cmdVari
+        self.commands['search']   = cmdSearch.cmdSearch
+        self.commands['commands'] = cmdCommands.cmdCommands
         
     def getCommand(self, name):
         """Returns a new command instance."""

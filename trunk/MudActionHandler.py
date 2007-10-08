@@ -26,7 +26,7 @@ class MudActionHandler:
         self.gameTime    = None
         
     def doAction(self, action):
-        if action.info['actionType']   == 'say':
+        if action.getType()   == 'say':
             self.say(action)
         elif action.getType() == 'look':
             self.look(action)
@@ -40,7 +40,7 @@ class MudActionHandler:
             self.dropItem(action)
         elif action.getType() == 'forcetransport':
             self.forceTransport(action)
-        elif aciton.getType() == 'addstat':
+        elif action.getType() == 'addstat':
             self.addStat(action)
         elif action.getType() == 'removestat':
             self.removeStat(action)
@@ -54,6 +54,10 @@ class MudActionHandler:
             self.removeLogic(action)
         elif action.getType() == 'messagelogic':
             self.messageLogic(action)
+        elif action.getType() == 'search':
+            self.doSearch(action)
+        elif action.getType() == 'commands':
+            self.doCommands(action)
         else:
             pass
     
@@ -407,10 +411,7 @@ class MudActionHandler:
         
         # And add it to the char's item dictionar
         c.addItem(i)
-        
-        
-        
-        
+
     def dropItem(self, action):
         c = action.getPlayerRef()
         i = action.getData1()
@@ -539,7 +540,6 @@ class MudActionHandler:
         else:
             i.clearHooks()
             i.getRoomRef().removeItem(i)
-        
 
     def destroyCharacter(self, action):
         """
@@ -570,12 +570,10 @@ class MudActionHandler:
         """Removes a stat from the entity."""
         action.getData1().removeStat(action.getData2())
         
-        
     def modifyStat(self, action):
         """Modifies a stat of the entity."""
         action.getData1().addStat(action.getData2(), action.getData3())
-        
-        
+
     def addLogic(self, action):
         """Adds a logic module to the entity."""
         try:
@@ -585,7 +583,7 @@ class MudActionHandler:
             logger.logging.debug("A logic module was not found upon attempting to load it! \
             The name of the module was: "+action.getString()+ '. \
             The player that originated the action was: '+action.getPlayerRef.getName())
-            
+
     def remLogic(self, action):
         """Removes a logic module from the entity."""
         try:
@@ -601,12 +599,42 @@ class MudActionHandler:
             logic = action.getData1().getLogic(action.getData2())
             logic.process(action)
         except KeyError:
-            logger.logging.debug("Amessage was sent to a nonexistent logic module! \
+            logger.logging.debug("A message was sent to a nonexistent logic module! \
             The name of the module was: "+action.getString()+ '. \
-            The player that originated the action was: '+action.getPlayerRef.getName())+' \
-            The message was: '+action.getString()
-            
-            
+            The player that originated the action was: '+action.getPlayerRef.getName()+' \
+            The message was: '+action.getString())
+
+    def doSearch(self, action):
+        """
+        Searches the databases for a specific template/instance.
+        """
+        actor   = action.getPlayerRef()
+        objType = action.getData1().lower()
+        objName = action.getData2().lower()
+
+        objectList = MudWorld.world.templateDb.listTemplatesByName(objType, objName)
+        try:
+            assert objectList[0] != 0
+        except:
+            actor.writeWithPrompt("Your search returned no matches!  Sorry! Please try again...")
+
+    def doCommands(self, action):
+        '''
+        Gives the player back a list of commands that are available to them.
+        '''
+        print "In doCommands:\n"
+        print action.getData1()
+        actor   = action.getPlayerRef()
+        cmdList = action.getData1()
+
+        try:
+            assert cmdList[0] != 0
+        except:
+            actor.writeWithPrompt("An error has occurred in the Commands command, please notify an administrator!")
+            print "No command list for" + player.getName()
+        actor.writeWithPrompt(', '.join(cmdList))
+
+
     # ------------------------------------ #
     # Functions for handling timed Actions #
     # ------------------------------------ #
@@ -675,6 +703,3 @@ def sort_by_attr_inplace(lst, attr):
     Code by Yakov Markovitch.
     """
     lst[:] = sort_by_attr(lst, attr)
-        
-    
-    
