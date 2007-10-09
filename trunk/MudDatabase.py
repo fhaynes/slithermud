@@ -1,6 +1,6 @@
 """
 MudDatabase.py
-This object handles all the saving, loading, and searching of characters,
+This object handles all the saving and loading of characters,
 items, rooms, zones, and portals.
 
 Author: Fletcher Haynes (kurosknight@gmail.com)
@@ -45,9 +45,6 @@ class MudDatabase:
         """Unpickles a zone file. Takes the zone name as an argument."""
         file = open(MudConst.zoneDir+os.sep+name+'.zne', 'r')
         x = pickle.load(file)
-        if x.getName() == 'Administration Offices':
-            print "Changing nextPortalId"
-            x.nextPortalId = 4
         name, genRoom = MudWorld.world.logicDb.getLogic('genericRoom')
         for eachRoom in x.info['rooms'].values():
             eachRoom.addLogic(name, genRoom)

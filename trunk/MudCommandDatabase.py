@@ -19,6 +19,7 @@ import cmdNewPortal
 import cmdDelPortal
 import cmdZedit
 import cmdPedit
+import cmdNewTemplate
 
 # Admin Related Imports
 import cmdWarp
@@ -30,34 +31,35 @@ class CommandDatabase:
         # General Commands for Players #
         # ---------------------------- #
         self.commands = {}
-        self.commands['look']      = cmdLook.cmdLook
-        self.commands['say']       = cmdSay.cmdSay
-        self.commands['go']        = cmdGo.cmdGo
-        self.commands['get']       = cmdGet.cmdGet
-        self.commands['drop']      = cmdDrop.cmdDrop
-        self.commands['vari']      = cmdVari.cmdVari
-        self.commands['search']    = cmdSearch.cmdSearch
-        self.commands['commands']  = cmdCommands.cmdCommands
-        self.commands['quit']      = cmdQuit.cmdQuit
+        self.commands['look']        = cmdLook.cmdLook
+        self.commands['say']         = cmdSay.cmdSay
+        self.commands['go']          = cmdGo.cmdGo
+        self.commands['get']         = cmdGet.cmdGet
+        self.commands['drop']        = cmdDrop.cmdDrop
+        self.commands['vari']        = cmdVari.cmdVari
+        self.commands['search']      = cmdSearch.cmdSearch
+        self.commands['commands']    = cmdCommands.cmdCommands
+        self.commands['quit']        = cmdQuit.cmdQuit
         
         # ---------------------- #
         #  OLC Related Commands  #
         # ---------------------- #
-        self.commands['newzone']   = cmdNewZone.cmdNewZone
-        self.commands['delzone']   = cmdDelZone.cmdDelZone
-        self.commands['listzone']  = cmdListZone.cmdListZone
-        self.commands['newroom']   = cmdNewRoom.cmdNewRoom
-        self.commands['redit']     = cmdRedit.cmdRedit
-        self.commands['delroom']   = cmdDelRoom.cmdDelRoom
-        self.commands['newportal'] = cmdNewPortal.cmdNewPortal
-        self.commands['delportal'] = cmdDelPortal.cmdDelPortal
-        self.commands['zedit']     = cmdZedit.cmdZedit
-        self.commands['pedit']     = cmdPedit.cmdPedit
+        self.commands['newzone']     = cmdNewZone.cmdNewZone
+        self.commands['delzone']     = cmdDelZone.cmdDelZone
+        self.commands['listzone']    = cmdListZone.cmdListZone
+        self.commands['newroom']     = cmdNewRoom.cmdNewRoom
+        self.commands['redit']       = cmdRedit.cmdRedit
+        self.commands['delroom']     = cmdDelRoom.cmdDelRoom
+        self.commands['newportal']   = cmdNewPortal.cmdNewPortal
+        self.commands['delportal']   = cmdDelPortal.cmdDelPortal
+        self.commands['zedit']       = cmdZedit.cmdZedit
+        self.commands['pedit']       = cmdPedit.cmdPedit
+        self.commands['newtemplate'] = cmdNewTemplate.cmdNewTemplate
         
         # ---------------------- #
         # Admin Related Commands #
         # ---------------------- #
-        self.commands['warp']      = cmdWarp.cmdWarp
+        self.commands['warp']        = cmdWarp.cmdWarp
 
     def getCommand(self, name):
         """Returns a new command instance."""
