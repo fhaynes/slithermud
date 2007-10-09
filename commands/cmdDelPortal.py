@@ -26,6 +26,7 @@ class cmdDelPortal(MudCommand.MudCommand):
         try:
             r.removePortal(int(args))
             z.addFreeId('portal', int(args))
+            MudWorld.world.db.saveZone(z)
         except KeyError:
             player.writeWithPrompt("Could not find that portal.")
             return

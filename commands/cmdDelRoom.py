@@ -23,6 +23,7 @@ class cmdDelRoom(MudCommand.MudCommand):
         # room having references to it.
 
         z = player.getZoneRef()
+        r = z.getRoom(int(args))
         
         # Now, let's remove the room from the zone.
         try:
@@ -31,12 +32,22 @@ class cmdDelRoom(MudCommand.MudCommand):
                 if eachChar.getSockRef() != '':
                     player.writeWithPrompt("A player is in that room. Cannot proceed!")
                     return
+            try:    
+                # And we need to delete each portal in the room
+                for eachPortal in z.getRoom(int(args)).getPortals().values():
+                    z.addFreeId('portal', eachPortal.getId())
+                    r.removePortal(eachPortal.getId())
+            except:
+                player.writeWithPrompt("There was an error removing the portals from the room.")
+                return
+                
             # If not, let's remove the room
             z.removeRoom(int(args))
             
             # And let's add the freed ID to the zone...
             z.addFreeId('room', args)
             player.writeWithPrompt("Room deleted!")
+            MudWorld.world.db.saveZone(z)
             return
         except KeyError:
             # If the room doesn't exist...

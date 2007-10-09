@@ -48,11 +48,15 @@ class MudRoom(MudObject.MudObject):
         self.info['portals'][portal.info['id_num']] = portal
         portal.setRoomRef(self)
 
-    def removePortal(self, portal):
+    def removePortal(self, portalId):
         """
         Removes a portal from the room.
         """
-        del self.info['portals'][portal.info['id_num']]
+        del self.info['portals'][portalId]
+        
+    def getPortal(self, portalId):
+        """Returns a specific portal."""
+        return self.info['portals'][portalId]
         
     def getPortals(self):
         """Returns the portal dictionary."""
