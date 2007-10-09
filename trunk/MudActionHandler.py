@@ -54,10 +54,6 @@ class MudActionHandler:
             self.removeLogic(action)
         elif action.getType() == 'messagelogic':
             self.messageLogic(action)
-        elif action.getType() == 'search':
-            self.doSearch(action)
-        elif action.getType() == 'commands':
-            self.doCommands(action)
         elif action.getType() == 'leaveworld':
             self.leaveWorld(action)
         else:
@@ -288,7 +284,7 @@ class MudActionHandler:
         destRoom.addCharacter(action.getPlayerRef())
         
     def leaveWorld(self, action):
-        """Handles logging a characte rout of the world."""
+        """Handles logging a character out of the world."""
         # TODO: Maybe we want to leave the player object resident in memory,
         # as that would make handling timed actions much easier.
         c = action.getPlayerRef()
@@ -615,36 +611,6 @@ class MudActionHandler:
             The name of the module was: "+action.getString()+ '. \
             The player that originated the action was: '+action.getPlayerRef.getName()+' \
             The message was: '+action.getString())
-
-    def doSearch(self, action):
-        """
-        Searches the databases for a specific template/instance.
-        """
-        actor   = action.getPlayerRef()
-        objType = action.getData1().lower()
-        objName = action.getData2().lower()
-
-        objectList = MudWorld.world.templateDb.listTemplatesByName(objType, objName)
-        try:
-            assert objectList[0] != 0
-        except:
-            actor.writeWithPrompt("Your search returned no matches!  Sorry! Please try again...")
-
-    def doCommands(self, action):
-        '''
-        Gives the player back a list of commands that are available to them.
-        '''
-        print "In doCommands:\n"
-        print action.getData1()
-        actor   = action.getPlayerRef()
-        cmdList = action.getData1()
-
-        try:
-            assert cmdList[0] != 0
-        except:
-            actor.writeWithPrompt("An error has occurred in the Commands command, please notify an administrator!")
-            print "No command list for" + player.getName()
-        actor.writeWithPrompt(', '.join(cmdList))
 
 
     # ------------------------------------ #

@@ -26,10 +26,15 @@ class cmdCommands(MudCommand.MudCommand):
 
     def process(self, player, args = ''):
         '''
-        Shouldn't be much processing here, just need to query the player for their list of commands,
-        then retun that list in a nicely formatted fashion.
+        Changed this command so that everything that needs to happen, happens here, rather than
+        in MudActionHandler.py.  This keeps the action handler from becoming ungainly with simple
+        little functions like this.
         '''
         cmdList = player.getCommands()
-        action = MudAction.MudAction('commands', player, cmdList, '', '', args)
-        MudWorld.world.processAction(action)
+        try:
+            assert cmdList[0] != 0
+        except:
+            player.writeWithPrompt("And error has occurred in the Commands command, please notify an administrator.\r\n")
+            print "No command list for" + player.getName()
+        player.writeWithPrompt(', '.join(cmdList))
         
