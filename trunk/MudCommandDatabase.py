@@ -17,6 +17,7 @@ import cmdDelRoom
 import cmdRedit
 import cmdNewPortal
 import cmdDelPortal
+import cmdZedit
 
 # Admin Related Imports
 import cmdWarp
@@ -49,6 +50,7 @@ class CommandDatabase:
         self.commands['delroom']   = cmdDelRoom.cmdDelRoom
         self.commands['newportal'] = cmdNewPortal.cmdNewPortal
         self.commands['delportal'] = cmdDelPortal.cmdDelPortal
+        self.commands['zedit']     = cmdZedit.cmdZedit
         
         # ---------------------- #
         # Admin Related Commands #
