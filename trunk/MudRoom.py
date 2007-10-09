@@ -34,11 +34,11 @@ class MudRoom(MudObject.MudObject):
         self.info['characters'][character.info['name']] = character
         character.setRoomRef(self)
 
-    def removeCharacter(self, character):
+    def removeCharacter(self, characterName):
         """
         Removes a character from the room.
         """
-        del self.info['characters'][character.info['name']]
+        del self.info['characters'][characterName]
 
     def addPortal(self, portal):
         """

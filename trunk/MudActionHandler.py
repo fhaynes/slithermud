@@ -254,7 +254,7 @@ class MudActionHandler:
             newZone.addCharacter(c)
             
         # Remove them from the old room
-        r.removeCharacter(c)
+        r.removeCharacter(c.getName())
 
         # Add the character to the new room
         newRoom.addCharacter(c)
@@ -279,6 +279,7 @@ class MudActionHandler:
     def enterWorld(self, action):
         """Handles setting a player up in the world."""
         # TODO: Error checking for not finding the zone #
+        MudWorld.world.addCharacter(action.getPlayerRef())
         destZone = MudWorld.world.getZone(action.getData1())
         destZone.addCharacter(action.getPlayerRef())
         destRoom = destZone.getRoom(action.getData2())
@@ -475,24 +476,24 @@ class MudActionHandler:
             changeZone = True
             newZone = MudWorld.world.getZone(action.getData1())
             try:
-                new_room = MudDatabase.db.returnRoomRef(new_zone.info['id_num'], int(action.info['data2']))
+                newRoom = newZone.getRoom(int(action.getData2()))
             except:
                 c.writeWithPrompt("Error - Invalid room ID!")
                 return
         
         if changeZone:
-            z.removeCharacter(c)
+            z.removeCharacter(c.getName())
             newZone.addCharacter(c)
             
-        r.removeCharacter(c)
+        r.removeCharacter(c.getName())
         newRoom.addCharacter(c)
         
         if changeZone:
             newAction = MudAction.MudAction('enterzone', c)
             newZone.doAction(newAction)
             c.doAction(newAction)
-            
-        newAction.setType('enterroom')
+        
+        newAction = MudAction.MudAction('enterroom', c)
         newRoom.doAction(action)
         self.actionRoomChars(action, c.getRoomRef())
         self.actionRoomItems(action, c.getRoomRef())
@@ -560,7 +561,7 @@ class MudActionHandler:
             self.doAction(action)
         t.clearHooks()
 
-        t.getRoomRef().removeCharacter(t)
+        t.getRoomRef().removeCharacter(t.getName())
         
     def addStat(self, action):
         """Adds a stat to the provided entity."""

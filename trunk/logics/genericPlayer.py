@@ -15,5 +15,10 @@ class genericPlayer(MudLogic.MudLogic):
             owner.writeWithPrompt(owner.getName()+' gets: '+action.getData1().getName())
         elif action.getType() == 'dropitem':
             owner.writeWithPrompt(owner.getName()+' drops: '+action.getData1().getName())
+        elif action.getType() == 'look':
+            if action.getPlayerRef().getName() == owner.getName():
+                pass
+            else:
+                action.getPlayerRef().writePlain('\r\n'+owner.getName()+' is here.')
         else:
             pass
