@@ -17,6 +17,7 @@ class MudRoom(MudObject.MudObject):
         self.info['portals']    = {}
         self.info['items']      = {}
         self.info['characters'] = {}
+        
 
     def addItem(self, item):
         self.info['items'][item.info['id_num']] = item

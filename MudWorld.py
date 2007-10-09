@@ -83,6 +83,10 @@ class MudWorld:
         """Adds a player to the global dictionary."""
         self.info['players'][player.info['name']] = player
         
+    def removeCharacter(self, playerName):
+        """Removes a player from the global dictionary."""
+        del self.info['players'][playerName]
+        
     def addZone(self, zone):
         """Adds a zone to the world."""
         self.info['zones'][zone.getId()] = zone

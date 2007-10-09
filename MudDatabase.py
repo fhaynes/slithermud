@@ -67,8 +67,10 @@ class MudDatabase:
         # implement lazy loading. i.e., we will need to check to make sure the
         # zone exists. If not, we can put them somewhere else or load it up.
         
+        # Remember, we translated these into ints on saving, so we don't have
+        # to use getId()! I am so sneaky!
         zoneId = player.getZoneRef()
-        roomId = player.getZoneRef()
+        roomId = player.getRoomRef()
 
         player.setZoneRef(MudWorld.world.getZone(zoneId))
         player.setRoomRef(player.getZoneRef().getRoom(roomId))
@@ -88,7 +90,6 @@ class MudDatabase:
 
         # We cannot pickle a socket, so we delete that
         pCopy.sockRef = None
-        
         zoneId = player.getZoneRef().getId()
         roomId = player.getRoomRef().getId()
         pCopy.setZoneRef(zoneId)

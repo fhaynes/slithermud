@@ -41,7 +41,7 @@ def getAccountPassword(player, data):
         player.writePlain('\r\nPassword accepted!\r\n')
         player.writeWithPrompt('Welcome, '+player.getName())
         player.setLoginState(MudConst.logedIn)
-        newAction = MudAction.MudAction('enterworld', player, 1, 1)
+        newAction = MudAction.MudAction('enterworld', player, player.getZoneRef().getId(), player.getRoomRef().getId())
         MudWorld.world.actionHandler.doAction(newAction)
         
         # TODO: Come up with a better way to load initial commands. #

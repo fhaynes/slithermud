@@ -6,6 +6,7 @@ import cmdDrop
 import cmdVari
 import cmdSearch
 import cmdCommands
+import cmdQuit
 
 # OLC Related Imports
 import cmdNewZone
@@ -35,6 +36,7 @@ class CommandDatabase:
         self.commands['vari']      = cmdVari.cmdVari
         self.commands['search']    = cmdSearch.cmdSearch
         self.commands['commands']  = cmdCommands.cmdCommands
+        self.commands['quit']      = cmdQuit.cmdQuit
         
         # ---------------------- #
         #  OLC Related Commands  #

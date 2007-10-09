@@ -19,7 +19,7 @@ class MudZone(MudObject.MudObject):
         self.info['characters'] = {}
         
         # Next max room ID
-        self.nextRoomId = 1
+        self.nextRoomId = 3
         
         # Next max portal ID
         self.nextPortalId = 1
@@ -36,7 +36,7 @@ class MudZone(MudObject.MudObject):
         self.info['rooms'][room.info['id_num']] = room
         room.setZone(self)
         
-    def remRoom(self, room_id):
+    def removeRoom(self, room_id):
         """
         Deletes a room from the zone object. Takes the ID of the room to
         delete from the dictionary.
