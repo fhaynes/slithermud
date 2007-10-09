@@ -21,8 +21,12 @@ class MudZone(MudObject.MudObject):
         # Next max room ID
         self.nextRoomId = 1
         
+        # Next max portal ID
+        self.nextPortalId = 1
+        
         # List of free Room IDs
         self.freeRoomIds = []
+        self.freePortalIds = []
         
     def addRoom(self, room):
         """
@@ -74,19 +78,36 @@ class MudZone(MudObject.MudObject):
     # and for handling recycling old ones  #
     # ------------------------------------ #
     
-    def addFreeId(self, idNum):
-        """This takes an ID number and adds it to freed room list."""
-        self.freeItemTemplateIds.append(int(idNum))
-        self.freeItemTemplateIds.sort(reverse=True)
+    def addFreeId(self, idType, idNum):
+        """This takes an ID number and adds it to appropiate freed list."""
+        if idType == 'room':
+            self.freeRoomIds.append(int(idNum))
+            self.freeRoomIds.sort(reverse=True)
+        elif idType == 'portal':
+            self.freePortalIds.append(int(idNum))
+            self.freePortalIds.sort(reverse=True)
+        else:
+            return
         
-    def getNewId(self):
+    def getNewId(self, idType):
         """Returns the next free Room ID number for the zone."""
-        try:
-            return self.freeRoomIds.pop()
-        except IndexError:
-            nextId = self.nextRoomId
-            self.nextRoomId += 1
-            return nextId
+        
+        if idType == 'room':
+            try:
+                return self.freeRoomIds.pop()
+            except IndexError:
+                nextId = self.nextRoomId
+                self.nextRoomId += 1
+                return nextId
+        elif idType == 'portal':
+            try:
+                return self.freePortalIds.pop()
+            except IndexError:
+                nextId = self.nextPortalId
+                self.nextPortalId += 1
+                return nextId
+        else:
+            return
         
     
     
