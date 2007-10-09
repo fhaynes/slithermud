@@ -13,27 +13,29 @@ import cmdDelZone
 import cmdListZone
 import cmdNewRoom
 import cmdDelRoom
+import cmdNewPortal
 
 class CommandDatabase:
     def __init__(self):
         self.commands = {}
-        self.commands['look']     = cmdLook.cmdLook
-        self.commands['say']      = cmdSay.cmdSay
-        self.commands['go']       = cmdGo.cmdGo
-        self.commands['get']      = cmdGet.cmdGet
-        self.commands['drop']     = cmdDrop.cmdDrop
-        self.commands['vari']     = cmdVari.cmdVari
-        self.commands['search']   = cmdSearch.cmdSearch
-        self.commands['commands'] = cmdCommands.cmdCommands
+        self.commands['look']      = cmdLook.cmdLook
+        self.commands['say']       = cmdSay.cmdSay
+        self.commands['go']        = cmdGo.cmdGo
+        self.commands['get']       = cmdGet.cmdGet
+        self.commands['drop']      = cmdDrop.cmdDrop
+        self.commands['vari']      = cmdVari.cmdVari
+        self.commands['search']    = cmdSearch.cmdSearch
+        self.commands['commands']  = cmdCommands.cmdCommands
         
         # ---------------------- #
         #  OLC Related Commands  #
         # ---------------------- #
-        self.commands['newzone']  = cmdNewZone.cmdNewZone
-        self.commands['delzone']  = cmdDelZone.cmdDelZone
-        self.commands['listzone'] = cmdListZone.cmdListZone
-        self.commands['newroom']  = cmdNewRoom.cmdNewRoom
-        self.commands['delroom']  = cmdDelRoom.cmdDelRoom
+        self.commands['newzone']   = cmdNewZone.cmdNewZone
+        self.commands['delzone']   = cmdDelZone.cmdDelZone
+        self.commands['listzone']  = cmdListZone.cmdListZone
+        self.commands['newroom']   = cmdNewRoom.cmdNewRoom
+        self.commands['delroom']   = cmdDelRoom.cmdDelRoom
+        self.commands['newportal'] = cmdNewPortal.cmdNewPortal
         
     def getCommand(self, name):
         """Returns a new command instance."""
