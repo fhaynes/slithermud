@@ -6,7 +6,7 @@ This commands handle adding a portal to a room.
 
 import MudCommand
 import MudWorld
-
+import MudPortal
 import string
 
 class cmdNewPortal(MudCommand.MudCommand):
@@ -24,7 +24,7 @@ class cmdNewPortal(MudCommand.MudCommand):
         # Let's check the args, to make sure we have all the needed info.
         argList = args.split(" ", 1)
         if len(argList) != 2:
-            player.writeWithPrompt("The proper format is newportal ID Name of Portal.")
+            player.writeWithPrompt("The proper format is newportal targetRoomID Name of Portal.")
             return
         
         # Create a new portal with the appropiate values
@@ -43,5 +43,5 @@ class cmdNewPortal(MudCommand.MudCommand):
         # Last, save the zone
         MudWorld.world.db.saveZone(z)
         
-        player.writeWithPrompt("Portal created!")
+        player.writeWithPrompt("Portal created with ID of: "+str(newPortal.getId()))
         

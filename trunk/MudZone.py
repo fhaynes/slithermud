@@ -19,7 +19,7 @@ class MudZone(MudObject.MudObject):
         self.info['characters'] = {}
         
         # Next max room ID
-        self.nextRoomId = 3
+        self.nextRoomId = 1
         
         # Next max portal ID
         self.nextPortalId = 1
