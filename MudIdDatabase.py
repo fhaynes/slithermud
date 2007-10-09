@@ -16,6 +16,7 @@ class MudIdDatabase:
         self.nextCharTemplate = 1
         self.nextItemInstance = 1
         self.nextCharInstance = 1
+        self.nextZoneId       = 3
         
         # Thes are lists of IDs that come from things that have been
         # destroyed, so they are free for use again.
@@ -23,13 +24,13 @@ class MudIdDatabase:
         self.freeCharTemplateIds = []
         self.freeItemInstanceIds = []
         self.freeCharInstanceIds = []
+        self.freeZoneIds         = []
         
     def addFreeId(self, idType, idNum):
         """This takes an ID number and adds it to the appropiate freed list."""
         if idType.lower()   == 'itemtemplate':
             self.freeItemTemplateIds.append(int(idNum))
             self.freeItemTemplateIds.sort(reverse=True)
-            
         elif idType.lower() == 'chartemplate':
             self.freeCharTemplateIds.append(int(idNum))
             self.freeCharTemplateIds.sort(reverse=True)
@@ -39,6 +40,9 @@ class MudIdDatabase:
         elif idType.lower() == 'charinstance':
             self.freeCharInstanceIds.append(int(idNum))
             self.freeCharTemplateIds.sort(reverse=True)
+        elif idType.lower() == 'zone':
+            self.freeZoneIds.append(int(idNum))
+            self.freeZoneIds.sort(reverse=True)
         else:
             # TODO some error checking code in case an invalid idType
             # is sent?
@@ -55,6 +59,7 @@ class MudIdDatabase:
             except IndexError:
                 nextId = self.nextItemTemplate
                 self.nextItemTemplate += 1
+                return nextId
 
         elif idType.lower() == 'iteminstance':
             try:
@@ -62,6 +67,7 @@ class MudIdDatabase:
             except IndexError:
                 nextId = self.nextItemInstance
                 self.nextItemInstance += 1
+                return nextId
 
         elif idType.lower() == 'chartemplate':
             try:
@@ -69,6 +75,7 @@ class MudIdDatabase:
             except IndexError:
                 nextId = self.nextCharTemplate
                 self.nextCharTemplate += 1
+                return nextId
 
         elif idType.lower() == 'charinstance':
             try:
@@ -76,6 +83,15 @@ class MudIdDatabase:
             except IndexError:
                 nextId = self.nextCharInstance
                 self.nextCharInstance += 1
+                return nextId
+                
+        elif idType.lower() == 'zone':
+            try:
+                return self.freeZoneIds.pop()
+            except IndexError:
+                nextId = self.nextZoneId
+                self.nextZoneId += 1
+                return nextId
         else:
             # TODO: Error checking code for an invalid idType
             pass

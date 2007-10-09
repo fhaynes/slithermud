@@ -46,7 +46,6 @@ class MudDatabase:
         file = open(MudConst.zoneDir+os.sep+name+'.zne', 'r')
         x = pickle.load(file)
         name, genRoom = MudWorld.world.logicDb.getLogic('genericRoom')
-        print name, genRoom
         for eachRoom in x.info['rooms'].values():
             eachRoom.addLogic(name, genRoom)
             for eachItem in eachRoom.info['items'].values():
@@ -55,7 +54,7 @@ class MudDatabase:
                 eachItem.addLogic(iName, genItem)
         self.saveZone(x)
         return x
-        #return pickle.load(file)
+##        return pickle.load(file)
     
     def loadPlayer(self, name, player):
         """Attempts to load a player file. NOT FOR NPCS!"""
