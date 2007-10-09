@@ -43,11 +43,11 @@ class MudZone(MudObject.MudObject):
         """        
         del self.info['rooms'][room_id]
         
-    def getRoom(self, room_id):
+    def getRoom(self, roomId):
         """
-        Returns a room instance with a matching id_num.
+        Returns a room instance with a matching ID.
         """
-        return self.info['rooms'][room_id]
+        return self.info['rooms'][roomId]
     
     def getRooms(self):
         """Returns the rooms dictionary."""
@@ -61,17 +61,17 @@ class MudZone(MudObject.MudObject):
         self.info['characters'][character.info['name']] = character
         character.setZoneRef(self)
         
-    def removeCharacter(self, character_name):
+    def removeCharacter(self, characterName):
         """
         Removes a character instance from the zone object.
         """
-        del self.info['characters'][character_name]
+        del self.info['characters'][characterName]
     
-    def getCharacter(self, character_name):
+    def getCharacter(self, characterName):
         """
         Returns a character instance with a matching name.
         """
-        return self.info['characters'][character_name]
+        return self.info['characters'][characterName]
     
     # ------------------------------------ #
     # Functions for assigning IDs to Rooms #
