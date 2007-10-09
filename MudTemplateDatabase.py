@@ -72,6 +72,8 @@ class MudTemplateDatabase:
                 if eachTemplate.getName().lower() == name:
                     return eachTemplate
             return None
+        else:
+            return None
         
     def listTemplatesByName(self, templateType, name):
         """
@@ -79,16 +81,17 @@ class MudTemplateDatabase:
         Returns a list of all matching templates.
         Returns none if nothing is found.
         """
+        print name
         if templateType.lower() == 'character':
             tmpList = []
-            for eachTemplate in self.charTemplates:
-                if eachTemplate.getName().lower() == name:
+            for eachTemplate in self.charTemplates.values():
+                if eachTemplate.getName().lower() == name.lower():
                     tmpList.append(eachTemplate)
                 return tmpList
         elif templateType.lower() == 'item':
             tmpList = []
-            for eachTemplate in self.itemTemplates:
-                if eachTemplate.getName.lower() == name:
+            for eachTemplate in self.itemTemplates.values():
+                if eachTemplate.getName().lower() == name.lower():
                     tmpList.append(eachTemplate)
                 return tmpList
 
@@ -104,7 +107,6 @@ class MudTemplateDatabase:
                 tmpList.append(template)
             return tmpList
     
-    # Need code to handle ID creation and such 
     def createInstance(self, templateType, templateId):
         """
         Returns a copy (instance in the MUD) of the template.

@@ -57,6 +57,7 @@ class cmdSearch(MudCommand.MudCommand):
         try:
             assert objList[0] != 0
             ##  Put objList display code here, not done yet!
+            print objList
             player.writeWithPrompt("We found some stuff, but can't display it cause I haven't written the code yet!")
         except:
             player.writeWithPrompt("Your search returned no matches!  Sorry!  Please try again...")
