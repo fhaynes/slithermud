@@ -27,7 +27,7 @@ class cmdDelRoom(MudCommand.MudCommand):
         # Now, let's remove the room from the zone.
         try:
             # Let's make sure there are no PCs in it
-            for eachChar in z.getRoom(int(args)):
+            for eachChar in z.getRoom(int(args)).getCharacters().values():
                 if eachChar.getSockRef() != '':
                     player.writeWithPrompt("A player is in that room. Cannot proceed!")
                     return
@@ -35,7 +35,7 @@ class cmdDelRoom(MudCommand.MudCommand):
             z.removeRoom(int(args))
             
             # And let's add the freed ID to the zone...
-            z.addFreeId(args)
+            z.addFreeId('room', args)
             player.writeWithPrompt("Room deleted!")
             return
         except KeyError:

@@ -20,8 +20,8 @@ class MudObject:
         
         # Name of the object, description, and ID Number. All Objects in the
         # MUD will have these.
-        self.info['name']   = ''
-        self.info['desc']   = ''
+        self.info['name']   = 'A Blank Name'
+        self.info['desc']   = 'A blank description.'
         self.info['id_num'] = 0
     
     # ---------------------- #    

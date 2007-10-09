@@ -29,9 +29,12 @@ class cmdWarp(MudCommand.MudCommand):
                 # We'll be using the forcetransport action, as it handles all the
                 # required stuff to move people around.
                 newAction = MudAction.MudAction('forcetransport', player, player.getZoneRef().getId(), int(argList[0]))
-                MudWorld.world.actionHandler.doAction(newAction)
-                player.writeWithPrompt("You warp through space.")
-                return
+                try:
+                    MudWorld.world.actionHandler.doAction(newAction)                
+                    player.writeWithPrompt("You warp through space.")
+                    return
+                except:
+                    player.writeWithPrompt("Invalid Room ID.")
             
             else:
                 # If it isn't a digit, it is letters. i.e., a player's name. So let's look them up.
@@ -51,9 +54,13 @@ class cmdWarp(MudCommand.MudCommand):
         elif len(argList) == 2:
             if argList[0].isdigit() and argList[1].isdigit():
                 newAction = MudAction.MudAction('forcetransport', player, int(argList[0]), int(argList[1]))
-                MudWorld.world.actionHandler.doAction(newAction)
-                player.writeWithPrompt("You warp through space.")
-                return
+                try:
+                    MudWorld.world.actionHandler.doAction(newAction)
+                    player.writeWithPrompt("You warp through space.")
+                    return
+                except:
+                    player.writeWithPrompt("Invalid zone or room ID.")
+                    return
             else:
                 player.writeWithPrompt("Zone IDs and Room IDs must be numbers!")
                 return

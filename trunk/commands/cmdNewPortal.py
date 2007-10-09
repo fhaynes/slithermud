@@ -33,6 +33,10 @@ class cmdNewPortal(MudCommand.MudCommand):
         # Assign it a unique ID...
         newPortal.setId(z.getNewId('portal'))
         
+        # Give it some default logic
+        name, logic = MudWorld.world.logicDb.getLogic('genericPortal')
+        newPortal.addLogic(name, logic)
+        
         # And add it to the room...
         r.addPortal(newPortal)
         

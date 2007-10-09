@@ -58,6 +58,8 @@ class MudActionHandler:
             self.doSearch(action)
         elif action.getType() == 'commands':
             self.doCommands(action)
+        elif action.getType() == 'leaveworld':
+            self.leaveWorld(action)
         else:
             pass
     
@@ -285,6 +287,22 @@ class MudActionHandler:
         destRoom = destZone.getRoom(action.getData2())
         destRoom.addCharacter(action.getPlayerRef())
         
+    def leaveWorld(self, action):
+        """Handles logging a characte rout of the world."""
+        # TODO: Maybe we want to leave the player object resident in memory,
+        # as that would make handling timed actions much easier.
+        c = action.getPlayerRef()
+        c.writeWithPrompt("Goodbye!")
+        MudWorld.world.db.savePlayer(action.getPlayerRef())
+        z = action.getPlayerRef().getZoneRef()
+        r = action.getPlayerRef().getRoomRef()
+        r.removeCharacter(c.getName())
+        z.removeCharacter(c.getName())
+        MudWorld.world.removeCharacter(c.getName())
+        c.getSockRef().loseConnection()
+        return
+        
+        
         
     def say(self, action):
         """Handles say actions."""
@@ -466,20 +484,13 @@ class MudActionHandler:
 
         if z.getId() == int(action.getData1()):
             changeZone = False
-            try:
-                newRoom = z.getRoom(action.getData2())
-            except:
-                # TODO: Should we log stuff like this to the log?
-                c.writeWithPrompt("Error - Invalid room ID!")
-                return
+            newRoom = z.getRoom(action.getData2())
         else:
             changeZone = True
             newZone = MudWorld.world.getZone(action.getData1())
-            try:
-                newRoom = newZone.getRoom(int(action.getData2()))
-            except:
-                c.writeWithPrompt("Error - Invalid room ID!")
-                return
+            
+            newRoom = newZone.getRoom(int(action.getData2()))
+
         
         if changeZone:
             z.removeCharacter(c.getName())
