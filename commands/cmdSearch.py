@@ -26,9 +26,10 @@ class cmdSearch(MudCommand.MudCommand):
 
     def process(self, player, args = ''):
         """
-        This is the function where we break down the command that the player typed
-        into little, manageable chunks that the actionHandler can then digest and figure
-        out what exactly it is that we want to do with the action.
+        This is the meat and potatoes of our search function.  First, we'll check the arguments
+        to make sure that we have everything that we need, then we perform the search and either
+        return the list of matching templates that are found, or we return a message that tells
+        the player that no matches were found.
         """
         args = args.lower()
         try:
@@ -52,5 +53,14 @@ class cmdSearch(MudCommand.MudCommand):
             player.writePlain("Please use the syntax: search <item/character> <name>.\r\n")
             player.writePlain("For example: search item apple \r\n")
             return   
-        action = MudAction.MudAction('search', player, objType, objName, '', args)
-        MudWorld.world.processAction(action)
+        objList = MudWorld.world.templateDb.listTemplatesByName(objType, objName)
+        try:
+            assert objList[0] != 0
+            ##  Put objList display code here, not done yet!
+            player.writeWithPrompt("We found some stuff, but can't display it cause I haven't written the code yet!")
+        except:
+            player.writeWithPrompt("Your search returned no matches!  Sorry!  Please try again...")
+
+        
+        
+            
