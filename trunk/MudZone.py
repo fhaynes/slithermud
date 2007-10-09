@@ -18,6 +18,12 @@ class MudZone(MudObject.MudObject):
         # A dictionary of characters. Key is the name of the character.
         self.info['characters'] = {}
         
+        # Next max room ID
+        self.nextRoomId = 1
+        
+        # List of free Room IDs
+        self.freeRoomIds = []
+        
     def addRoom(self, room):
         """
         Adds a room to the dictionary. Takes a room instance as the argument,
@@ -62,5 +68,25 @@ class MudZone(MudObject.MudObject):
         Returns a character instance with a matching name.
         """
         return self.info['characters'][character_name]
+    
+    # ------------------------------------ #
+    # Functions for assigning IDs to Rooms #
+    # and for handling recycling old ones  #
+    # ------------------------------------ #
+    
+    def addFreeId(self, idNum):
+        """This takes an ID number and adds it to freed room list."""
+        self.freeItemTemplateIds.append(int(idNum))
+        self.freeItemTemplateIds.sort(reverse=True)
+        
+    def getNewId(self):
+        """Returns the next free Room ID number for the zone."""
+        try:
+            return self.freeRoomIds.pop()
+        except IndexError:
+            nextId = self.nextRoomId
+            self.nextRoomId += 1
+            return nextId
+        
     
     

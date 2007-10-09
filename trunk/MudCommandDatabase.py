@@ -7,6 +7,12 @@ import cmdVari
 import cmdSearch
 import cmdCommands
 
+# OLC Related Commands
+import cmdNewZone
+import cmdDelZone
+import cmdListZone
+import cmdNewRoom
+
 class CommandDatabase:
     def __init__(self):
         self.commands = {}
@@ -18,6 +24,12 @@ class CommandDatabase:
         self.commands['vari']     = cmdVari.cmdVari
         self.commands['search']   = cmdSearch.cmdSearch
         self.commands['commands'] = cmdCommands.cmdCommands
+        
+        # OLC Related Commands
+        self.commands['newzone']  = cmdNewZone.cmdNewZone
+        self.commands['delzone']  = cmdDelZone.cmdDelZone
+        self.commands['listzone'] = cmdListZone.cmdListZone
+        self.commands['newroom']  = cmdNewRoom.cmdNewRoom
         
     def getCommand(self, name):
         """Returns a new command instance."""

@@ -54,17 +54,21 @@ class MudWorld:
         
         print "Loading ID Database..."
         self.idDb = self.db.loadIdDatabase()
-        
+
         print "Loading Template Database..."
         self.templateDb = self.db.loadTemplateDatabase()
         
         print "Starting Zone Loading..."
         zFile = open(MudConst.zoneList)
         for eachLine in zFile.readlines():
-            eachLine = eachLine.replace('\r', '')
-            eachLine = eachLine.replace('\n', '')
-            print "     Loading Zone: "+eachLine
-            self.addZone(self.db.loadZone(eachLine))
+            try:
+                eachLine = eachLine.replace('\r', '')
+                eachLine = eachLine.replace('\n', '')
+                print "     Loading Zone: "+eachLine
+                self.addZone(self.db.loadZone(eachLine))
+            except:
+                pass
+                
             
         print "Loading Time and Timer Database..."
         self.actionHandler.gameTime = self.db.loadGameTime()            
@@ -83,9 +87,18 @@ class MudWorld:
         """Adds a zone to the world."""
         self.info['zones'][zone.getId()] = zone
         
+    def removeZone(self, zoneId):
+        """Removes a zone from the game, based on it's ID."""
+        # TODO: try/except for invalid name
+        del self.info['zones'][zoneId]
+
     def getZone(self, zone_id):
         """Gets a reference to a zone. Takes the ID of the zone."""
         return self.info['zones'][zone_id]
+    
+    def getZones(self):
+        """Returns the entire zone dictionary."""
+        return self.info['zones']
     
     def handleInput(self, player, input):
         """
