@@ -1,7 +1,8 @@
 """
 cmdNewRoom.py
 Author: Fletcher Haynes
-This file handles created a new zone.
+This file handles creating a new room. Creates a new room in the zone the
+user is in.
 """
 
 import MudCommand
