@@ -56,6 +56,10 @@ class MudActionHandler:
             self.messageLogic(action)
         elif action.getType() == 'leaveworld':
             self.leaveWorld(action)
+        elif action.getType() == 'spawnitem':
+            self.spawnItem(action)
+        elif action.getType() == 'spawncharacter':
+            self.spawnCharacter(action)
         else:
             pass
     
@@ -512,11 +516,13 @@ class MudActionHandler:
         data2 field is the zone it should be spawned in.
         data3 is the room in the zone it should be spawned in.
         """
-        if MudWorld.world.templateDatabase.ifTemplateExists('item', action.getData1()):
-            newItem = MudWorld.world.templateDatabase.createInstance('item', action.getData1())
+        if MudWorld.world.templateDb.ifTemplateExists('item', action.getData1()):
+            newItem = MudWorld.world.templateDb.createInstance('item', action.getData1())
             zone = MudWorld.world.getZone(action.getData2())
             room = zone.getRoom(action.getData3())
             room.addItem(newItem)
+            name, logic = MudWorld.world.logicDb.getLogic('genericItem')
+            newItem.addLogic(name, logic)
         else:
             action.getPlayerRef().writeWithPrompt("Invalid template ID!")
             
@@ -527,11 +533,13 @@ class MudActionHandler:
         data2 field is the zone where it should be spawned.
         data3 is the room in the zone it should be spawned in.
         """
-        if MudWorld.world.templateDatabase.ifTemplateExists('character', action.getData1()):
-            newChar = MudWorld.world.templateDatabase.createInstance('character', action.getData1())
+        if MudWorld.world.templateDb.ifTemplateExists('character', action.getData1()):
+            newChar = MudWorld.world.templateDb.createInstance('character', action.getData1())
             zone = MudWorld.world.getZone(action.getData2())
             room = zone.getRoom(action.getData3())
             room.addCharacter(newChar)
+            name, logic = MudWorld.world.logicDb.getLogic('genericPlayer')
+            newChar.addLogic(name, logic)
         else:
             pass
 

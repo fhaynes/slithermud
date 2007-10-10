@@ -4,7 +4,8 @@ Author: Fletcher Haynes
 This is the template DB class. It manages all the templates for items
 and characters in the game.
 """
-
+import copy
+import MudWorld
 class MudTemplateDatabase:
     def __init__(self):
         self.itemTemplates = {}
@@ -81,7 +82,6 @@ class MudTemplateDatabase:
         Returns a list of all matching templates.
         Returns none if nothing is found.
         """
-        print name
         if templateType.lower() == 'character':
             tmpList = []
             for eachTemplate in self.charTemplates.values():

@@ -61,3 +61,6 @@ class MudItem(MudObject.MudObject):
         """Returns if the item is a quantity item or not."""
         return self.info['isQuantity']
         
+    def setRoom(self, room):
+        """Sets the roomRef variable of the item."""
+        self.info['roomRef'] = room
