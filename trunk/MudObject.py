@@ -142,6 +142,12 @@ class MudObject:
         for eachHook in self.info['hooks']:
             eachHook.setValid(False)
             del eachHook
+            
+    def getInfo(self):
+        """
+        Returns a reference to the entire info dictionary.
+        """
+        return self.info
 
         
     # ------------------------- #    

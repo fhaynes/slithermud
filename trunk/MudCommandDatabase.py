@@ -23,6 +23,8 @@ import cmdNewTemplate
 
 # Admin Related Imports
 import cmdWarp
+import cmdEdit
+import cmdSpawn
 
 class CommandDatabase:
     def __init__(self):
@@ -60,6 +62,8 @@ class CommandDatabase:
         # Admin Related Commands #
         # ---------------------- #
         self.commands['warp']        = cmdWarp.cmdWarp
+        self.commands['edit']        = cmdEdit.cmdEdit
+        self.commands['spawn']       = cmdSpawn.cmdSpawn
 
     def getCommand(self, name):
         """Returns a new command instance."""
