@@ -22,7 +22,7 @@ getStats              = 9
 logedIn               = 10
 inOlc                 = 11
 
-# Admin levesl
+# Admin levels
 
 player      = 1
 enforcer    = 2

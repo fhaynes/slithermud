@@ -7,6 +7,7 @@ import MudAction
 import MudWorld
 
 from exceptions import *
+from columnize import *
 
 class cmdCommands(MudCommand.MudCommand):
     """
@@ -28,7 +29,7 @@ class cmdCommands(MudCommand.MudCommand):
         '''
         Changed this command so that everything that needs to happen, happens here, rather than
         in MudActionHandler.py.  This keeps the action handler from becoming ungainly with simple
-        little functions like this.
+        little functions like this.  This is also the first function to use the brand new "Columnizer!"
         '''
         cmdList = player.getCommands()
         try:
@@ -36,5 +37,5 @@ class cmdCommands(MudCommand.MudCommand):
         except:
             player.writeWithPrompt("And error has occurred in the Commands command, please notify an administrator.\r\n")
             print "No command list for" + player.getName()
-        player.writeWithPrompt(', '.join(cmdList))
-        
+            return
+        columnize(player, cmdList, 6)

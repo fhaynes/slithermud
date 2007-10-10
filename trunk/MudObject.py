@@ -25,7 +25,7 @@ class MudObject:
         self.info['id_num'] = 0
     
     # ---------------------- #    
-    # Get and Set functions
+    # Get and Set functions  #
     # ---------------------- #
     def setName(self, newName):
         '''

@@ -306,6 +306,7 @@ class MudActionHandler:
         
     def say(self, action):
         """Handles say actions."""
+        
         action.setType('cansay')
         # First we have to check with the room to see if it is ok for them
         # to say something.
@@ -335,12 +336,20 @@ class MudActionHandler:
 
     def look(self, action):
         """Handles look actions."""
+
+        # Adding some defactor variables here for explicity and brevity's sake
+        room = action.getPlayerRef().getRoomRef()
         
         action.setType('canlook')
         
         result = self.queryRoom(action)
         if result == 1:
             return
+
+        # Why and what are we querying the characters and items in the room for?
+        # If we're looking just at the room (the default case) shouldn't the room
+        # be able to query the players and items within it?  Will a look fail if
+        # there's nothing in the room with the player?  What about scrying or something?
         
         # Now we check all the other players in the room.
         result = self.queryRoomChars(action)
@@ -352,9 +361,12 @@ class MudActionHandler:
         if result == 1:
             return
         action.setType('look')
-        self.actionRoom(action, action.getPlayerRef().getRoomRef())
-        self.actionRoomChars(action, action.getPlayerRef().getRoomRef())
-        self.actionRoomItems(action, action.getPlayerRef().getRoomRef())
+        # I'm uncertain why we're sending the look action to all the characters
+        # and items in the room?  To let them know they've been looked at?
+        # Is there a better way to do this?
+        self.actionRoom(action, room)
+        self.actionRoomChars(action, room)
+        self.actionRoomItems(action, room)
         
         action.getPlayerRef().writeWithPrompt("")
         
