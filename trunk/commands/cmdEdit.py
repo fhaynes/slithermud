@@ -41,11 +41,19 @@ class cmdEdit(MudCommand.MudCommand):
 
             if t.getInfo().has_key(argList[2]):
                 if argList[3].isdigit():
-                    t.info[argList[2]] = int(argList[3])
-                    return
+                    if t.hasStat(argList[2]):
+                        t.setStat(argList[2], int(argList[3]))
+                        return
+                    else:
+                        player.writeWithPrompt("That object does not have that stat. Please use addstat to add it.")
+                        return
                 else:
-                    t.info[argList[2]] = argList[3]
-                    return
+                    if t.hasStat(argList[2]):
+                        t.info[argList[2]] = argList[3]
+                        return
+                    else:
+                        player.writeWithPrompt("That object does not have that stat. Please use addstat to add it.")
+                        return
                     
             else:
                 player.writeWithPrompt("The character does not have that attribute.")
@@ -54,11 +62,89 @@ class cmdEdit(MudCommand.MudCommand):
             player.writeWithPrompt(argList[2]+' was changed to: '+str(argList[3])+' on: '+t.getName())
             
         elif argList[0].lower() == 'ctemplate':
-            pass
+            
+            t = MudWorld.world.templateDb.findTemplateById('character', int(argList[1]))
+            if t == None:
+                player.writeWithPrompt("That template was not found.")
+                
+            if t.getInfo().has_key(argList[2]):
+                if argList[3].isdigit():
+                    if t.hasStat(argList[2]):
+                        t.setStat(argList[2], int(argList[3]))
+                        return
+                    else:
+                        player.writeWithPrompt("That template does not have that stat. Please use addstat to add it.")
+                        return
+                else:
+                    if t.hasStat(argList[2]):
+                        t.info[argList[2]] = argList[3]
+                        return
+                    else:
+                        player.writeWithPrompt("That template does not have that stat. Please use addstat to add it.")
+                        return
+                    
+            else:
+                player.writeWithPrompt("The character template does not have that attribute.")
+                return
         elif argList[0].lower() == 'itemplate':
-            pass
+            t = MudWorld.world.templateDb.findTemplateById('item', int(argList[1]))
+            if t == None:
+                player.writeWithPrompt("That template was not found.")
+                
+            if t.getInfo().has_key(argList[2]):
+                if argList[3].isdigit():
+                    if t.hasStat(argList[2]):
+                        t.setStat(argList[2], int(argList[3]))
+                        return
+                    else:
+                        player.writeWithPrompt("That template does not have that stat. Please use addstat to add it.")
+                        return
+                else:
+                    if t.hasStat(argList[2]):
+                        t.info[argList[2]] = argList[3]
+                        return
+                    else:
+                        player.writeWithPrompt("That template does not have that stat. Please use addstat to add it.")
+                        return
+                    
+            else:
+                player.writeWithPrompt("The item template does not have that attribute.")
+                return
         elif argList[0].lower() == 'iinstance':
-            pass
+            for eachChar in player.getRoomRef().getItems().values():
+                try:
+                    if eachChar.getId() == int(argList[1]):
+                        t = eachChar
+                        break
+                except:
+                    player.writeWithPrompt("IDs must be numbers only!")
+                    return
+            
+            if t == None:
+                player.writeWithPrompt("An item with that ID was not found in this room.")
+                return
+
+            if t.getInfo().has_key(argList[2]):
+                if argList[3].isdigit():
+                    if t.hasStat(argList[2]):
+                        t.setStat(argList[2], int(argList[3]))
+                        return
+                    else:
+                        player.writeWithPrompt("That item does not have that stat. Please use addstat to add it.")
+                        return
+                else:
+                    if t.hasStat(argList[2]):
+                        t.info[argList[2]] = argList[3]
+                        return
+                    else:
+                        player.writeWithPrompt("That item does not have that stat. Please use addstat to add it.")
+                        return
+                    
+            else:
+                player.writeWithPrompt("The item does not have that attribute.")
+                return
+            
+            player.writeWithPrompt(argList[2]+' was changed to: '+str(argList[3])+' on: '+t.getName())
         else:
             player.writeWithPrompt("Invalid type. Please use iinstance, itemplate, cinstance, or ctemplate.")
             return
