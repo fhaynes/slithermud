@@ -64,6 +64,7 @@ class CommandDatabase:
         self.commands['spawn']       = cmdSpawn.cmdSpawn
         self.commands['vari']        = cmdVari.cmdVari
         self.commands['search']      = cmdSearch.cmdSearch
+        self.commands['addstat']     = cmdAddStat.cmdAddStat
 
     def getCommand(self, name):
         """Returns a new command instance."""
