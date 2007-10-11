@@ -73,7 +73,7 @@ class MudWorld:
         print "Loading Time and Timer Database..."
         self.actionHandler.gameTime = self.db.loadGameTime()            
         
-        print "MUD Started!"
+        print "MUD Started on port: "+str(MudConst.port)
         
     def processAction(self, action):
         """Sends the action to the actionHandler instance for processing."""

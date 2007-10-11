@@ -114,11 +114,13 @@ class MudTemplateDatabase:
         if templateType.lower() == 'item':
             newItem = copy.deepcopy(self.itemTemplates[templateId])
             newItem.setId(MudWorld.world.idDb.getNewId('iteminstance'))
+            newItem.setTemplateId(int(templateId))
             return newItem
             
         elif templateType.lower() == 'character':
             newChar = copy.deepcopy(self.charTemplates[templateId])
             newChar.setId(MudWorld.world.idDb.getNewId('charinstance'))
+            newItem.setTemplateId(int(templateId))
             return newChar
         else:
             # TODO: Try/Except to catch invalid types. 

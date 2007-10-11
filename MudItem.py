@@ -64,3 +64,11 @@ class MudItem(MudObject.MudObject):
     def setRoom(self, room):
         """Sets the roomRef variable of the item."""
         self.info['roomRef'] = room
+        
+    def getTemplateId(self):
+        """Returns the template ID."""
+        return self.info['templateId']
+    
+    def setTemplateId(self, idNum):
+        """Sets the template ID."""
+        self.info['templateId'] = int(idNum)

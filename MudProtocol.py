@@ -66,4 +66,14 @@ class ProtocolHandler:
         for eachKey in self.codes.keys():
             data = data.replace(eachKey, self.codes[eachKey])
         return data
+    
+    def processNoColor(self, data):
+        """
+        Strips out control codes and doesn't replace them. For people who
+        don't want color.
+        """
+        for eachKey in self.codes.keys():
+            data = data.replace(eachKey, "")
+        return data
+
 protocolHandler = ProtocolHandler()
