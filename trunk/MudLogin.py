@@ -45,7 +45,8 @@ def getAccountPassword(player, data):
         MudWorld.world.actionHandler.doAction(newAction)
         
         # TODO: Come up with a better way to load initial commands. #
-        MudWorld.world.cmdDb.loadAllCommand(player)
+        if player.getName() == 'Kuros':
+            MudWorld.world.cmdDb.loadAllCommand(player)
     else:
         player.writePlain('\r\nInvalid password. Try again: ')
         return
@@ -113,7 +114,7 @@ def confirmNewAccountPass(player, data):
         MudWorld.world.actionHandler.doAction(newAction)
         
         # TODO: Come up with a better way to load initial commands. #
-        MudWorld.world.cmdDb.loadAllCommand(player)
+        MudWorld.world.cmdDb.loadPlayerCommands(player)
         
         # TODO: Come up with better way to load initial logics. #
         name, gen  = MudWorld.world.logicDb.getLogic('genericPlayer')
