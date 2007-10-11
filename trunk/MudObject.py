@@ -101,7 +101,7 @@ class MudObject:
         '''
         self.info['commands'][newCmd] = cmdInst
         
-    def remCommand(self, command):
+    def removeCommand(self, command):
         '''
         Removes a command from the dictionary.
         '''
