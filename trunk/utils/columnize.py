@@ -10,7 +10,6 @@ def columnize(player, list, columns, sorted = True, padding = 2):
     try:
         assert list[0] != 0
     except:
-        print "Columnize called with an empty list!"
         return
     # Some variables we're going to use in the course of our function
     iter        = 1
