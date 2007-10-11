@@ -16,11 +16,13 @@ getNewAccountName     = 3
 getNewAccountPass     = 4
 confirmNewAccountName = 5
 confirmNewAccountPass = 6
-getRace               = 7
-confirmGetRace        = 8
-getStats              = 9
-logedIn               = 10
-inOlc                 = 11
+logedIn               = 7
+
+# Character ranks in the MUD
+player        = 1
+enforcer      = 2
+builder       = 3
+administrator = 4
 
 # Admin levels
 
@@ -69,6 +71,7 @@ gameTimePath = databaseDir+'currentGameTime.mdb'
 sys.path.append(zoneDir)
 sys.path.append(os.path.join(homeDir, 'commands'))
 sys.path.append(os.path.join(homeDir, 'logics'))
+sys.path.append(os.path.join(homeDir, 'utils'))
 
 greeting = '''<green>\r\n\r\n\tSlitherMUD\r\n
 <r>\t<cyan>By: Kuros

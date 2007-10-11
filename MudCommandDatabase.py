@@ -38,8 +38,6 @@ class CommandDatabase:
         self.commands['go']          = cmdGo.cmdGo
         self.commands['get']         = cmdGet.cmdGet
         self.commands['drop']        = cmdDrop.cmdDrop
-        self.commands['vari']        = cmdVari.cmdVari
-        self.commands['search']      = cmdSearch.cmdSearch
         self.commands['commands']    = cmdCommands.cmdCommands
         self.commands['quit']        = cmdQuit.cmdQuit
         
@@ -64,6 +62,8 @@ class CommandDatabase:
         self.commands['warp']        = cmdWarp.cmdWarp
         self.commands['edit']        = cmdEdit.cmdEdit
         self.commands['spawn']       = cmdSpawn.cmdSpawn
+        self.commands['vari']        = cmdVari.cmdVari
+        self.commands['search']      = cmdSearch.cmdSearch
 
     def getCommand(self, name):
         """Returns a new command instance."""
@@ -73,3 +73,35 @@ class CommandDatabase:
         """Gives all commands to the player. Takes a player reference."""
         for eachCmd in self.commands.keys():
             player.addCommand(eachCmd, self.commands[eachCmd]())
+            
+    def loadOlcCommand(self, player):
+        """Gives all OLC commands to the player. Takes a player reference."""
+        player.addCommand('newzone', self.commands['newzone']())
+        player.addCommand('delzone', self.commands['delzone']())
+        player.addCommand('listzone', self.commands['listzone']())
+        player.addCommand('newroom', self.commands['newroom']())
+        player.addCommand('redit', self.commands['redit']())
+        player.addCommand('delroom', self.commands['delroom']())
+        player.addCommand('newportal', self.commands['newportal']())
+        player.addCommand('delportal', self.commands['delportal']())
+        player.addCommand('zedit', self.commands['zedit']())
+        player.addCommand('pedit', self.commands['pedit']())
+        player.addCommand('newtemplate', self.commands['newtemplate']())
+    
+    def loadStdCommands(self, player):
+        """Loads standard admin commands."""
+        player.addCommand('spawn', self.commands['spawn']())
+        player.addCommand('edit', self.commands['edit']())
+        player.addCommand('search', self.commands['search']())
+        player.addCommand('warp', self.commands['warp']())
+        
+    def loadPlayerCommands(self, player):
+        """Loads player specific commands."""
+        player.addCommand('get', self.commands['get']())
+        player.addCommand('drop', self.commands['drop']())
+        player.addCommand('go', self.commands['go']())
+        player.addCommand('say', self.commands['say']())
+        player.addCommand('look', self.commands['look']())
+        player.addCommand('quit', self.commands['quit']())
+        player.addCommand('commands', self.commands['commands']())
+        

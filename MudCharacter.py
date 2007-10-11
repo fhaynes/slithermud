@@ -19,6 +19,9 @@ class MudCharacter(MudObject.MudObject):
 
         # ID of the template the character was created from
         self.info['templateId'] = None
+        
+        # The rank of the player. Player, Builder, Admin, etc
+        self.info['rank'] = 1
 
         
     # ------------------- #

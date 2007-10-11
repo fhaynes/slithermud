@@ -85,6 +85,15 @@ class MudObject:
         Returns the value of a requested statistic.
         '''
         return self.info['statistics'][statName]
+    
+    def hasStat(self, statName):
+        '''
+        Checks if the object has a stat in the info dictionary.
+        '''
+        if self.info['statistics'].has_key(statName):
+            return True
+        else:
+            return False
         
     def addCommand(self, newCmd, cmdInst):
         '''
