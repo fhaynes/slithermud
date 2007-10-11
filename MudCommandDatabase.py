@@ -28,6 +28,7 @@ import cmdAddStat
 import cmdDelStat
 import cmdVari
 import cmdSearch
+import cmdGrant
 
 class CommandDatabase:
     def __init__(self):
@@ -70,17 +71,22 @@ class CommandDatabase:
         self.commands['search']      = cmdSearch.cmdSearch
         self.commands['addstat']     = cmdAddStat.cmdAddStat
         self.commands['delstat']     = cmdDelStat.cmdDelStat
+        self.commands['grant']       = cmdGrant.cmdGrant
 
     def getCommand(self, name):
         """Returns a new command instance."""
         return self.commands[name]()
+    
+    def getCommandList(self):
+        """Returns all the keys in the command dictionary."""
+        return self.commands.keys()
     
     def loadAllCommand(self, player):
         """Gives all commands to the player. Takes a player reference."""
         for eachCmd in self.commands.keys():
             player.addCommand(eachCmd, self.commands[eachCmd]())
             
-    def loadOlcCommand(self, player):
+    def loadOlcCommands(self, player):
         """Gives all OLC commands to the player. Takes a player reference."""
         player.addCommand('newzone', self.commands['newzone']())
         player.addCommand('delzone', self.commands['delzone']())
