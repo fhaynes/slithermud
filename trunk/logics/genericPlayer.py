@@ -20,5 +20,8 @@ class genericPlayer(MudLogic.MudLogic):
                 pass
             else:
                 action.getPlayerRef().writePlain('\r\n'+owner.getName()+' is here.')
+        elif action.getType() == 'vision':
+            owner.writeWithPrompt(action.getString())
+            return
         else:
             pass
