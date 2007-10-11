@@ -66,4 +66,3 @@ class ProtocolHandler:
         for eachKey in self.codes.keys():
             data = data.replace(eachKey, self.codes[eachKey])
         return data
-protocolHandler = ProtocolHandler()
