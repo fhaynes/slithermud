@@ -62,62 +62,78 @@ S'Lets you edit the zone attributes.'
 p28
 sg16
 g23
-ssbsS'delzone'
+ssbsS'color'
 p29
-(icmdDelZone
-cmdDelZone
+(icmdColor
+cmdColor
 p30
 (dp31
 g3
 (dp32
 g12
-S'delzone 3'
+S'color on/off'
 p33
 sg14
-S'Deletes the zone with the supplied ID number.'
+S'Lets you toggle color on or off.'
 p34
 sg16
 g29
-ssbsS'newportal'
+ssbsS'delzone'
 p35
-(icmdNewPortal
-cmdNewPortal
+(icmdDelZone
+cmdDelZone
 p36
 (dp37
 g3
 (dp38
 g12
-S'newportal 3 Door of Death'
+S'delzone 3'
 p39
 sg14
-S'Creates a new room with the specified target room and name.'
+S'Deletes the zone with the supplied ID number.'
 p40
 sg16
 g35
-ssbsS'say'
+ssbsS'newportal'
 p41
-(icmdSay
-cmdSay
+(icmdNewPortal
+cmdNewPortal
 p42
 (dp43
 g3
 (dp44
 g12
-S'say text'
+S'newportal 3 Door of Death'
 p45
 sg14
-S'Lets you say something to the room.'
+S'Creates a new room with the specified target room and name.'
 p46
 sg16
 g41
-ssbsS'go'
+ssbsS'say'
 p47
-(icmdGo
-cmdGo
+(icmdSay
+cmdSay
 p48
 (dp49
 g3
 (dp50
+g12
+S'say text'
+p51
+sg14
+S'Lets you say something to the room.'
+p52
+sg16
+g47
+ssbsS'go'
+p53
+(icmdGo
+cmdGo
+p54
+(dp55
+g3
+(dp56
 g12
 S''
 sg14
@@ -126,99 +142,131 @@ sg16
 S''
 ssg12
 S'go portalname'
-p51
-sg14
-S'This tries to move you through a portal.'
-p52
-sg16
-g47
-sbsS'delroom'
-p53
-(icmdDelRoom
-cmdDelRoom
-p54
-(dp55
-g3
-(dp56
-g12
-S'newroom 3'
 p57
 sg14
-S'Creates a new room with the specified ID.'
+S'This tries to move you through a portal.'
 p58
 sg16
 g53
-ssbsS'vari'
+sbsS'delroom'
 p59
-(icmdVari
-cmdVari
+(icmdDelRoom
+cmdDelRoom
 p60
 (dp61
 g3
 (dp62
 g12
-S'DO NOT USE!'
+S'newroom 3'
 p63
 sg14
-g63
+S'Creates a new room with the specified ID.'
+p64
 sg16
 g59
+ssbsS'vari'
+p65
+(icmdVari
+cmdVari
+p66
+(dp67
+g3
+(dp68
+g12
+S'DO NOT USE!'
+p69
+sg14
+g69
+sg16
+g65
 ssbsS'quit'
-p64
+p70
 (icmdQuit
 cmdQuit
-p65
-(dp66
+p71
+(dp72
 g3
-(dp67
+(dp73
 g12
-g64
+g70
 sg14
 S'Lets you quit the game.'
-p68
-sg16
-g64
-ssbsS'redit'
-p69
-(icmdRedit
-cmdRedit
-p70
-(dp71
-g3
-(dp72
-g12
-S'redit (name, desc, addlogic, dellogic)'
-p73
-sg14
-S'Lets you edit the room attributes.'
 p74
 sg16
-g69
-ssbsS'pedit'
+g70
+ssbsS'addstat'
 p75
-(icmdPedit
-cmdPedit
+(icmdAddStat
+cmdAddStat
 p76
 (dp77
 g3
 (dp78
 g12
-S'pedit id (name, targetzone, targetroom)'
+S'addstat ctemplate/cinstance/itemplate/iinstance ID statname initialvalue'
 p79
 sg14
-S'Lets you edit portal attributes'
+S'Lets you add stats to the template or instance.'
 p80
 sg16
 g75
-ssbsS'get'
+ssbsS'redit'
 p81
-(icmdGet
-cmdGet
+(icmdRedit
+cmdRedit
 p82
 (dp83
 g3
 (dp84
 g12
+S'redit (name, desc, addlogic, dellogic)'
+p85
+sg14
+S'Lets you edit the room attributes.'
+p86
+sg16
+g81
+ssbsS'pedit'
+p87
+(icmdPedit
+cmdPedit
+p88
+(dp89
+g3
+(dp90
+g12
+S'pedit id (name, targetzone, targetroom)'
+p91
+sg14
+S'Lets you edit portal attributes'
+p92
+sg16
+g87
+ssbsS'delstat'
+p93
+(icmdDelStat
+cmdDelStat
+p94
+(dp95
+g3
+(dp96
+g12
+S'delstat ctemplate/cinstance/itemplate/iinstance ID statname'
+p97
+sg14
+S'Lets you delete stats from the template or instance.'
+p98
+sg16
+g93
+ssbsS'get'
+p99
+(icmdGet
+cmdGet
+p100
+(dp101
+g3
+(dp102
+g12
 S''
 sg14
 S''
@@ -226,147 +274,147 @@ sg16
 S''
 ssg12
 S'get sword'
-p85
+p103
 sg14
 S'This tries to get an item.'
-p86
+p104
 sg16
-g81
-sbsg6
+g99
+sbsS'search'
+p105
+(icmdSearch
+cmdSearch
+p106
+(dp107
+g3
+(dp108
+g12
+S'search item sword'
+p109
+sg14
+S'This command allows you to search through the character and item databases for an instance or a template.'
+p110
+sg16
+g105
+ssbsS'warp'
+p111
+(icmdWarp
+cmdWarp
+p112
+(dp113
+g3
+(dp114
+g12
+S'warp (zone ID) room ID or warp playername'
+p115
+sg14
+S'Lets you instantly travel to a room, zone, or player.'
+p116
+sg16
+g111
+ssbsS'listzone'
+p117
+(icmdListZone
+cmdListZone
+p118
+(dp119
+g3
+(dp120
+g12
+S'listzone (zoneid)'
+p121
+sg14
+S'Lists all zone names and IDs, or more specific info about a specified zone.'
+p122
+sg16
+g117
+ssbsS'newtemplate'
+p123
+(icmdNewTemplate
+cmdNewTemplate
+p124
+(dp125
+g3
+(dp126
+g12
+S'newtemplate character/item Name of Template'
+p127
+sg14
+S'Creates a new template with the optionally specified name.'
+p128
+sg16
+g123
+ssbsg6
 (icmdCommands
 cmdCommands
-p87
-(dp88
+p129
+(dp130
 g3
-(dp89
+(dp131
 g12
 g6
 sg14
 S'This command shows the player a list of commands at their disposal.'
-p90
-sg16
-g6
-ssbsS'warp'
-p91
-(icmdWarp
-cmdWarp
-p92
-(dp93
-g3
-(dp94
-g12
-S'warp (zone ID) room ID or warp playername'
-p95
-sg14
-S'Lets you instantly travel to a room, zone, or player.'
-p96
-sg16
-g91
-ssbsS'listzone'
-p97
-(icmdListZone
-cmdListZone
-p98
-(dp99
-g3
-(dp100
-g12
-S'listzone (zoneid)'
-p101
-sg14
-S'Lists all zone names and IDs, or more specific info about a specified zone.'
-p102
-sg16
-g97
-ssbsS'newtemplate'
-p103
-(icmdNewTemplate
-cmdNewTemplate
-p104
-(dp105
-g3
-(dp106
-g12
-S'newtemplate character/item Name of Template'
-p107
-sg14
-S'Creates a new template with the optionally specified name.'
-p108
-sg16
-g103
-ssbsS'search'
-p109
-(icmdSearch
-cmdSearch
-p110
-(dp111
-g3
-(dp112
-g12
-S'search item sword'
-p113
-sg14
-S'This command allows you to search through the character and item databases for an instance or a template.'
-p114
-sg16
-g109
-ssbsS'look'
-p115
-(icmdLook
-cmdLook
-p116
-(dp117
-g3
-(dp118
-g12
-S'look (target)'
-p119
-sg14
-S'Look at your surroundings, or something specific.'
-p120
-sg16
-g115
-ssbsS'newzone'
-p121
-(icmdNewZone
-cmdNewZone
-p122
-(dp123
-g3
-(dp124
-g12
-S'newzone The Deadly Forest of Death'
-p125
-sg14
-S'Creates a new zone with the supplied name'
-p126
-sg16
-g121
-ssbsS'edit'
-p127
-(icmdEdit
-cmdEdit
-p128
-(dp129
-g3
-(dp130
-g12
-S'edit cinstance/ctemplate/iinstance/itemplate         ID field value'
-p131
-sg14
-S'Lets you edit template and instance attributes.'
 p132
 sg16
-g127
-ssbsS'drop'
+g6
+ssbsS'look'
 p133
-(icmdDrop
-cmdDrop
+(icmdLook
+cmdLook
 p134
 (dp135
 g3
 (dp136
 g12
+S'look (target)'
+p137
+sg14
+S'Look at your surroundings, or something specific.'
+p138
+sg16
+g133
+ssbsS'newzone'
+p139
+(icmdNewZone
+cmdNewZone
+p140
+(dp141
+g3
+(dp142
+g12
+S'newzone The Deadly Forest of Death'
+p143
+sg14
+S'Creates a new zone with the supplied name'
+p144
+sg16
+g139
+ssbsS'edit'
+p145
+(icmdEdit
+cmdEdit
+p146
+(dp147
+g3
+(dp148
+g12
+S'edit cinstance/ctemplate/iinstance/itemplate         ID field value'
+p149
+sg14
+S'Lets you edit template and instance attributes.'
+p150
+sg16
+g145
+ssbsS'drop'
+p151
+(icmdDrop
+cmdDrop
+p152
+(dp153
+g3
+(dp154
+g12
 S''
 sg14
 S''
@@ -374,78 +422,80 @@ sg16
 S''
 ssg12
 S'get sword'
-p137
+p155
 sg14
 S'This tries to get an item.'
-p138
+p156
 sg16
-g81
+g99
 sbsS'newroom'
-p139
+p157
 (icmdNewRoom
 cmdNewRoom
-p140
-(dp141
+p158
+(dp159
 g3
-(dp142
+(dp160
 g12
 S'newroom (The Room of Horrible Horror)'
-p143
+p161
 sg14
 S'Creates a new room with the optionally specified name.'
-p144
+p162
 sg16
-g139
+g157
 ssbssS'logics'
-p145
-(dp146
+p163
+(dp164
 S'genericPlayer'
-p147
+p165
 (igenericPlayer
 genericPlayer
-p148
-(dp149
+p166
+(dp167
 S'temporary'
-p150
+p168
 I00
 sbssS'name'
-p151
+p169
 S'Admin'
-p152
+p170
+sg29
+I00
 sS'hooks'
-p153
-(lp154
+p171
+(lp172
 sS'zoneRef'
-p155
+p173
 I1
 sS'id_num'
-p156
+p174
 I0
 sS'rank'
-p157
+p175
 I1
 sS'login_state'
-p158
+p176
 I7
 sS'statistics'
-p159
-(dp160
+p177
+(dp178
 sS'templateId'
-p161
+p179
 NsS'password'
-p162
+p180
 S'admin'
-p163
+p181
 sS'items'
-p164
-(dp165
+p182
+(dp183
 sS'roomRef'
-p166
+p184
 I1
 sS'desc'
-p167
+p185
 S'A blank description.'
-p168
+p186
 ssS'sockRef'
-p169
+p187
 Nsb.
