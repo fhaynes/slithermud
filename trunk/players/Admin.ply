@@ -1,0 +1,451 @@
+(iMudCharacter
+MudCharacter
+p1
+(dp2
+S'info'
+p3
+(dp4
+S'admin_level'
+p5
+I1
+sS'commands'
+p6
+(dp7
+S'delportal'
+p8
+(icmdDelPortal
+cmdDelPortal
+p9
+(dp10
+g3
+(dp11
+S'useExample'
+p12
+S'delportal 3'
+p13
+sS'helpText'
+p14
+S'Deletes a portal from the room, based on supplied ID.'
+p15
+sS'cmdName'
+p16
+g8
+ssbsS'spawn'
+p17
+(icmdSpawn
+cmdSpawn
+p18
+(dp19
+g3
+(dp20
+g12
+S'spawn character/item 5'
+p21
+sg14
+S'Spawn allows you to create an instance from a character or item template.         The instance is created in the room you are in.'
+p22
+sg16
+g17
+ssbsS'zedit'
+p23
+(icmdZedit
+cmdZedit
+p24
+(dp25
+g3
+(dp26
+g12
+S'zedit (addlogic, dellogic)'
+p27
+sg14
+S'Lets you edit the zone attributes.'
+p28
+sg16
+g23
+ssbsS'delzone'
+p29
+(icmdDelZone
+cmdDelZone
+p30
+(dp31
+g3
+(dp32
+g12
+S'delzone 3'
+p33
+sg14
+S'Deletes the zone with the supplied ID number.'
+p34
+sg16
+g29
+ssbsS'newportal'
+p35
+(icmdNewPortal
+cmdNewPortal
+p36
+(dp37
+g3
+(dp38
+g12
+S'newportal 3 Door of Death'
+p39
+sg14
+S'Creates a new room with the specified target room and name.'
+p40
+sg16
+g35
+ssbsS'say'
+p41
+(icmdSay
+cmdSay
+p42
+(dp43
+g3
+(dp44
+g12
+S'say text'
+p45
+sg14
+S'Lets you say something to the room.'
+p46
+sg16
+g41
+ssbsS'go'
+p47
+(icmdGo
+cmdGo
+p48
+(dp49
+g3
+(dp50
+g12
+S''
+sg14
+S''
+sg16
+S''
+ssg12
+S'go portalname'
+p51
+sg14
+S'This tries to move you through a portal.'
+p52
+sg16
+g47
+sbsS'delroom'
+p53
+(icmdDelRoom
+cmdDelRoom
+p54
+(dp55
+g3
+(dp56
+g12
+S'newroom 3'
+p57
+sg14
+S'Creates a new room with the specified ID.'
+p58
+sg16
+g53
+ssbsS'vari'
+p59
+(icmdVari
+cmdVari
+p60
+(dp61
+g3
+(dp62
+g12
+S'DO NOT USE!'
+p63
+sg14
+g63
+sg16
+g59
+ssbsS'quit'
+p64
+(icmdQuit
+cmdQuit
+p65
+(dp66
+g3
+(dp67
+g12
+g64
+sg14
+S'Lets you quit the game.'
+p68
+sg16
+g64
+ssbsS'redit'
+p69
+(icmdRedit
+cmdRedit
+p70
+(dp71
+g3
+(dp72
+g12
+S'redit (name, desc, addlogic, dellogic)'
+p73
+sg14
+S'Lets you edit the room attributes.'
+p74
+sg16
+g69
+ssbsS'pedit'
+p75
+(icmdPedit
+cmdPedit
+p76
+(dp77
+g3
+(dp78
+g12
+S'pedit id (name, targetzone, targetroom)'
+p79
+sg14
+S'Lets you edit portal attributes'
+p80
+sg16
+g75
+ssbsS'get'
+p81
+(icmdGet
+cmdGet
+p82
+(dp83
+g3
+(dp84
+g12
+S''
+sg14
+S''
+sg16
+S''
+ssg12
+S'get sword'
+p85
+sg14
+S'This tries to get an item.'
+p86
+sg16
+g81
+sbsg6
+(icmdCommands
+cmdCommands
+p87
+(dp88
+g3
+(dp89
+g12
+g6
+sg14
+S'This command shows the player a list of commands at their disposal.'
+p90
+sg16
+g6
+ssbsS'warp'
+p91
+(icmdWarp
+cmdWarp
+p92
+(dp93
+g3
+(dp94
+g12
+S'warp (zone ID) room ID or warp playername'
+p95
+sg14
+S'Lets you instantly travel to a room, zone, or player.'
+p96
+sg16
+g91
+ssbsS'listzone'
+p97
+(icmdListZone
+cmdListZone
+p98
+(dp99
+g3
+(dp100
+g12
+S'listzone (zoneid)'
+p101
+sg14
+S'Lists all zone names and IDs, or more specific info about a specified zone.'
+p102
+sg16
+g97
+ssbsS'newtemplate'
+p103
+(icmdNewTemplate
+cmdNewTemplate
+p104
+(dp105
+g3
+(dp106
+g12
+S'newtemplate character/item Name of Template'
+p107
+sg14
+S'Creates a new template with the optionally specified name.'
+p108
+sg16
+g103
+ssbsS'search'
+p109
+(icmdSearch
+cmdSearch
+p110
+(dp111
+g3
+(dp112
+g12
+S'search item sword'
+p113
+sg14
+S'This command allows you to search through the character and item databases for an instance or a template.'
+p114
+sg16
+g109
+ssbsS'look'
+p115
+(icmdLook
+cmdLook
+p116
+(dp117
+g3
+(dp118
+g12
+S'look (target)'
+p119
+sg14
+S'Look at your surroundings, or something specific.'
+p120
+sg16
+g115
+ssbsS'newzone'
+p121
+(icmdNewZone
+cmdNewZone
+p122
+(dp123
+g3
+(dp124
+g12
+S'newzone The Deadly Forest of Death'
+p125
+sg14
+S'Creates a new zone with the supplied name'
+p126
+sg16
+g121
+ssbsS'edit'
+p127
+(icmdEdit
+cmdEdit
+p128
+(dp129
+g3
+(dp130
+g12
+S'edit cinstance/ctemplate/iinstance/itemplate         ID field value'
+p131
+sg14
+S'Lets you edit template and instance attributes.'
+p132
+sg16
+g127
+ssbsS'drop'
+p133
+(icmdDrop
+cmdDrop
+p134
+(dp135
+g3
+(dp136
+g12
+S''
+sg14
+S''
+sg16
+S''
+ssg12
+S'get sword'
+p137
+sg14
+S'This tries to get an item.'
+p138
+sg16
+g81
+sbsS'newroom'
+p139
+(icmdNewRoom
+cmdNewRoom
+p140
+(dp141
+g3
+(dp142
+g12
+S'newroom (The Room of Horrible Horror)'
+p143
+sg14
+S'Creates a new room with the optionally specified name.'
+p144
+sg16
+g139
+ssbssS'logics'
+p145
+(dp146
+S'genericPlayer'
+p147
+(igenericPlayer
+genericPlayer
+p148
+(dp149
+S'temporary'
+p150
+I00
+sbssS'name'
+p151
+S'Admin'
+p152
+sS'hooks'
+p153
+(lp154
+sS'zoneRef'
+p155
+I1
+sS'id_num'
+p156
+I0
+sS'rank'
+p157
+I1
+sS'login_state'
+p158
+I7
+sS'statistics'
+p159
+(dp160
+sS'templateId'
+p161
+NsS'password'
+p162
+S'admin'
+p163
+sS'items'
+p164
+(dp165
+sS'roomRef'
+p166
+I1
+sS'desc'
+p167
+S'A blank description.'
+p168
+ssS'sockRef'
+p169
+Nsb.

@@ -3,8 +3,6 @@ import cmdSay
 import cmdGo
 import cmdGet
 import cmdDrop
-import cmdVari
-import cmdSearch
 import cmdCommands
 import cmdQuit
 
@@ -25,6 +23,10 @@ import cmdNewTemplate
 import cmdWarp
 import cmdEdit
 import cmdSpawn
+import cmdAddStat
+import cmdDelStat
+import cmdVari
+import cmdSearch
 
 class CommandDatabase:
     def __init__(self):
@@ -65,6 +67,7 @@ class CommandDatabase:
         self.commands['vari']        = cmdVari.cmdVari
         self.commands['search']      = cmdSearch.cmdSearch
         self.commands['addstat']     = cmdAddStat.cmdAddStat
+        self.commands['delstat']     = cmdDelStat.cmdDelStat
 
     def getCommand(self, name):
         """Returns a new command instance."""
@@ -95,6 +98,8 @@ class CommandDatabase:
         player.addCommand('edit', self.commands['edit']())
         player.addCommand('search', self.commands['search']())
         player.addCommand('warp', self.commands['warp']())
+        player.addCommand('addstat', self.commands['addstat']())
+        player.addCommand('delstat', self.commands['delstat']())
         
     def loadPlayerCommands(self, player):
         """Loads player specific commands."""
@@ -105,4 +110,5 @@ class CommandDatabase:
         player.addCommand('look', self.commands['look']())
         player.addCommand('quit', self.commands['quit']())
         player.addCommand('commands', self.commands['commands']())
+        
         
