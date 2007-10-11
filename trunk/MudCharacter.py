@@ -22,6 +22,9 @@ class MudCharacter(MudObject.MudObject):
         
         # The rank of the player. Player, Builder, Admin, etc
         self.info['rank'] = 1
+        
+        # Should they see color? By default, no
+        self.info['color'] = False
 
         
     # ------------------- #
@@ -88,6 +91,14 @@ class MudCharacter(MudObject.MudObject):
     def getItems(self):
         """Returns the item dictionary."""
         return self.info['items']
+    
+    def setColor(self, flag):
+        """Sets the color flag to true or false."""
+        self.info['color'] = flag
+        
+    def getColor(self):
+        """Returns true/false if the char wants color."""
+        return self.info['color']
         
     def findItemByName(self, name):
         """Searches for an item in char's inventory by name."""
@@ -103,14 +114,24 @@ class MudCharacter(MudObject.MudObject):
         
     def prompt(self):
         """Returns a prompt to show to the user."""
-        return '\r\n'+self.info['name']+'> '
+        if self.getColor() == True:
+            return MudProtocol.protocolHandler.processText('\r\n'+self.info['name']+'> ')
+        else:
+            return '\r\n'+self.info['name']+'> '
     
     def writeWithPrompt(self, data):
         """Writes a string to the socket with a prompt following."""
-        self.sockRef.write('\r\n'+data+'\r\n'+self.prompt())
+        if self.getColor() == True:
+            self.sockRef.write(MudProtocol.protocolHandler.processText('\r\n'+data+'\r\n'+self.prompt()))
+        else:
+            self.sockRef.write('\r\n'+data+'\r\n'+self.prompt())
         
     def writePlain(self, data):
         """Writes data to the socket without a prompt following."""
-        self.sockRef.write(data)
+        if self.getColor():
+            self.sockRef.write(MudProtocol.protocolHandler.processText(data))
+        else:
+            self.sockRef.write(data)
+        
         
         

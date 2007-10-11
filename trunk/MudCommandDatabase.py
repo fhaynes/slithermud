@@ -5,6 +5,7 @@ import cmdGet
 import cmdDrop
 import cmdCommands
 import cmdQuit
+import cmdColor
 
 # OLC Related Imports
 import cmdNewZone
@@ -42,6 +43,7 @@ class CommandDatabase:
         self.commands['drop']        = cmdDrop.cmdDrop
         self.commands['commands']    = cmdCommands.cmdCommands
         self.commands['quit']        = cmdQuit.cmdQuit
+        self.commands['color']       = cmdColor.cmdColor
         
         # ---------------------- #
         #  OLC Related Commands  #
@@ -110,5 +112,6 @@ class CommandDatabase:
         player.addCommand('look', self.commands['look']())
         player.addCommand('quit', self.commands['quit']())
         player.addCommand('commands', self.commands['commands']())
+        player.addCommand('color', self.commands['color']())
         
         
