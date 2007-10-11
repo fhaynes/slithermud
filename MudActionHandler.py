@@ -30,6 +30,8 @@ class MudActionHandler:
             self.say(action)
         elif action.getType() == 'look':
             self.look(action)
+        elif action.info['actionType'] == 'vision':
+            self.actionRoomCharacters(action, action.getData1())
         elif action.getType() == 'enterworld':
             self.enterWorld(action)
         elif action.getType() == 'enterportal':
