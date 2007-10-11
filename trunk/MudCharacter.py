@@ -1,5 +1,5 @@
 import MudObject
-
+import MudProtocol
 class MudCharacter(MudObject.MudObject):    
     
     def __init__(self, sockRef=''):
@@ -106,6 +106,14 @@ class MudCharacter(MudObject.MudObject):
             if eachItem.getName().lower() == name.lower():
                 return eachItem
         return None
+    
+    def getTemplateId(self):
+        """Returns the template ID."""
+        return self.info['templateId']
+    
+    def setTemplateId(self, idNum):
+        """Sets the template ID."""
+        self.info['templateId'] = int(idNum)
 
         
     # ---------------------- #
@@ -117,21 +125,21 @@ class MudCharacter(MudObject.MudObject):
         if self.getColor() == True:
             return MudProtocol.protocolHandler.processText('\r\n'+self.info['name']+'> ')
         else:
-            return '\r\n'+self.info['name']+'> '
+            return MudProtocol.protocolHandler.processNoColor('\r\n'+self.info['name']+'> ')
     
     def writeWithPrompt(self, data):
         """Writes a string to the socket with a prompt following."""
         if self.getColor() == True:
             self.sockRef.write(MudProtocol.protocolHandler.processText('\r\n'+data+'\r\n'+self.prompt()))
         else:
-            self.sockRef.write('\r\n'+data+'\r\n'+self.prompt())
+            self.sockRef.write(MudProtocol.protocolHandler.processNoColor('\r\n'+data+'\r\n'+self.prompt()))
         
     def writePlain(self, data):
         """Writes data to the socket without a prompt following."""
         if self.getColor():
             self.sockRef.write(MudProtocol.protocolHandler.processText(data))
         else:
-            self.sockRef.write(data)
+            self.sockRef.write(MudProtocol.protocolHandler.processNoColor(data))
         
         
         

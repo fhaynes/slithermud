@@ -30,6 +30,7 @@ import cmdVari
 import cmdSearch
 import cmdGrant
 import cmdRevoke
+import cmdInfo
 
 class CommandDatabase:
     def __init__(self):
@@ -74,6 +75,7 @@ class CommandDatabase:
         self.commands['delstat']     = cmdDelStat.cmdDelStat
         self.commands['grant']       = cmdGrant.cmdGrant
         self.commands['revoke']      = cmdRevoke.cmdRevoke
+        self.commands['info']        = cmdInfo.cmdInfo
 
     def getCommand(self, name):
         """Returns a new command instance."""

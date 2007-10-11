@@ -95,6 +95,10 @@ class MudObject:
         else:
             return False
         
+    def getStats(self):
+        """Returns the entire stat dictionary."""
+        return self.info['statistics']
+        
     def addCommand(self, newCmd, cmdInst):
         '''
         Adds a command to the dictionary.
@@ -111,10 +115,7 @@ class MudObject:
         '''
         Returns a list of all the command names
         '''
-        cmdList = []
-        for eachCommand in self.info['commands']:
-            cmdList.append(eachCommand)
-        return cmdList                    
+        return self.info['commands'].keys()                 
         
     def addLogic(self, newLogic, logicInst):
         '''
