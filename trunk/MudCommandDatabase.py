@@ -1,3 +1,6 @@
+# A change to test copyover functionality! - Vopisk
+# Again!
+
 import cmdLook
 import cmdSay
 import cmdGo
@@ -31,6 +34,7 @@ import cmdSearch
 import cmdGrant
 import cmdRevoke
 import cmdInfo
+import cmdCopyover
 
 class CommandDatabase:
     def __init__(self):
@@ -76,6 +80,7 @@ class CommandDatabase:
         self.commands['grant']       = cmdGrant.cmdGrant
         self.commands['revoke']      = cmdRevoke.cmdRevoke
         self.commands['info']        = cmdInfo.cmdInfo
+        self.commands['copyover']    = cmdCopyover.cmdCopyover
 
     def getCommand(self, name):
         """Returns a new command instance."""
@@ -123,5 +128,3 @@ class CommandDatabase:
         player.addCommand('quit', self.commands['quit']())
         player.addCommand('commands', self.commands['commands']())
         player.addCommand('color', self.commands['color']())
-        
-        
