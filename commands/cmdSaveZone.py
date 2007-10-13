@@ -22,14 +22,13 @@ class cmdSaveZone(MudCommand.MudCommand):
             player.writeToSelf("Please specify a zone ID.")
             return
         try:
-            name = MudWorld.world.getZone(int(args)).getName()
-            MudWorld.world.removeZone(int(args))
+            MudWorld.world.db.saveZone(MudWorld.world.getZone(int(args)))
         except KeyError:
-            player.writeWithPrompt("A zone with that ID does not exist.")
-            
-        MudWorld.world.db.saveZone(MudWorld.world.getZone(int(args)))
+            player.writeWithPrompt("That Zone ID is invalid.")
+            return
         
         player.writeWithPrompt("Zone: "+name+" has been saved!")
+        return
         
             
 

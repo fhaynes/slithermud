@@ -149,7 +149,7 @@ class MudObject:
         """
         del self.info['hooks'][action]
         
-    def clearHooks(self, action):
+    def clearHooks(self):
         """
         Clears all the hooks to all actions.
         """
