@@ -49,7 +49,6 @@ class cmdDelZone(MudCommand.MudCommand):
         
         # Finally, we add the freed ID number back into the database, and save it
         MudWorld.world.idDb.addFreeId('zone', int(args))
-        MudWorld.world.db.saveIdDatabase()
         
         player.writeWithPrompt("Zone: "+name+" has been deleted!")
         

@@ -36,6 +36,7 @@ import cmdRevoke
 import cmdInfo
 import cmdCopyover
 import cmdSaveZone
+import cmdObliterate
 
 class CommandDatabase:
     def __init__(self):
@@ -83,6 +84,7 @@ class CommandDatabase:
         self.commands['info']        = cmdInfo.cmdInfo
         self.commands['copyover']    = cmdCopyover.cmdCopyover
         self.commands['savezone']    = cmdSaveZone.cmdSaveZone
+        self.commands['obliterate']  = cmdObliterate.cmdObliterate
 
     def getCommand(self, name):
         """Returns a new command instance."""
@@ -120,6 +122,7 @@ class CommandDatabase:
         player.addCommand('addstat', self.commands['addstat']())
         player.addCommand('delstat', self.commands['delstat']())
         player.addCommand('savezone', self.commands['savezone']())
+        player.addCommand('obliterate', self.commands['obliterate']())
         
     def loadPlayerCommands(self, player):
         """Loads player specific commands."""

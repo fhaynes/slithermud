@@ -92,6 +92,10 @@ class MudCharacter(MudObject.MudObject):
         """Returns the item dictionary."""
         return self.info['items']
     
+    def clearItems(self):
+        """Deletes all the items in the dictionary."""
+        self.info['items'] = {}
+    
     def setColor(self, flag):
         """Sets the color flag to true or false."""
         self.info['color'] = flag
