@@ -23,7 +23,14 @@ class MudTemplateDatabase:
     
     def removeTemplate(self, templateType, template):
         """Removes a template from the DB."""
-        pass
+        if templateType == 'character':
+            del self.charTemplates[int(template)]
+            MudWorld.world.idDb.addFreeId('chartemplate', int(template))
+        elif templateType == 'item':
+            del self.itemTemplates[int(template)]
+            MudWorld.world.idDb.addFreeId('itemtemplate', int(template))
+        else:
+            return
         
     def ifTemplateExists(self, templateType, idNum):
         """Checks if a template exists by ID number."""

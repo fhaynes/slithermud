@@ -31,18 +31,23 @@ class MudIdDatabase:
         if idType.lower()   == 'itemtemplate':
             self.freeItemTemplateIds.append(int(idNum))
             self.freeItemTemplateIds.sort(reverse=True)
+            MudWorld.world.db.saveIdDatabase()
         elif idType.lower() == 'chartemplate':
             self.freeCharTemplateIds.append(int(idNum))
             self.freeCharTemplateIds.sort(reverse=True)
+            MudWorld.world.db.saveIdDatabase()
         elif idType.lower() == 'iteminstance':
             self.freeItemInstanceIds.append(int(idNum))
-            self.freeItemInstanceIds.sort(reverse=True)            
+            self.freeItemInstanceIds.sort(reverse=True)    
+            MudWorld.world.db.saveIdDatabase()        
         elif idType.lower() == 'charinstance':
             self.freeCharInstanceIds.append(int(idNum))
             self.freeCharTemplateIds.sort(reverse=True)
+            MudWorld.world.db.saveIdDatabase()
         elif idType.lower() == 'zone':
             self.freeZoneIds.append(int(idNum))
             self.freeZoneIds.sort(reverse=True)
+            MudWorld.world.db.saveIdDatabase()
         else:
             # TODO some error checking code in case an invalid idType
             # is sent?
