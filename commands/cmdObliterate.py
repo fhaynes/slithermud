@@ -9,7 +9,7 @@ import MudWorld
 import MudAction
 import string
 
-class cmdDelRoom(MudCommand.MudCommand):
+class cmdObliterate(MudCommand.MudCommand):
     def __init__(self):
         MudCommand.MudCommand.__init__(self)
         self.info['cmdName']    = "obliterate"
