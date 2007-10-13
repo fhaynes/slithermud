@@ -27,7 +27,7 @@ class cmdSaveZone(MudCommand.MudCommand):
             player.writeWithPrompt("That Zone ID is invalid.")
             return
         
-        player.writeWithPrompt("Zone: "+name+" has been saved!")
+        player.writeWithPrompt("Zone has been saved!")
         return
         
             
