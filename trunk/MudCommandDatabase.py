@@ -35,6 +35,7 @@ import cmdGrant
 import cmdRevoke
 import cmdInfo
 import cmdCopyover
+import cmdSaveZone
 
 class CommandDatabase:
     def __init__(self):
@@ -81,6 +82,7 @@ class CommandDatabase:
         self.commands['revoke']      = cmdRevoke.cmdRevoke
         self.commands['info']        = cmdInfo.cmdInfo
         self.commands['copyover']    = cmdCopyover.cmdCopyover
+        self.commands['savezone']    = cmdSaveZone.cmdSaveZone
 
     def getCommand(self, name):
         """Returns a new command instance."""
@@ -117,6 +119,7 @@ class CommandDatabase:
         player.addCommand('warp', self.commands['warp']())
         player.addCommand('addstat', self.commands['addstat']())
         player.addCommand('delstat', self.commands['delstat']())
+        player.addCommand('savezone', self.commands['savezone']())
         
     def loadPlayerCommands(self, player):
         """Loads player specific commands."""
