@@ -4,7 +4,7 @@ p1
 (dp2
 S'nextCharInstance'
 p3
-I1
+I2
 sS'nextItemTemplate'
 p4
 I2
@@ -17,13 +17,16 @@ I3
 sS'freeCharTemplateIds'
 p7
 (lp8
-sS'freeItemTemplateIds'
+I3
+aI2
+asS'freeItemTemplateIds'
 p9
 (lp10
 sS'freeCharInstanceIds'
 p11
 (lp12
-sS'nextCharTemplate'
+I1
+asS'nextCharTemplate'
 p13
 I4
 sS'freeItemInstanceIds'
