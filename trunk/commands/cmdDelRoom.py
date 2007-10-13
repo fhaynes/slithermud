@@ -26,7 +26,11 @@ class cmdDelRoom(MudCommand.MudCommand):
         # portal that goes TO this room as well
 
         z = player.getZoneRef()
-        r = z.getRoom(int(args))
+        try:
+            r = z.getRoom(int(args))
+        except KeyError:
+            player.writeWithPrompt("That is not a valid room ID!")
+            return
         
         # Now, let's remove the room from the zone.
         try:
