@@ -41,13 +41,12 @@ class cmdObliterate(MudCommand.MudCommand):
             MudWorld.world.actionHandler.doAction(newAction)
             player.writeWithPrompt("Character instance: "+t.getName()+' was deleted.')
             
-
-            
         elif argList[0].lower() == 'ctemplate':
             
             t = MudWorld.world.templateDb.findTemplateById('character', int(argList[1]))
             if t == None:
                 player.writeWithPrompt("That template was not found.")
+                return
                 
             MudWorld.world.templateDb.removeTemplate('character', t.getId())
             player.writeWithPrompt("Template: "+t.getName()+" was deleted.")
@@ -57,6 +56,7 @@ class cmdObliterate(MudCommand.MudCommand):
             t = MudWorld.world.templateDb.findTemplateById('item', int(argList[1]))
             if t == None:
                 player.writeWithPrompt("That template was not found.")
+                return
 
             MudWorld.world.templateDb.removeTemplate('item', t.getId())
             player.writeWithPrompt("Template: "+t.getName()+" was deleted.")
