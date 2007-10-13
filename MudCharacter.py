@@ -127,23 +127,44 @@ class MudCharacter(MudObject.MudObject):
     def prompt(self):
         """Returns a prompt to show to the user."""
         if self.getColor() == True:
-            return MudProtocol.protocolHandler.processText('\r\n'+self.info['name']+'> ')
+            try:
+                return MudProtocol.protocolHandler.processText('\r\n'+self.info['name']+'> ')
+            except AttributeError:
+                pass
         else:
-            return MudProtocol.protocolHandler.processNoColor('\r\n'+self.info['name']+'> ')
+            try:
+                return MudProtocol.protocolHandler.processNoColor('\r\n'+self.info['name']+'> ')
+            except AttributeError:
+                pass
+            
     
     def writeWithPrompt(self, data):
         """Writes a string to the socket with a prompt following."""
         if self.getColor() == True:
-            self.sockRef.write(MudProtocol.protocolHandler.processText('\r\n'+data+'\r\n'+self.prompt()))
+            try:
+                self.sockRef.write(MudProtocol.protocolHandler.processText('\r\n'+data+'\r\n'+self.prompt()))
+            except AttributeError:
+                pass
         else:
-            self.sockRef.write(MudProtocol.protocolHandler.processNoColor('\r\n'+data+'\r\n'+self.prompt()))
-        
+            try:
+                self.sockRef.write(MudProtocol.protocolHandler.processNoColor('\r\n'+data+'\r\n'+self.prompt()))
+            except AttributeError:
+                pass
+
     def writePlain(self, data):
         """Writes data to the socket without a prompt following."""
         if self.getColor():
-            self.sockRef.write(MudProtocol.protocolHandler.processText(data))
+            try:
+                self.sockRef.write(MudProtocol.protocolHandler.processText(data))
+            except AttributeError:
+                pass
+
         else:
-            self.sockRef.write(MudProtocol.protocolHandler.processNoColor(data))
+            try:
+                self.sockRef.write(MudProtocol.protocolHandler.processNoColor(data))
+            except AttributeError:
+                pass
+            
         
         
         
