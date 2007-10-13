@@ -62,6 +62,10 @@ class MudActionHandler:
             self.spawnItem(action)
         elif action.getType() == 'spawncharacter':
             self.spawnCharacter(action)
+        elif action.getType() == 'destroycharacter':
+            self.destroyCharacter(action)
+        elif action.getType() == 'destroyitem':
+            self.destroyItem(action)
         else:
             pass
     
