@@ -595,6 +595,7 @@ class MudActionHandler:
         t.clearHooks()
 
         t.getRoomRef().removeCharacter(t.getName())
+        MudWorld.world.idDb.addFreeId('charinstance', t.getId())
         
     def addStat(self, action):
         """Adds a stat to the provided entity."""
