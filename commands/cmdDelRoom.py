@@ -21,6 +21,9 @@ class cmdDelRoom(MudCommand.MudCommand):
         # First, let's get a reference to the zone the player is in
         # TODO: Look at possible memory leak issues due to characters in the
         # room having references to it.
+        
+        # TODO: Will probably have to scan through the zone and delete each
+        # portal that goes TO this room as well
 
         z = player.getZoneRef()
         r = z.getRoom(int(args))

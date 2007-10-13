@@ -66,6 +66,7 @@ class cmdAddStat(MudCommand.MudCommand):
                     t.addStat(argList[2], argList[3])
                     
             player.writeWithPrompt("Stat: "+argList[2]+" was added with a value of: "+str(argList[3]))
+            MudWorld.world.saveTemplateDatabase()
                     
 
         elif argList[0].lower() == 'itemplate':
@@ -84,6 +85,7 @@ class cmdAddStat(MudCommand.MudCommand):
                     t.addStat(argList[2], argList[3])
                     
             player.writeWithPrompt("Stat: "+argList[2]+" was added with a value of: "+str(argList[3]))
+            MudWorld.world.saveTemplateDatabase()
         elif argList[0].lower() == 'iinstance':
             for eachItem in player.getRoomRef().getItems().values():
                 try:

@@ -132,6 +132,10 @@ class MudObject:
     def getLogic(self, moduleName):
         """Returns the specified logic module."""
         return self.info['logics'][moduleName]
+    
+    def getLogics(self):
+        """Returns the logics list."""
+        return self.info['logics']
         
     def addHook(self, action):
         """
