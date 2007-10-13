@@ -40,7 +40,7 @@ class cmdNewTemplate(MudCommand.MudCommand):
             MudWorld.world.templateDb.addTemplate('character', newTemplate)
             MudWorld.world.db.saveIdDatabase()
             MudWorld.world.db.saveTemplateDatabase()
-            player.writeWithPrompt("Character Template: "+argList[1]+" created ith an ID of: "+str(newTemplate.getId())+".")
+            player.writeWithPrompt("Character Template: "+argList[1]+" created with an ID of: "+str(newTemplate.getId())+".")
 
         else:
             player.writeWithPrompt("You specified an invalid template type. Please use item or character.")

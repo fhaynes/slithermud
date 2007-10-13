@@ -21,7 +21,6 @@ class cmdSpawn(MudCommand.MudCommand):
         
     def process(self, player, args=''):
         argList = args.split(" ")
-        print argList
         if len(argList) != 2:
             player.writeWithPrompt("Proper format is spawn character/item TemplateID.")
             return
@@ -37,6 +36,10 @@ class cmdSpawn(MudCommand.MudCommand):
                 player.getRoomRef().getId())
                 MudWorld.world.actionHandler.doAction(action)
                 player.writeWithPrompt("You spawned a character from ID: "+str(argList[1]))
+                
+                # TODO: Probably don't want to save the entire zone each time we spawn something...?
+                MudWorld.world.db.saveIdDatabase()
+                MudWorld.world.db.saveZone(player.getZoneRef())
                 return
             except KeyError:
                 player.writeWithPrompt("That character template ID does not exist.")
@@ -48,6 +51,10 @@ class cmdSpawn(MudCommand.MudCommand):
                 player.getRoomRef().getId())
                 MudWorld.world.actionHandler.doAction(action)
                 player.writeWithPrompt("You spawned an item from ID: "+str(argList[1]))
+
+                # TODO: Probably don't want to save the entire zone each time we spawn something...?
+                MudWorld.world.db.saveIdDatabase()
+                MudWorld.world.db.saveZone(player.getZoneRef())
                 return
             except KeyError:
                 player.writeWithPrompt("That item template ID does not exist.")

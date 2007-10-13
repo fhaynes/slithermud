@@ -49,16 +49,12 @@ class cmdInfo(MudCommand.MudCommand):
             cmdList = t.getCommands()
             player.writePlain("\r\n\r\n<green>[COMMANDS]<r>")
             columnize.columnize(player, cmdList, 6)
+            player.writePlain('\r\n\r\n<green>[LOGICS]<r>')
+            logicList = t.getLogics().keys()
+            columnize.columnize(player, logicList, 6)
             player.writeWithPrompt("\r\nEND INFO")
             
-            player.writePlain("<red>[Name]:<r> "+t.getName()+'\r\n')
-            player.writePlain("<red>[ID  ]:<r>"+str(t.getId()+'\r\n'))
-            player.writePlain("<red>[TID ]:<r>"+str(t.getTemplateId()+'\r\n'))
-            player.writePlain("\r\n<red>[Statistics]")
-            statList = t.getStats().keys()
-            for eachItem in statList:
-                eachItem = eachItem + ": "+str(t.getStat(eachItem))
-            columnize.columnize(player,  statList, 6)
+            
             
             
         elif argList[0].lower() == 'ctemplate':
@@ -76,6 +72,9 @@ class cmdInfo(MudCommand.MudCommand):
             cmdList = t.getCommands()
             player.writePlain("\r\n\r\n<green>[COMMANDS]<r>")
             columnize.columnize(player, cmdList, 6)
+            player.writePlain('\r\n\r\n<green>[LOGICS]<r>')
+            logicList = t.getLogics().keys()
+            columnize.columnize(player, logicList, 6)
             player.writeWithPrompt("\r\nEND INFO")
                     
         elif argList[0].lower() == 'itemplate':
@@ -93,6 +92,9 @@ class cmdInfo(MudCommand.MudCommand):
             cmdList = t.getCommands()
             player.writePlain("\r\n\r\n<green>[COMMANDS]<r>")
             columnize.columnize(player, cmdList, 6)
+            player.writePlain('\r\n\r\n<green>[LOGICS]<r>')
+            logicList = t.getLogics().keys()
+            columnize.columnize(player, logicList, 6)
             player.writeWithPrompt("\r\nEND INFO")
             
                 
@@ -121,6 +123,9 @@ class cmdInfo(MudCommand.MudCommand):
             cmdList = t.getCommands()
             player.writePlain("\r\n\r\n<green>[COMMANDS]<r>")
             columnize.columnize(player, cmdList, 6)
+            player.writePlain('\r\n\r\n<green>[LOGICS]<r>')
+            logicList = t.getLogics().keys()
+            columnize.columnize(player, logicList, 6)
             player.writeWithPrompt("\r\nEND INFO")
 
             

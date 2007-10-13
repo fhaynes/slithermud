@@ -42,14 +42,12 @@ class cmdEdit(MudCommand.MudCommand):
             if argList[3].isdigit():
                 if t.hasStat(argList[2]):
                     t.setStat(argList[2], int(argList[3]))
-                    return
                 else:
                     player.writeWithPrompt("That object does not have that stat.")
                     return
             else:
                 if t.hasStat(argList[2]):
                     t.info[argList[2]] = argList[3]
-                    return
                 else:
                     player.writeWithPrompt("That object does not have that stat.")
                     return
@@ -66,17 +64,18 @@ class cmdEdit(MudCommand.MudCommand):
             if argList[3].isdigit():
                 if t.hasStat(argList[2]):
                     t.setStat(argList[2], int(argList[3]))
-                    return
+                    MudWorld.world.saveTemplateDatabase()
                 else:
                     player.writeWithPrompt("That template does not have that stat. Please use addstat to add it.")
                     return
             else:
                 if t.hasStat(argList[2]):
                     t.info[argList[2]] = argList[3]
-                    return
+                    MudWorld.world.saveTemplateDatabase()
                 else:
                     player.writeWithPrompt("That template does not have that stat. Please use addstat to add it.")
                     return
+            player.writeWithPrompt(argList[2]+' was changed to: '+str(argList[3])+' on: '+t.getName())
                     
         elif argList[0].lower() == 'itemplate':
             t = MudWorld.world.templateDb.findTemplateById('item', int(argList[1]))
@@ -86,17 +85,20 @@ class cmdEdit(MudCommand.MudCommand):
             if argList[3].isdigit():
                 if t.hasStat(argList[2]):
                     t.setStat(argList[2], int(argList[3]))
-                    return
+                    MudWorld.world.saveTemplateDatabase()
+                    
                 else:
                     player.writeWithPrompt("That template does not have that stat. Please use addstat to add it.")
                     return
             else:
                 if t.hasStat(argList[2]):
                     t.info[argList[2]] = argList[3]
-                    return
+                    MudWorld.world.saveTemplateDatabase()
+                    
                 else:
                     player.writeWithPrompt("That template does not have that stat. Please use addstat to add it.")
                     return
+            player.writeWithPrompt(argList[2]+' was changed to: '+str(argList[3])+' on: '+t.getName())
                     
         elif argList[0].lower() == 'iinstance':
             for eachItem in player.getRoomRef().getItems().values():
@@ -107,11 +109,9 @@ class cmdEdit(MudCommand.MudCommand):
                 except:
                     player.writeWithPrompt("IDs must be numbers only!")
                     return
-            
             if t == None:
                 player.writeWithPrompt("An item with that ID was not found in this room.")
                 return
-
             if argList[3].isdigit():
                 if t.hasStat(argList[2]):
                     t.setStat(argList[2], int(argList[3]))
@@ -122,7 +122,6 @@ class cmdEdit(MudCommand.MudCommand):
             else:
                 if t.hasStat(argList[2]):
                     t.info[argList[2]] = argList[3]
-                    return
                 else:
                     player.writeWithPrompt("That item does not have that stat. Please use addstat to add it.")
                     return

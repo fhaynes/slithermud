@@ -30,18 +30,22 @@ class cmdNewRoom(MudCommand.MudCommand):
         if args != '':
             newRoom.setName(args)
 
-        # Now we add the room to the zone!
-        z.addRoom(newRoom)
-        
-        # Add some initial logics
-        name, logic = MudWorld.world.logicDb.getLogic('genericRoom')
-        newRoom.addLogic(name, logic)
-        
-        # Tell the player it was created and what the ID is
-        player.writeWithPrompt("Room was created with an ID of: "+str(newRoom.getId()))
-        
-        # And save the zone
-        MudWorld.world.db.saveZone(z)
+            # Now we add the room to the zone!
+            z.addRoom(newRoom)
+            
+            # Add some initial logics
+            name, logic = MudWorld.world.logicDb.getLogic('genericRoom')
+            newRoom.addLogic(name, logic)
+            
+            # Tell the player it was created and what the ID is
+            player.writeWithPrompt("Room was created with an ID of: "+str(newRoom.getId()))
+            
+            # And save the zone
+            MudWorld.world.db.saveZone(z)
+            
+        else:
+            player.writeWithPrompt("You must supply a room name!")
+            return
 
 
         

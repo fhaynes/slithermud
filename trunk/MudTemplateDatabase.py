@@ -120,7 +120,7 @@ class MudTemplateDatabase:
         elif templateType.lower() == 'character':
             newChar = copy.deepcopy(self.charTemplates[templateId])
             newChar.setId(MudWorld.world.idDb.getNewId('charinstance'))
-            newItem.setTemplateId(int(templateId))
+            newChar.setTemplateId(int(templateId))
             return newChar
         else:
             # TODO: Try/Except to catch invalid types. 
