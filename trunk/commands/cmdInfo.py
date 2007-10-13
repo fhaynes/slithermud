@@ -43,9 +43,11 @@ class cmdInfo(MudCommand.MudCommand):
             player.writePlain("<red>[TID ]: <r>"+str(t.getTemplateId())+'\r\n')
             player.writePlain("\r\n<green>[STATISTICS]")
             statList = t.getStats().keys()
+            newList = []
             for eachItem in statList:
                 eachItem = eachItem + ": "+str(t.getStat(eachItem))
-            columnize.columnize(player,  statList, 6)
+                newList.append(eachItem)
+            columnize.columnize(player,  newList, 4)
             cmdList = t.getCommands()
             player.writePlain("\r\n\r\n<green>[COMMANDS]<r>")
             columnize.columnize(player, cmdList, 6)
@@ -68,7 +70,7 @@ class cmdInfo(MudCommand.MudCommand):
             statList = t.getStats().keys()
             for eachItem in statList:
                 eachItem = eachItem + ": "+str(t.getStat(eachItem))
-            columnize.columnize(player,  statList, 6)
+            columnize.columnize(player,  statList, 4)
             cmdList = t.getCommands()
             player.writePlain("\r\n\r\n<green>[COMMANDS]<r>")
             columnize.columnize(player, cmdList, 6)
@@ -88,7 +90,7 @@ class cmdInfo(MudCommand.MudCommand):
             statList = t.getStats().keys()
             for eachItem in statList:
                 eachItem = eachItem + ": "+str(t.getStat(eachItem))
-            columnize.columnize(player,  statList, 6)
+            columnize.columnize(player,  statList, 4)
             cmdList = t.getCommands()
             player.writePlain("\r\n\r\n<green>[COMMANDS]<r>")
             columnize.columnize(player, cmdList, 6)
@@ -119,7 +121,7 @@ class cmdInfo(MudCommand.MudCommand):
             statList = t.getStats().keys()
             for eachItem in statList:
                 eachItem = eachItem + ": "+str(t.getStat(eachItem))
-            columnize.columnize(player,  statList, 6)
+            columnize.columnize(player,  statList, 4)
             cmdList = t.getCommands()
             player.writePlain("\r\n\r\n<green>[COMMANDS]<r>")
             columnize.columnize(player, cmdList, 6)

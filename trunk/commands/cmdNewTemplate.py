@@ -37,6 +37,7 @@ class cmdNewTemplate(MudCommand.MudCommand):
             newTemplate = MudCharacter.MudCharacter()
             newTemplate.setId(MudWorld.world.idDb.getNewId('chartemplate'))
             newTemplate.setName(argList[1])
+            MudWorld.world.cmdDb.loadPlayerCommands(newTemplate)
             MudWorld.world.templateDb.addTemplate('character', newTemplate)
             MudWorld.world.db.saveIdDatabase()
             MudWorld.world.db.saveTemplateDatabase()
