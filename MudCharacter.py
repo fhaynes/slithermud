@@ -25,6 +25,16 @@ class MudCharacter(MudObject.MudObject):
         
         # Should they see color? By default, no
         self.info['color'] = False
+        
+        # - D20 Stats - #
+        self.info['statistics']['intelligence'] = 0
+        self.info['statistics']['strength']     = 0
+        self.info['statistics']['dexterity']    = 0
+        self.info['statistics']['constitution'] = 0
+        self.info['statistics']['wisdom']       = 0
+        self.info['statistics']['charisma']     = 0
+        
+
 
         
     # ------------------- #

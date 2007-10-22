@@ -4,7 +4,7 @@ import MudConst
 import MudWorld
 import MudAction
 import logger
-
+import diceutils
 def getAccountName(player, data):
     """
     Checks to see if the player exists, or helps create a new one.
@@ -100,9 +100,59 @@ def getNewAccountPass(player, data):
     player.setLoginState(MudConst.confirmNewAccountPass)
     
 def confirmNewAccountPass(player, data):
+
     """
     Confirms the new password for the account.
     """
+    if data.lower() == 'y':
+        player.writePlain("Press any key to roll your stats.")
+        player.setLoginState(MudConst.rollStats)
+
+##        logger.logging.info('New character: '+player.info['name']+'logged in.')
+##
+##        player.writePlain('Character created.\r\n')
+##        player.writeWithPrompt('Welcome, '+player.getName())
+##        player.setLoginState(MudConst.logedIn)
+##
+##        newAction = MudAction.MudAction('enterworld', player, 1, 1)
+##        MudWorld.world.actionHandler.doAction(newAction)
+##        
+##        # TODO: Come up with a better way to load initial commands. #
+##        MudWorld.world.cmdDb.loadPlayerCommands(player)
+##        
+##        # TODO: Come up with better way to load initial logics. #
+##        name, gen  = MudWorld.world.logicDb.getLogic('genericPlayer')
+##        player.addLogic(name, gen)
+##        
+##        MudWorld.world.db.savePlayer(player)
+
+    elif data.lower() == 'n':
+        player.writePlain('\r\nChoose a password: ')
+        player.setLoginState(MudConst.getNewAccountPass)
+        return
+    else:
+        player.writePlain('\r\nInvalid choice. Try again: ')
+        return
+
+def rollStats(player, data):
+    player.setStat('strength', diceutils.rollTotal(3, 6))
+    player.setStat('dexterity', diceutils.rollTotal(3, 6))
+    player.setStat('intelligence', diceutils.rollTotal(3, 6))
+    player.setStat('wisdom', diceutils.rollTotal(3, 6))
+    player.setStat('charisma', diceutils.rollTotal(3, 6))
+    player.setStat('constitution', diceutils.rollTotal(3, 6))
+    
+    player.writePlain("Your rolled stats are:\r\n")
+    player.writePlain("Strength    : "+str(player.getStat('strength'))+'\r\n')
+    player.writePlain("Dexterity   : "+str(player.getStat('dexterity'))+'\r\n')
+    player.writePlain("Constitution: "+str(player.getStat('constitution'))+'\r\n')
+    player.writePlain("Intelligence: "+str(player.getStat('intelligence'))+'\r\n')
+    player.writePlain("Wisdom      : "+str(player.getStat('wisdom'))+'\r\n')
+    player.writePlain("Charisma    : "+str(player.getStat('charisma'))+'\r\n')
+    player.writePlain("Are these acceptable? (Y/N) : ")
+    player.setLoginState(MudConst.confirmStats)
+
+def confirmStats(player, data):
     if data.lower() == 'y':
         logger.logging.info('New character: '+player.info['name']+'logged in.')
 
@@ -121,14 +171,15 @@ def confirmNewAccountPass(player, data):
         player.addLogic(name, gen)
         
         MudWorld.world.db.savePlayer(player)
-
+        return
     elif data.lower() == 'n':
-        player.writePlain('\r\nChoose a password: ')
-        player.setLoginState(MudConst.getNewAccountPass)
+        player.writePlain("\r\nPress enter to reroll your stats.")
+        player.setLoginState(MudConst.rollStats)
         return
     else:
-        player.writePlain('\r\nInvalid choice. Try again: ')
+        player.writePlain("\r\nPlease type Y or N: ")
         return
+        
     
 
 def processLogin(player, data):
@@ -149,5 +200,9 @@ def processLogin(player, data):
         getNewAccountPass(player, data)
     elif player.getLoginState() == MudConst.confirmNewAccountPass:
         confirmNewAccountPass(player, data)
+    elif player.getLoginState() == MudConst.rollStats:
+        rollStats(player, data)
+    elif player.getLoginState() == MudConst.confirmStats:
+        confirmStats(player, data)
     else:
         pass

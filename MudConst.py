@@ -16,7 +16,9 @@ getNewAccountName     = 3
 getNewAccountPass     = 4
 confirmNewAccountName = 5
 confirmNewAccountPass = 6
-logedIn               = 7
+rollStats             = 7
+confirmStats          = 8
+logedIn               = 9
 
 # Character ranks in the MUD
 player        = 1
@@ -66,6 +68,9 @@ timerDatabasePath = databaseDir+'timerDatabase.mdb'
 
 # Path to the saved game time variable
 gameTimePath = databaseDir+'currentGameTime.mdb'
+
+# Path to the credits file
+creditPath = homeDir+'credits.txt'
 
 # Adds some stuff to the PATH
 sys.path.append(zoneDir)
