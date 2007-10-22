@@ -9,6 +9,7 @@ import cmdDrop
 import cmdCommands
 import cmdQuit
 import cmdColor
+import cmdCredits
 
 # OLC Related Imports
 import cmdNewZone
@@ -53,6 +54,7 @@ class CommandDatabase:
         self.commands['commands']    = cmdCommands.cmdCommands
         self.commands['quit']        = cmdQuit.cmdQuit
         self.commands['color']       = cmdColor.cmdColor
+        self.commands['credits']     = cmdCredits.cmdCredits
         
         # ---------------------- #
         #  OLC Related Commands  #
