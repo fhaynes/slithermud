@@ -149,7 +149,5 @@ def processLogin(player, data):
         getNewAccountPass(player, data)
     elif player.getLoginState() == MudConst.confirmNewAccountPass:
         confirmNewAccountPass(player, data)
-    elif player.getLoginState() == MudConst.rollStats:
-        rollStats(player, data)
     else:
         pass
