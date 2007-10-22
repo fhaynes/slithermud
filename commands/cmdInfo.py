@@ -64,6 +64,7 @@ class cmdInfo(MudCommand.MudCommand):
             t = MudWorld.world.templateDb.findTemplateById('character', int(argList[1]))
             if t == None:
                 player.writeWithPrompt("That template was not found.")
+                return
             player.writePlain("<red>[Name]: <r> "+t.getName()+'\r\n')
             player.writePlain("<red>[ID  ]: <r>"+str(t.getId())+'\r\n')
             player.writePlain("\r\n<green>[STATISTICS]")
@@ -83,6 +84,7 @@ class cmdInfo(MudCommand.MudCommand):
             t = MudWorld.world.templateDb.findTemplateById('item', int(argList[1]))
             if t == None:
                 player.writeWithPrompt("That template was not found.")
+                return
                 
             player.writePlain("<red>[Name]: <r> "+t.getName()+'\r\n')
             player.writePlain("<red>[ID  ]: <r>"+str(t.getId())+'\r\n')
