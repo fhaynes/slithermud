@@ -1,0 +1,10 @@
+These are the people who made SlitherMUD possible:
+
+Kuros  - Original Author and Coder (kurosknight@gmail.com)
+Adam "Vopisk" Dean - Co-Designer and Programmer (vopisk@gmail.com)
+
+Additional Contributions by:
+KaVir
+Yellow Archer
+Idealiad
+Aetherwild
