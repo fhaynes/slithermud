@@ -67,6 +67,9 @@ timerDatabasePath = databaseDir+'timerDatabase.mdb'
 # Path to the saved game time variable
 gameTimePath = databaseDir+'currentGameTime.mdb'
 
+# Path to the credits file
+creditPath = homeDir+'credits.txt'
+
 # Adds some stuff to the PATH
 sys.path.append(zoneDir)
 sys.path.append(os.path.join(homeDir, 'commands'))
