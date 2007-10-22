@@ -25,6 +25,8 @@ class MudCharacter(MudObject.MudObject):
         
         # Should they see color? By default, no
         self.info['color'] = False
+        
+
 
         
     # ------------------- #
