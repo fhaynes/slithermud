@@ -60,18 +60,31 @@ class cmdEdit(MudCommand.MudCommand):
             t = MudWorld.world.templateDb.findTemplateById('character', int(argList[1]))
             if t == None:
                 player.writeWithPrompt("That template was not found.")
+            
+            if argList[2].lower() == 'addlogic':
+                name, logic = MudWorld.world.logicDb.getLogic(argList[3])
+                t.addLogic(name, logic)
+                player.writeWithPrompt("Logic module: "+name+" added.")
+                return
+            
+            if argList[2].lower() == 'dellogic':
+                try:
+                    t.removeLogic(argList[3])
+                except:
+                    player.writeWithPrompt("The template does not have logic module: "+argList[3])
+                    return
                 
             if argList[3].isdigit():
                 if t.hasStat(argList[2]):
                     t.setStat(argList[2], int(argList[3]))
-                    MudWorld.world.saveTemplateDatabase()
+                    MudWorld.world.db.saveTemplateDatabase()
                 else:
                     player.writeWithPrompt("That template does not have that stat. Please use addstat to add it.")
                     return
             else:
                 if t.hasStat(argList[2]):
                     t.info[argList[2]] = argList[3]
-                    MudWorld.world.saveTemplateDatabase()
+                    MudWorld.world.db.saveTemplateDatabase()
                 else:
                     player.writeWithPrompt("That template does not have that stat. Please use addstat to add it.")
                     return
@@ -85,7 +98,7 @@ class cmdEdit(MudCommand.MudCommand):
             if argList[3].isdigit():
                 if t.hasStat(argList[2]):
                     t.setStat(argList[2], int(argList[3]))
-                    MudWorld.world.saveTemplateDatabase()
+                    MudWorld.world.db.saveTemplateDatabase()
                     
                 else:
                     player.writeWithPrompt("That template does not have that stat. Please use addstat to add it.")
@@ -93,7 +106,7 @@ class cmdEdit(MudCommand.MudCommand):
             else:
                 if t.hasStat(argList[2]):
                     t.info[argList[2]] = argList[3]
-                    MudWorld.world.saveTemplateDatabase()
+                    MudWorld.world.db.saveTemplateDatabase()
                     
                 else:
                     player.writeWithPrompt("That template does not have that stat. Please use addstat to add it.")
