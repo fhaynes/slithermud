@@ -101,8 +101,8 @@ class MudDatabase:
         pickle.dump(pCopy, file)
         
         # The copy has been saved, so we can safely delete it now.
+
         del pCopy
-        
         file.close()
         
     def saveIdDatabase(self):
