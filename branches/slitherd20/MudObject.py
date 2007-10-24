@@ -72,32 +72,32 @@ class MudObject:
         
     def removeStat(self, statName):
         '''Deletes a stat from the dictionary.'''
-        del self.info['statistics'][statName]
+        del self.info['stats'][statName]
         
     def setStat(self, statName, statValue):
         '''
         Sets a statistic in the statistics dictionary.
         '''
-        self.info['statistics'][statName] = statValue
+        self.info['stats'][statName] = statValue
         
     def getStat(self, statName):
         '''
         Returns the value of a requested statistic.
         '''
-        return self.info['statistics'][statName]
+        return self.info['stats'][statName]
     
     def hasStat(self, statName):
         '''
         Checks if the object has a stat in the info dictionary.
         '''
-        if self.info['statistics'].has_key(statName):
+        if self.info['stats'].has_key(statName):
             return True
         else:
             return False
         
     def getStats(self):
         """Returns the entire stat dictionary."""
-        return self.info['statistics']
+        return self.info['stats']
         
     def addCommand(self, newCmd, cmdInst):
         '''

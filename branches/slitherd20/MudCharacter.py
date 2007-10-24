@@ -27,15 +27,48 @@ class MudCharacter(MudObject.MudObject):
         self.info['color'] = False
         
         # - D20 Stats - #
-        self.info['statistics']['intelligence'] = 0
-        self.info['statistics']['strength']     = 0
-        self.info['statistics']['dexterity']    = 0
-        self.info['statistics']['constitution'] = 0
-        self.info['statistics']['wisdom']       = 0
-        self.info['statistics']['charisma']     = 0
+        self.stats  = {}
+        self.skills = {}
+        self.feats  = {}
+        self.stats['statistics']['intelligence'] = 0
+        self.stats['statistics']['strength']     = 0
+        self.stats['statistics']['dexterity']    = 0
+        self.stats['statistics']['constitution'] = 0
+        self.stats['statistics']['wisdom']       = 0
+        self.stats['statistics']['charisma']     = 0
         
 
 
+    # --------------------- #
+    # d20 get/set functions #
+    # --------------------- #
+    
+    def getSkill(self, sname):
+        """Returns the requested skill."""
+        return self.skills[sname]
+    
+    def setSkill(self, sname, svalue):
+        """Sets or adds the requested skill."""
+        self.skills[sname] = svalue
+        
+    def getFeat(self, fname):
+        """Determines if the player has the specified feat."""
+        if self.feats.has_key(fname):
+            return True
+        else:
+            return False
+    
+    def addFeat(self, fname):
+        """
+        Adds a feat to the dictionary. We don't need a value for this,
+        so it will just be zero.
+        """
+        self.feats[fname] = True
+    
+    def removeFeat(self, fname):
+        """Removes a feat from a character."""
+        del self.feats[fname]
+        
         
     # ------------------- #
     #  Get/Set Functions  #
