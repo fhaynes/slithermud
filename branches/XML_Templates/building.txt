@@ -1,0 +1,145 @@
+How to build on SlitherMUD
+
+This document is intended to give you an overview of how the zone, character, and item structures work in SlitherMUD, and how you can expand them.
+
+------
+Zones
+------
+
+The entire world of made of "zones". A zone can generally be described as a collection of rooms, mobs, and items that share a theme. You have have an evil forest with vampires in it that players can adventure in. Or a haunted castle. Those locales would be zones.
+
+Creating a zone is easy using the "newzone" command. You simply type:
+
+newzone Spooky Castle (or whatever name you want, you can use spaces)
+
+and poof, it appears in the world with a single room. You will be told it's ID number after it is created. You can then warp to it to commence building.
+
+Deleting zones is similarly easy. Use the delzone command, ala:
+
+delzone IDNumberOfZone
+
+So, if the Spooky Castle zone was assigned an ID of 15, you would type delzone 15. Once deleted, the zone is gone forever! Along with all mobs and items within it (but not their templates).
+
+The third command dealing with zones is the listzone command. You can type:
+
+listzone
+
+To get a list of all the zones in the game and their ID numbers. You can also type: 
+
+listzone zoneid
+
+to get a few more details about that specific zone.
+
+-------
+Rooms
+-------
+
+Rooms are what make up zones, and they are what characters travel between by using the "go" command. A zone can have an unlimited number of rooms. Creating a new room is easy. Simply make sure you are in the zone you want to add a room to, and issue the "newroom" command with the name of the room. For example:
+
+newroom The Room of Horrible Horror
+
+You will be told what the ID of the room is, and you can then warp there (as it is not connected to any other rooms at the moment).
+
+To delete a room, simply issue the delroom command followed by the ID. Example:
+
+delroom 10
+
+Would delete room number 10
+
+There are two things you can edit about a room, it's name and description. To change those, use the redit command:
+
+redit name New Name of Room
+
+redit desc This is the new description of the room. You can make it as long as you want. 
+To clear the description, you can type: room desc clear
+
+You can also add/remove logic modules that are loaded with the redit command, ala:
+redit addlogic nameOfModule
+redit dellogic nameOfModule
+
+--------
+Portals
+--------
+
+Portals are what connect rooms to each other. They can also send you to another zone. Rooms have a name, which is what people see when they type look. To create a portal, make sure you are in the room you want the portal to appear in, then issue the newportal command:
+
+newportal targetRoomId Name of the Portal
+
+So, say you wanted a portal going from room 10 to 11 named "Wooden Gate". You would type, from room 10:
+
+newportal 11 Wooden Gate
+
+Portals, for right now, are one way! So you could go to room 11, but you couldn't get back to 10. You would need to make a seperate portal from room 11.
+
+By default, the target zone of portals is always the zone you are in when you made it. To create an inter-zone portal, or to edit an existing portal, use the "pedit" command:
+
+pedit portalID name/targetzone/targetroom/addlogic/dellogic
+
+So, to make a portal from zone 1 room 12 go to zone 2 room 13, we would go to zone 1 room 12, make a new portal named whatever we want (and the newportal command would tell us the ID, or we could use wizview), and issue the following commands:
+
+pedit ID targetzone 2
+pedit ID targetroom 13
+
+If we wanted to change the name to "Swirling Portal of Energy" we would type:
+
+pedit ID name Swirling Portal of Energy
+
+To delete a portal, issue the delportal command. If we wanted to delete a portal with the ID of 3, we would do:
+
+delportal 3
+
+While standing in the room the portal exists in.
+
+-----------
+Templates and Instances
+-----------
+
+Items represent physical items you can pick up, drop, equip, etc in the world. Characters are any player character or NPC.
+
+A Template is an original item or character. Take an item called a Rusty Dagger. Theoretically, you can find these off of any old rat around Qey--er, a city. Stored in the template database is an item called "Rusty Dagger". When we spawn a rat that has it, we simply make a copy of that template (referred to as an instance) and give it to the rat. ALl the items or characters you see in the game world are simply copies of a template.
+
+You never create an item or character instance directly. Instead, you create a template and spawn a new copy off of that. By default, templates don't come with in-game "stats" such as strength, dexterity, etc. It is the responsibility of the coder for your game to add those to the template. There are number of commands dealing with templates and instances, so let's get started!
+
+newtemplate - This command will create a new item or character template with the supplied name. Examples:
+
+newtemplate character a dirty ogre
+newtemplate item Sword of Deadly Death
+
+You will be told the template was created, and with what ID.
+
+Now, say you want to create a dirty ogre for your zone. You would type:
+
+spawn character IDNumberOfDirtyOgre
+
+ANd you get a copy of him! It will even tell you what the ID of that instance is. Let's say it is 10
+
+Now, you CAN edit individual attributes of an instance, or the name, using the edit command. Say you wanted to change the Strength attribute of a dirty ogre you just mad to make him much stronger than normal. You would type:
+
+edit cinstance 10 strength 50
+
+If you wanted to change the template (which has an ID of, say, 5) so that all subsequent ogres would have the super strength, you would do:
+
+edit ctemplate 5 strength 50
+
+You can do the same thing for itemplates and iisntances.
+
+You CANNOT change a stat if it doesn't exist. If it doesn't exist, you will be told that. You should use the addstat/delstat commands to add or delete stats. Let's say the ogre doesn't have a strength attribute, so we can add it like this:
+
+addstat cinstance 10 strength 50
+The last number is what you want it to be.
+
+If we wanted to add it to the template, we could do:
+addstat ctemplate 5 strength 50
+
+Now, if you want to get detailed information about a template or instance, you use the Info command. Let's say we wanted to see what logic modules are attached to a dirty ogre TEMPLATE (not instance). We woudl type:
+
+info ctemplate 5
+
+Or, if we wanted to see the instance's information, we could type:
+
+info cinstance 10
+
+You can only Info an instance if it is in the same room as you! You can info a template from anywhere, but if you want specific information on an item or character instance, you must be in the same room as them.
+
+
+Well, this concludes this version of the document. I'll be adding more to it as I add in more to the code, so stay tuned!
