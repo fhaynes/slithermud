@@ -1,0 +1,1 @@
+A complete MUD framework written in Python. It is meant to be very flexible and easy to extend. Most of the framework is done.
